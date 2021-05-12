@@ -14,6 +14,7 @@ A template for creating discord bots with node.js and discord.js
    * your admin id's: Enter a discord user id in quotation marks and separate several with a comma ```[ "<id>", "<id>", ..., "<id>"]```.\
      These are the only users who have the permission to execute the restricted commands
    * OPTIONAL: change lang from "en" to "de" for german instead of english language
+   * OPTIONAL: change the name or place of the commands directory by editing the file path `commands_path`
 3. Run `npm install`.
 
 ## Adding a command 
@@ -32,8 +33,8 @@ module.exports = {
     guildOnly: false,                       // this command runs only in guilds
     dmOnly: false,                          // this command runs only in dms
     restricted: false,                      // only admins (see config file) can run this command 
-    execute(message, args) {                // your code to execute
-    
+    execute(message, args) {                // message = discord.js 'Message' object; args = given arguments as list
+        // your code to execute
     },
 };
 ```
