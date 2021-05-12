@@ -1,0 +1,10 @@
+{
+  "index": {
+    "guild_only": "Ich kann diesen Befehl leider nur in Servern ausführen!",
+    "dm_only": "Ich kann diesen Befehl leider nur im privaten Chat mit dir ausführen!",
+    "restricted": "Du bist leider nicht berechtigt, diesen Befehl auszuführen!",
+    "missing_args": "Du hast die falsche Anzahl an Argummente abgegeben",
+    "missing_args_proper_use": "Die korrekte Verwendung wäre: ",
+    "error": "Es gab einen Fehler beim Versuch, diesen Befehl auszuführen!"
+  }
+}

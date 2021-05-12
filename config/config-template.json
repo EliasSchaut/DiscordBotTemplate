@@ -1,0 +1,7 @@
+{
+  "prefix": "YOUR_PREFIX",
+  "token": "YOUR_TOKEN",
+  "commands_path": "./commands",
+  "lang": "en",
+  "admin_ids": [ ]
+}
