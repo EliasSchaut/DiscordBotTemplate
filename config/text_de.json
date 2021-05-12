@@ -6,5 +6,45 @@
     "missing_args": "Du hast die falsche Anzahl an Argummente abgegeben",
     "missing_args_proper_use": "Die korrekte Verwendung wäre: ",
     "error": "Es gab einen Fehler beim Versuch, diesen Befehl auszuführen!"
+  },
+  "commands": {
+    "echo": {
+      "help": "Sendet die übergebenen Argumente zurück.",
+      "usage": "[Text]"
+    },
+    "help": {
+      "help": "Listet alle Befehle auf bzw. Informationen zu einem bestimmten Befehl",
+      "usage": "[Name eines Befehls]",
+      "invalid_command": "Das ist kein gültiger Befehl!",
+      "intro": {
+        "0": "Hier ist eine Liste mit allen Befehlen:",
+        "1": "Du kannst",
+        "2": "senden, um Informationen zu einem bestimmten Befehl zu erhalten"
+      },
+      "dm": {
+        "success": "Dir wurde eine DM mit allen Befehlen geschickt!",
+        "fail_console": "Konnte keine DM senden an",
+        "fail_reply": "Es scheint so, als ob ich dir keine DMs schicken kann! Hast du DMs deaktiviert?"
+      },
+      "success": {
+        "name": "**Name:**",
+        "aliases": "**Aliase:**",
+        "description": "**Beschreibung:**",
+        "usage": "**Verwendung:**"
+      }
+    },
+    "ping": {
+      "help": "Den Ping des Bots abrufen",
+      "websocket": "Websocket Heartbeat:",
+      "pinging": "Senden...",
+      "roundtrip": "Roundtrip Latenz:"
+    },
+    "reload": {
+      "help": "Lädt einen Befehl erneut",
+      "usage": "[Name eines Befehls]",
+      "invalid_command": "Es gibt keinen Befehl mit diesem Namen oder Alias",
+      "success": "wurde neu geladen!",
+      "fail": "Es gab einen Fehler beim Nachladen des Befehls"
+    }
   }
 }

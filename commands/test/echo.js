@@ -1,9 +1,12 @@
+const { lang } = require("../../config/config.json");
+const text = require(`../../config/text_${lang}.json`).commands.echo;
+
 module.exports = {
     name: 'echo',
-    description: 'Sends back your arguments.',
+    description: text.help,
     aliases: ['echos'],
     args: true,
-    usage: '[text]',
+    usage: text.usage,
     args_min_length: 1,
     guildOnly: false,
     dmOnly: false,

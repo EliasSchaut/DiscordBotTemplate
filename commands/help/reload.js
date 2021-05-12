@@ -1,12 +1,14 @@
 const fs = require('fs');
+const { lang, commands_path } = require("../../config/config.json");
+const text = require(`../../config/text_${lang}.json`).commands.reload;
 
 module.exports = {
     name: 'reload',
-    description: 'Reloads a command',
+    description: text.help,
     aliases: ['reloads', 'r'],
     args: true,
     args_min_length: 1,
-    usage: '[command name]',
+    usage: text.usage,
     guildOnly: false,
     dmOnly: false,
     restricted: true,
@@ -16,21 +18,21 @@ module.exports = {
             || message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
         if (!command) {
-            return message.channel.send(`There is no command with name or alias \`${commandName}\`, ${message.author}!`);
+            return message.channel.send(`${text.invalid_command} \`${commandName}\`, ${message.author}!`);
         }
 
-        const commandFolders = fs.readdirSync('./commands');
-        const folderName = commandFolders.find(folder => fs.readdirSync(`./commands/${folder}`).includes(`${commandName}.js`));
+        const commandFolders = fs.readdirSync(commands_path);
+        const folderName = commandFolders.find(folder => fs.readdirSync(`${commands_path}/${folder}`).includes(`${commandName}.js`));
 
         delete require.cache[require.resolve(`../${folderName}/${command.name}.js`)];
 
         try {
             const newCommand = require(`../${folderName}/${command.name}.js`);
             message.client.commands.set(newCommand.name, newCommand);
-            message.channel.send(`Command \`${newCommand.name}\` was reloaded!`);
+            message.channel.send(`\`${newCommand.name}\` ${text.success}`);
         } catch (error) {
             console.error(error);
-            message.channel.send(`There was an error while reloading a command \`${command.name}\`:\n\`${error.message}\``);
+            message.channel.send(`${text.fail} \`${command.name}\`:\n\`${error.message}\``);
         }
     },
 };

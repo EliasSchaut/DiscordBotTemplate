@@ -6,5 +6,45 @@
     "missing_args": "You have given the wrong number of arguments",
     "missing_args_proper_use": "The proper usage would be: ",
     "error": "There was an error trying to execute that command! Ask the holy Ilias for help!"
+  },
+  "commands": {
+    "echo": {
+      "help": "Sends back the arguments.",
+      "usage": "[text]"
+    },
+    "help": {
+      "help": "List all commands or give info about a specific command.",
+      "usage": "[command name]",
+      "invalid_command": "That's not a valid command!",
+      "intro": {
+        "0": "Here's a list of all commands:",
+        "1": "You can send",
+        "2": "to get info on a specific command"
+      },
+      "dm": {
+        "success": "I've sent you a DM with all my commands!",
+        "fail_console": "Could not send help DM to",
+        "fail_reply": "It seems like I can't DM you! Do you have DMs disabled?"
+      },
+      "success": {
+        "name": "**Name:**",
+        "aliases": "**Aliases:**",
+        "description": "**Description:**",
+        "usage": "**Usage:**"
+      }
+    },
+    "ping": {
+      "help": "Get the bot's ping",
+      "websocket": "Websocket heartbeat:",
+      "pinging": "Pinging...",
+      "roundtrip": "Roundtrip latency:"
+    },
+    "reload": {
+      "help": "Reloads a command",
+      "usage": "[command name]",
+      "invalid_command": "There is no command with this name or alias",
+      "success": "was reloaded!",
+      "fail": "There was an error while reloading a command"
+    }
   }
 }
