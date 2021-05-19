@@ -41,7 +41,7 @@ module.exports = {
 
         if (command.aliases) data.push(`${text.success.aliases} ${command.aliases.join(', ')}`);
         if (command.description) data.push(`${text.success.description} ${command.description}`);
-        if (command.usage) data.push(`${text.success.usage} ${prefix}${command.name} ${command.usage}`);
+        if (command.usage) data.push(`${text.success.usage} \`${prefix}${command.name} ${command.usage}\``);
 
         message.channel.send(data, { split: true });
     },
