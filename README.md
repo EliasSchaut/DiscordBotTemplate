@@ -17,7 +17,7 @@ A template for creating discord bots with node.js and discord.js
    * OPTIONAL: change the name or place of the commands directory by editing the file path `commands_path`
 3. Run `npm install`.
 
-## Adding a command 
+## Add a command 
 1. Create a new JS file with the name [command name].js inside a folder in the folder `commands`.\
    **Note**: Every command has to be in a folder in the folder `commands`. A command, which is directly in the folder 
    `commands` or in a folder in a folder in `commands` is not allowed!
