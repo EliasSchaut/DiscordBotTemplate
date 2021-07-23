@@ -5,10 +5,6 @@ module.exports = {
     name: 'ping',
     description: text.help,
     aliases: ['p'],
-    args: false,
-    guildOnly: false,
-    dmOnly: false,
-    restricted: false,
     execute(message, args) {
         message.channel.send(`${text.websocket} ${message.mentions.client.ws.ping}ms.`);
 

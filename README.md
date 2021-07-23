@@ -25,15 +25,15 @@ A template for creating discord bots with node.js and discord.js
 2. Write down the following skeleton (\<something\> means you have to insert something here): 
 ```js
 module.exports = {
-    name: '<name>',                         // insert the name of the command
-    description: '<help>',                  // describe your command
-    aliases: ['<alias_1>', '<alias_2>'],    // make optional aliases
-    args: false,                            // user must enter arguments
-    args_min_length: 0,                     // user must enter a minumum of this number arguments
-    usage: '<usage>',                       // how the arguments must look like
-    guildOnly: false,                       // this command runs only in guilds
-    dmOnly: false,                          // this command runs only in dms
-    restricted: false,                      // only admins (see config file) can run this command 
+    name: '<name>',                         // REQUIRED: insert the name of the command
+    description: '<help>',                  // REQUIRED: describe your command
+    aliases: ['<alias_1>', '<alias_2>'],    // OPTIONAL: make optional aliases
+    args_needed: true,                      // OPTIONAL: user must enter arguments
+    args_min_length: 0,                     // ONLY WHEN args_needed: user must enter a minumum of this number arguments
+    usage: '<usage>',                       // ONLY WHEN args_needed: how the arguments must look like
+    guild_only: true,                       // OPTIONAL: this command runs only in guilds
+    dm_only: true,                          // OPTIONAL: this command runs only in dms
+    restricted: true,                       // OPTIONAL: only admins (see config file) can run this command 
     execute(message, args) {                // message = discord.js 'Message' object; args = given arguments as list
         // your code to execute
     },

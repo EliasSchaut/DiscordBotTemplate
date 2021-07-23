@@ -6,11 +6,9 @@ module.exports = {
     name: 'reload',
     description: text.help,
     aliases: ['reloads', 'r'],
-    args: true,
+    args_needed: true,
     args_min_length: 1,
     usage: text.usage,
-    guildOnly: false,
-    dmOnly: false,
     restricted: true,
     execute(message, args) {
         const commandName = args[0].toLowerCase();

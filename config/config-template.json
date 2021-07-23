@@ -2,7 +2,10 @@
   "prefix": "YOUR_PREFIX",
   "token": "YOUR_TOKEN",
   "lang": "en",
-  "admin_ids": [ ],
 
-  "embed_color": "DARK_PURPLE"
+
+  "permissions_for_admin": [ "Add_Discord_Permissions" ],
+  "user_ids_admin": [ "Add_Discord_Id" ],
+
+  "embed_color": "Add Color"
 }

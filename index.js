@@ -1,5 +1,5 @@
 // Node's native file system module.
-const fs = require('fs')
+const fs = require('fs') // fs-promises
 
 // require the discord.js module
 const Discord = require('discord.js')
@@ -52,22 +52,22 @@ client.on('message', message => {
     if (!command) return;
 
     // guild only
-    if (command.guildOnly && helper.from_guild(message)) {
+    if (command.hasOwnProperty("guild_only") && command.guild_only && helper.from_guild(message)) {
         return message.reply(text.guild_only);
     }
 
     // dm only
-    if (command.dmOnly && helper.from_dm(message)) {
+    if (command.hasOwnProperty("dm_only") && command.dm_only && helper.from_dm(message)) {
         return message.reply(text.dm_only);
     }
 
     // restricted
-    if (command.restricted && !helper.is_permitted(message.author.id)) {
+    if (command.hasOwnProperty("restricted") && command.restricted && !helper.is_permitted(message.author.id)) {
         return message.reply(text.restricted);
     }
 
     // check missing args
-    if (command.args && !helper.check_args(command, args)) {
+    if (command.hasOwnProperty("args_needed") && command.args_needed && !helper.check_args(command, args)) {
         let reply = text.missing_args + `, ${message.author}!`;
 
         if (command.usage) {
@@ -88,4 +88,4 @@ client.on('message', message => {
 // ---------------------------------
 
 // login to Discord with app's token
-client.login(config.token);
+// client.login(config.token);

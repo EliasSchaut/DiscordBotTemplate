@@ -1,12 +1,23 @@
 {
+  "name": "my-bot",
+  "version": "1.0.0",
+  "description": "A Discord bot!",
+  "main": "index.js",
+
   "devDependencies": {
     "jest": "^23.6.0",
     "@types/jest": "^23.3.12"
   },
   "scripts": {
-    "test": "jest"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node .",
+    "lint": "eslint ."
   },
   "dependencies": {
     "discord.js": "^12.5.3"
-  }
+  },
+
+  "keywords": [],
+  "author": "Elias Schaut",
+  "license": "MIT"
 }

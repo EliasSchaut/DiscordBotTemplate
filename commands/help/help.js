@@ -7,11 +7,9 @@ module.exports = {
     name: 'help',
     description: text.help,
     aliases: ['commands', 'h'],
-    args: false,
+    args_needed: true,
+    args_min_length: 0,
     usage: text.usage,
-    guildOnly: false,
-    dmOnly: false,
-    restricted: false,
     execute(message, args) {
         const data = [];
         const { commands } = message.client;
