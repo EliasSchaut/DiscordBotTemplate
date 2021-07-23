@@ -29,13 +29,14 @@ module.exports = {
     description: '<help>',                  // REQUIRED: describe your command
     aliases: ['<alias_1>', '<alias_2>'],    // OPTIONAL: make optional aliases
     args_needed: true,                      // OPTIONAL: user must enter arguments
-    args_min_length: 0,                     // ONLY WHEN args_needed: user must enter a minumum of this number arguments
+    args_min_length: 2,                     // ONLY WHEN args_needed: user must enter a minumum of this number arguments
     usage: '<usage>',                       // ONLY WHEN args_needed: how the arguments must look like
     guild_only: true,                       // OPTIONAL: this command runs only in guilds
     dm_only: true,                          // OPTIONAL: this command runs only in dms
-    restricted: true,                       // OPTIONAL: only admins (see config file) can run this command 
+    need_permission: ['<permission1>'],     // OPTIONAL: only members with this permissions can execute this command
+    admin_only: true,                       // OPTIONAL: only admins (see config file) can run this command 
     execute(message, args) {                // message = discord.js 'Message' object; args = given arguments as list
-        // your code to execute
+        // your lovely code to execute
     },
 };
 ```

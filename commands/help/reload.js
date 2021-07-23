@@ -9,7 +9,7 @@ module.exports = {
     args_needed: true,
     args_min_length: 1,
     usage: text.usage,
-    restricted: true,
+    admin_only: true,
     execute(message, args) {
         const commandName = args[0].toLowerCase();
         const command = message.client.commands.get(commandName)
