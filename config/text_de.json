@@ -16,8 +16,9 @@
       "help": "Listet alle Befehle auf bzw. Informationen zu einem bestimmten Befehl",
       "usage": "[Name eines Befehls]",
       "invalid_command": "Das ist kein gültiger Befehl!",
+      "command": "Kommando",
       "intro": {
-        "0": "Hier ist eine Liste mit allen Befehlen:",
+        "0": "Liste mit allen Befehlen:",
         "1": "Du kannst",
         "2": "senden, um Informationen zu einem bestimmten Befehl zu erhalten"
       },

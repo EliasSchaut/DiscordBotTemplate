@@ -16,8 +16,9 @@
       "help": "List all commands or give info about a specific command.",
       "usage": "[command name]",
       "invalid_command": "That's not a valid command!",
+      "command": "Command",
       "intro": {
-        "0": "Here's a list of all commands:",
+        "0": "List with all commands:",
         "1": "You can send",
         "2": "to get info on a specific command"
       },

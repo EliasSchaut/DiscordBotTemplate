@@ -3,5 +3,7 @@
   "token": "YOUR_TOKEN",
   "commands_path": "./commands",
   "lang": "en",
-  "admin_ids": [ ]
+  "admin_ids": [ ],
+
+  "embed_color": "DARK_PURPLE"
 }

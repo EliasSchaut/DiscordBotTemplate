@@ -1,27 +1,32 @@
 // Node's native file system module.
-const fs = require('fs');
+const fs = require('fs')
 
 // require the discord.js module
-const Discord = require('discord.js');
+const Discord = require('discord.js')
 
 // require the config.json and text.js module
-const config = require('./config/config.json');
-const text = require(`./config/text_${config.lang}.json`).index;
-const prefix = config.prefix;
+const config = require('./config/config.json')
+const text = require(`./config/text_${config.lang}.json`).index
+const helper = require('./js/helper.js')
+const prefix = config.prefix
 
 // create a new Discord client
-const client = new Discord.Client();
-client.commands = new Discord.Collection();
+const client = new Discord.Client()
+client.commands = new Discord.Collection()
 
-// dynamically retrieve all command files
+// dynamically retrieve all command files and save it into helper file
+command_tree = {}
 const commandFolders = fs.readdirSync(config.commands_path);
 for (const folder of commandFolders) {
+    command_tree[folder] = {}
     const commandFiles = fs.readdirSync(`${config.commands_path}/${folder}`).filter(file => file.endsWith('.js'));
     for (const file of commandFiles) {
-        const command = require(`${config.commands_path}/${folder}/${file}`);
-        client.commands.set(command.name, command);
+        const command = require(`${config.commands_path}/${folder}/${file}`)
+        client.commands.set(command.name, command)
+        command_tree[folder][command.name] = command
     }
 }
+helper.command_tree = command_tree
 
 
 // ---------------------------------
@@ -46,24 +51,22 @@ client.on('message', message => {
     if (!command) return;
 
     // guild only
-    if (command.guildOnly && message.channel.type === 'dm') {
+    if (command.guildOnly && helper.from_guild(message)) {
         return message.reply(text.guild_only);
     }
 
     // dm only
-    if (command.dmOnly && message.channel.type !== 'dm') {
+    if (command.dmOnly && helper.from_dm(message)) {
         return message.reply(text.dm_only);
     }
 
     // restricted
-    if (command.restricted) {
-        if (!config.admin_ids.includes(message.author.id)) {
-            return message.reply(text.restricted);
-        }
+    if (command.restricted && !helper.is_permitted(message.author.id)) {
+        return message.reply(text.restricted);
     }
 
     // check missing args
-    if (command.args && (args.length < command.args_min_length)) {
+    if (command.args && !helper.check_args(command, args)) {
         let reply = text.missing_args + `, ${message.author}!`;
 
         if (command.usage) {
@@ -78,7 +81,7 @@ client.on('message', message => {
         command.execute(message, args);
     } catch (error) {
         console.error(error);
-        message.reply(text.index.error);
+        message.reply(text.error);
     }
 });
 // ---------------------------------
