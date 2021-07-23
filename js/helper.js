@@ -19,6 +19,25 @@ function is_permitted(user_id) {
     return config.admin_ids.includes(user_id)
 }
 
+function permitted_commands_to_string(command_tree, user_id) {
+    let out = ""
+    Object.keys(command_tree).forEach(function (command_dir) {
+        let data = []
+
+        Object.keys(command_tree[command_dir]).forEach(function (command) {
+            if (!((command_tree[command_dir][command].restricted && !is_permitted(user_id)))) {
+                data.push(command)
+            }
+        })
+
+        if (data) {
+            out += `\n**${command_dir.toUpperCase()}**\n${data.join("\n")}\n`
+        }
+    })
+
+    return out
+}
 
 
-module.exports = { command_tree, from_guild, from_dm, check_args , is_permitted }
+
+module.exports = { command_tree, from_guild, from_dm, check_args , is_permitted, permitted_commands_to_string}
