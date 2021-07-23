@@ -9,6 +9,7 @@ const config = require('./config/config.json')
 const text = require(`./config/text_${config.lang}.json`).index
 const helper = require('./js/helper.js')
 const prefix = config.prefix
+const commands_path = "./commands"
 
 // create a new Discord client
 const client = new Discord.Client()
@@ -16,12 +17,12 @@ client.commands = new Discord.Collection()
 
 // dynamically retrieve all command files and save it into helper file
 command_tree = {}
-const commandFolders = fs.readdirSync(config.commands_path);
+const commandFolders = fs.readdirSync(commands_path);
 for (const folder of commandFolders) {
     command_tree[folder] = {}
-    const commandFiles = fs.readdirSync(`${config.commands_path}/${folder}`).filter(file => file.endsWith('.js'));
+    const commandFiles = fs.readdirSync(`${commands_path}/${folder}`).filter(file => file.endsWith('.js'));
     for (const file of commandFiles) {
-        const command = require(`${config.commands_path}/${folder}/${file}`)
+        const command = require(`${commands_path}/${folder}/${file}`)
         client.commands.set(command.name, command)
         command_tree[folder][command.name] = command
     }
