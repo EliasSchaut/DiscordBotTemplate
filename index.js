@@ -1,4 +1,4 @@
-// Node's native file system module.
+// require node's native file system module.
 const fs = require('fs') // fs-promises
 
 // require the discord.js module
@@ -29,13 +29,16 @@ for (const folder of commandFolders) {
 }
 helper.command_tree = command_tree
 
-
 // ---------------------------------
 // Event-Handler
 // ---------------------------------
 
 // when the client is ready
 client.once('ready', () => {
+    if (config.enable_database) {
+        const db_helper = require("./js/db_model")
+        db_helper.Tags.sync()
+    }
     console.log('Ready!');
 });
 

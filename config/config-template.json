@@ -3,9 +3,11 @@
   "token": "YOUR_TOKEN",
   "lang": "en",
 
-
-  "permissions_for_admin": [ "Add_Discord_Permissions" ],
+  "role_ids_admin": [ "<Discord_Permission1>" ],
   "user_ids_admin": [ "Add_Discord_Id" ],
 
-  "embed_color": "Add Color"
+  "enable_database": false,
+
+  "embed_color": "<COLOR>",
+  "embed_avatar": "<URL-TO-PICTURE>"
 }
