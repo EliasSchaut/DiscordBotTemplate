@@ -36,8 +36,7 @@ helper.command_tree = command_tree
 // when the client is ready
 client.once('ready', () => {
     if (config.enable_database) {
-        const db_helper = require("./db/models/example_model")
-        db_helper.Tags.sync()
+        require("./db/dbObjects.js")
     }
     console.log('Ready!');
 });
