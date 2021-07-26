@@ -18,7 +18,7 @@ module.exports = {
         // help information for all command
         if (!args.length) {
             data.push(`${text.intro[0]}`);
-            data.push(helper.permitted_commands_to_string(helper.command_tree, message.author));
+            data.push(helper.permitted_commands_to_string(helper.command_tree, message));
             data.push(`\n${text.intro[1]} \`${prefix}${this.name} ${this.usage}\` ${text.intro[2]}!`);
             embed.setTitle(`${this.name.toUpperCase()} ${text.command.toUpperCase()}`)
             embed.setDescription(data)

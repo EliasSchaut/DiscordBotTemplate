@@ -15,6 +15,10 @@ const commands_path = "./commands"
 const client = new Discord.Client()
 client.commands = new Discord.Collection()
 
+// get discord buttons (See also https://discord-buttons.js.org/docs/stable/)
+const disbut = require("discord-buttons")
+disbut(client)
+
 // dynamically retrieve all command files and save it into helper file
 let command_tree = {}
 const commandFolders = fs.readdirSync(commands_path);
@@ -51,15 +55,14 @@ client.on('message', message => {
         || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
     if (!command) return;
 
-
     // admin only
-    if (command.hasOwnProperty("admin_only") && command.admin_only && !helper.is_admin(message.author)) {
+        if (command.hasOwnProperty("admin_only") && command.admin_only && !helper.is_admin(message)) {
         return message.reply(text.restricted);
     }
 
     // checks permissions
     if (command.hasOwnProperty("need_permission") && command.need_permission.length
-        && helper.has_permission(message.author, command.need_permission))
+        && helper.has_permission(message, command.need_permission))
 
     // guild only
     if (command.hasOwnProperty("guild_only") && command.guild_only && helper.from_guild(message)) {
