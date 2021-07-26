@@ -17,6 +17,8 @@
       "usage": "[Name eines Befehls]",
       "invalid_command": "Das ist kein gültiger Befehl!",
       "command": "Kommando",
+      "back_to_message": "Zurück zur Nachricht",
+      "jump_to_dm": "Springe zur DM",
       "intro": {
         "0": "Liste mit allen Befehlen:",
         "1": "Du kannst",

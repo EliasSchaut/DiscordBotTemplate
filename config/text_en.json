@@ -17,6 +17,8 @@
       "usage": "[command name]",
       "invalid_command": "That's not a valid command!",
       "command": "Command",
+      "back_to_message": "Back to message",
+      "jump_to_dm": "Jump to DM",
       "intro": {
         "0": "List with all commands:",
         "1": "You can send",

@@ -67,4 +67,32 @@ function permitted_commands_to_string(command_tree, message) {
     return out
 }
 
-module.exports = { command_tree, from_guild, from_dm, check_args, is_admin, has_permission, permitted_commands_to_string }
+// returns a link of dm-channel between author and bot
+// Note: custom text works only in embed
+function link_to_dm(message, text = "") {
+    let link = `https://discord.com/channels/@me/${message.author.dmChannel.id}/`
+    if (text !== "") link = custom_text_to_link(link, text)
+    return link
+}
+
+// returns a link to the sended message
+// Note: custom text works only in embed
+function link_to_message(message, text = "") {
+    let link;
+    if (from_dm(message)) {
+        link = link_to_dm(message) + message.id
+
+    } else if (from_guild(message)) {
+        link = `https://discord.com/channels/${message.channel.guild.id}/${message.channel.id}/${message.id}`
+    }
+    if (text !== "") link = custom_text_to_link(link, text)
+    return link
+}
+
+// add custom text to a link with markdown-syntax -> [Link Text](link)
+function custom_text_to_link(link, text) {
+    return `[${text}](${link})`
+}
+
+module.exports = { command_tree, from_guild, from_dm, check_args, is_admin, has_permission,
+    permitted_commands_to_string, link_to_dm, link_to_message }
