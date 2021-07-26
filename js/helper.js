@@ -40,7 +40,7 @@ function is_admin_from_guild(member) {
 
 // Check, if a given user have all of the given permissions as list
 function has_permission(message, permission_list) {
-    return message.author.hasPermission(permission_list)
+    return message.member.hasPermission(permission_list)
 }
 
 // print all executable commands for a given user in a human readable string

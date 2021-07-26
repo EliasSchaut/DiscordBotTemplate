@@ -1,7 +1,7 @@
 // Node's native file system module.
 const fs = require('fs') // fs-promises
 
-// require the discord.js module
+// require the discord.js module (See also https://discord.js.org/#/docs/main/stable/general/welcome)
 const Discord = require('discord.js')
 
 // get required files and values
@@ -62,7 +62,9 @@ client.on('message', message => {
 
     // checks permissions
     if (command.hasOwnProperty("need_permission") && command.need_permission.length
-        && helper.has_permission(message, command.need_permission))
+        && !helper.has_permission(message, command.need_permission)) {
+        return message.reply(text.restricted);
+    }
 
     // guild only
     if (command.hasOwnProperty("guild_only") && command.guild_only && helper.from_guild(message)) {
