@@ -6,9 +6,8 @@
   "role_ids_admin": [ "Add_Discord_Permissions" ],
   "user_ids_admin": [ "Add_Discord_Id" ],
 
-
   "enable_database": false,
 
-  "embed_color": "Add Color",
-  "embed_avatar_url": "URL"
+  "embed_color": "<COLOR>",
+  "embed_avatar": "<URL-TO-PICTURE>"
 }
