@@ -1,5 +1,7 @@
 const config = require("../config/config.json")
 
+
+// Note: will used without getter/setter
 let command_tree = []
 
 // Checks, if given message is from guild (a discord server)

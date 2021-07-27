@@ -1,14 +1,14 @@
-const { lang } = require("../../config/config.json");
-const text = require(`../../config/text_${lang}.json`).commands.echo;
+const { get_text: gt } = require("../../lang/lang_helper")
+const s = "commands.echo"
 
 module.exports = {
     name: 'echo',
-    description: text.help,
+    description: async function (msg) { return await gt(msg, "help", s) },
     aliases: ['echos'],
     args_needed: true,
-    usage: text.usage,
+    usage: async function (msg) { return await gt(msg, "usage", s) },
     args_min_length: 1,
-    execute(message, args) {
-        message.channel.send(`${args}`);
+    async execute(msg, args) {
+        msg.channel.send(`${args}`);
     },
 };

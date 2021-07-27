@@ -1,13 +1,17 @@
 {
   "prefix": "YOUR_PREFIX",
   "token": "YOUR_TOKEN",
-  "lang": "en",
 
-  "role_ids_admin": [ "Add_Discord_Permissions" ],
-  "user_ids_admin": [ "Add_Discord_Id" ],
-
-  "enable_database": false,
+  "role_ids_admin": [ "<Add_Discord_Permissions>" ],
+  "user_ids_admin": [ "<Add_Discord_USER_ID>" ],
 
   "embed_color": "<COLOR>",
-  "embed_avatar": "<URL-TO-PICTURE>"
+  "embed_avatar_url": "<URL-TO-PICTURE>",
+
+  "default_lang": "en",
+  "enable_lang_change": true,
+  "lang_paths": {
+    "de": "text_de.json",
+    "en": "text_en.json"
+  }
 }

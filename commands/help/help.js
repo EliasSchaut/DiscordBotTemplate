@@ -1,39 +1,40 @@
-const { prefix, lang, embed_color } = require('../../config/config.json');
-const text = require(`../../config/text_${lang}.json`).commands.help;
+const { prefix, embed_color, } = require('../../config/config.json');
 const helper = require("../../js/helper.js")
 const Discord = require("discord.js")
+const { get_text: gt } = require("../../lang/lang_helper")
+const s = "commands.help"
 
 module.exports = {
     name: 'help',
-    description: text.help,
+    description: async function (msg) { return await gt(msg, "help", s) },
     aliases: ['commands', 'h'],
     args_needed: true,
     args_min_length: 0,
-    usage: text.usage,
-    execute(message, args) {
+    usage: async function (msg) { return await gt(msg, "usage", s) },
+    async execute(msg, args) {
         const data = [];
-        const { commands } = message.client;
+        const { commands } = msg.client;
         const embed = new Discord.MessageEmbed().setColor(embed_color)
 
         // help information for all command
         if (!args.length) {
-            data.push(`${text.intro[0]}`);
-            data.push(helper.permitted_commands_to_string(helper.command_tree, message));
-            data.push(`\n${text.intro[1]} \`${prefix}${this.name} ${this.usage}\` ${text.intro[2]}!`);
-            data.push(helper.link_to_message(message, text.back_to_message))
-            embed.setTitle(`${this.name.toUpperCase()} ${text.command.toUpperCase()}`)
+            data.push(`${await gt(msg, "0", s + ".intro")}`);
+            data.push(helper.permitted_commands_to_string(helper.command_tree, msg));
+            data.push(`\n${await gt(msg, "1", s + ".intro")} \`${prefix}${this.name} ${await this.usage(msg)}\` ${await gt(msg, "2", s + ".intro")}!`);
+            data.push(helper.link_to_message(msg, await gt(msg, "back_to_message", s)))
+            embed.setTitle(`${this.name.toUpperCase()} ${(await gt(msg, "command", s)).toUpperCase()}`)
             embed.setDescription(data)
 
-            return message.author.send(embed)
-                .then(() => {
-                    if (helper.from_dm(message)) return;
-                    message.channel.send(new Discord.MessageEmbed()
-                        .setDescription(`<@${message.author.id}> ${text.dm.success} ${helper.link_to_dm(message, text.jump_to_dm)}!`)
+            return msg.author.send(embed)
+                .then(async () => {
+                    if (helper.from_dm(msg)) return;
+                    msg.channel.send(new Discord.MessageEmbed()
+                        .setDescription(`<@${msg.author.id}> ${await gt(msg, "success", s + ".dm")} ${helper.link_to_dm(msg, await gt(msg, "jump_to_dm", s))}!`)
                         .setColor(embed_color))
                 })
-                .catch(error => {
-                    console.error(`${text.dm.fail_console} ${message.author.tag}.\n`, error);
-                    message.reply(test.dm.fail_reply);
+                .catch(async error => {
+                    console.error(`${await gt(msg, "fail_console", s + ".dm")} ${msg.author.tag}.\n`, error);
+                    msg.reply(await gt(msg, "fail_reply", s + ".dm"));
                 });
 
         } else { // help information for a specific command
@@ -41,16 +42,16 @@ module.exports = {
             const command = commands.get(name) || commands.find(c => c.aliases && c.aliases.includes(name));
 
             if (!command) {
-                return message.reply(text.invalid_command);
+                return msg.reply(await gt(msg, "invalid_command", s));
             }
 
-            if (command.aliases) data.push(`${text.success.aliases}\n${command.aliases.join(', ')}\n`);
-            if (command.description) data.push(`${text.success.description}\n${command.description}\n`);
-            if (command.usage) data.push(`${text.success.usage}\n\`${prefix}${command.name} ${command.usage}\`\n`);
+            if (command.aliases) data.push(`${await gt(msg, "aliases", s + ".success")}\n${command.aliases.join(', ')}\n`);
+            if (command.description) data.push(`${await gt(msg, "description", s + ".success")}\n${await command.description(msg)}\n`);
+            if (command.usage) data.push(`${await gt(msg, "usage", s + ".success")}\n\`${prefix}${command.name} ${await command.usage(msg)}\`\n`);
 
-            embed.setTitle(`${command.name.toUpperCase()} ${text.command.toUpperCase()}`)
+            embed.setTitle(`${command.name.toUpperCase()} ${(await gt(msg, "command", s)).toUpperCase()}`)
             embed.setDescription(data)
-            message.channel.send(embed)
+            msg.channel.send(embed)
         }
     },
 };

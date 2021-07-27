@@ -1,5 +1,6 @@
 # Discord.js-Template
 A template for creating discord bots with node.js and discord.js
+NOTE: This README.md is outdated. Better docu is in progress.
 
 ## Preparations
 * You need [node.js](https://nodejs.org/en/) installed.
@@ -33,7 +34,7 @@ module.exports = {
     usage: '<usage>',                       // ONLY WHEN args_needed: how the arguments must look like
     guild_only: true,                       // OPTIONAL: this command runs only in guilds
     dm_only: true,                          // OPTIONAL: this command runs only in dms
-    need_permission: ['<permission1>'],     // OPTIONAL: only members with this permissions can execute this command
+    need_permission: ['<permission1>'],     // OPTIONAL: only members with this permissions can execute this command (See also: https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS)
     admin_only: true,                       // OPTIONAL: only admins (see config file) can run this command 
     execute(message, args) {                // message = discord.js 'Message' object; args = given arguments as list
         // your lovely code to execute

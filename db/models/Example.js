@@ -2,7 +2,7 @@
 // See also: https://discordjs.guide/sequelize and https://discordjs.guide/sequelize/currency.html
 
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define('example', {
+    return sequelize.define('Example', {
         guild_id: {
             type: DataTypes.STRING,
             unique: true,

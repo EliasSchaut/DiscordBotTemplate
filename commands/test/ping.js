@@ -1,15 +1,15 @@
-const { lang } = require("../../config/config.json");
-const text = require(`../../config/text_${lang}.json`).commands.ping;
+const { get_text: gt } = require("../../lang/lang_helper")
+const s = "commands.ping"
 
 module.exports = {
     name: 'ping',
-    description: text.help,
+    description: async function (msg) { return await gt(msg, "help", s) },
     aliases: ['p'],
-    execute(message, args) {
-        message.channel.send(`${text.websocket} ${message.mentions.client.ws.ping}ms.`);
+    async execute(msg, args) {
+        msg.channel.send(`${await gt(msg, "websocket", s)} ${msg.mentions.client.ws.ping}ms.`);
 
-        message.channel.send(text.pinging).then(send => {
-            send.edit(`${text.roundtrip} ${send.createdTimestamp - message.createdTimestamp}ms`);
+        msg.channel.send(await gt(msg, "pinging", s)).then(async send => {
+            send.edit(`${await gt(msg, "roundtrip", s)} ${send.createdTimestamp - msg.createdTimestamp}ms`);
         });
     },
 };

@@ -48,6 +48,13 @@
       "invalid_command": "Es gibt keinen Befehl mit diesem Namen oder Alias",
       "success": "wurde neu geladen!",
       "fail": "Es gab einen Fehler beim Nachladen des Befehls"
+    },
+    "lang": {
+      "help": "Ohne Argumente gibt dieser Befehl deine aktuell gesetzte Sprache aus. Mit einem Argument setzt dieser Befehl deine Sprache auf die übergebende Sprache, sofern diese existiert.",
+      "usage": "[lang]",
+      "invalid": "Diese Sprache existiert nicht!",
+      "set": "Deine Sprache wurde gesetzt auf:",
+      "get": "Deine aktuelle Sprache ist:"
     }
   }
 }

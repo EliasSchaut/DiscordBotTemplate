@@ -1,22 +1,23 @@
 const fs = require('fs');
-const { lang, commands_path } = require("../../config/config.json");
-const text = require(`../../config/text_${lang}.json`).commands.reload;
+const { get_text: gt } = require("../../lang/lang_helper")
+const s = "commands.reload"
+const commands_path = "./commands"
 
 module.exports = {
     name: 'reload',
-    description: text.help,
+    description: async function (msg) { return await gt(msg, "help", s) },
     aliases: ['reloads', 'r'],
     args_needed: true,
     args_min_length: 1,
-    usage: text.usage,
+    usage: async function (msg) { return await gt(msg, "usage", s) },
     admin_only: true,
-    execute(message, args) {
+    async execute(msg, args) {
         const commandName = args[0].toLowerCase();
-        const command = message.client.commands.get(commandName)
-            || message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+        const command = msg.client.commands.get(commandName)
+            || msg.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
         if (!command) {
-            return message.channel.send(`${text.invalid_command} \`${commandName}\`, ${message.author}!`);
+            return msg.channel.send(`${await gt(msg, "invalid_command", s)} \`${commandName}\`, ${msg.author}!`);
         }
 
         const commandFolders = fs.readdirSync(commands_path);
@@ -26,11 +27,11 @@ module.exports = {
 
         try {
             const newCommand = require(`../${folderName}/${command.name}.js`);
-            message.client.commands.set(newCommand.name, newCommand);
-            message.channel.send(`\`${newCommand.name}\` ${text.success}`);
+            msg.client.commands.set(newCommand.name, newCommand);
+            msg.channel.send(`\`${newCommand.name}\` ${await gt(msg, "success", s)}`);
         } catch (error) {
             console.error(error);
-            message.channel.send(`${text.fail} \`${command.name}\`:\n\`${error.message}\``);
+            msg.channel.send(`${await gt(msg, "fail", s)} \`${command.name}\`:\n\`${error.message}\``);
         }
     },
 };

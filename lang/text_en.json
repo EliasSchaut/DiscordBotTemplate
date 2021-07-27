@@ -48,6 +48,13 @@
       "invalid_command": "There is no command with this name or alias",
       "success": "was reloaded!",
       "fail": "There was an error while reloading a command"
+    },
+    "lang": {
+      "help": "Without arguments, this command outputs your currently set language. With an argument, this command sets your language to the passing language, if it exists.",
+      "usage": "[lang]",
+      "invalid": "This language does not exist!",
+      "set": "Your language is set to: ",
+      "get": "Your current language is: "
     }
   }
 }
