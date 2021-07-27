@@ -29,6 +29,7 @@ for (const folder of commandFolders) {
     const commandFiles = fs.readdirSync(`${commands_path}/${folder}`).filter(file => file.endsWith('.js'));
     for (const file of commandFiles) {
         const command = require(`${commands_path}/${folder}/${file}`)
+        if (command.hasOwnProperty("disabled") && command.disabled) continue
         client.commands.set(command.name, command)
         command_tree[folder][command.name] = command
     }

@@ -36,6 +36,7 @@ module.exports = {
     dm_only: true,                          // OPTIONAL: this command runs only in dms
     need_permission: ['<permission1>'],     // OPTIONAL: only members with this permissions can execute this command (See also: https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS)
     admin_only: true,                       // OPTIONAL: only admins (see config file) can run this command 
+    disabled: true,                         // OPTIONAL: if disabled, the command is not useable
     execute(message, args) {                // message = discord.js 'Message' object; args = given arguments as list
         // your lovely code to execute
     },

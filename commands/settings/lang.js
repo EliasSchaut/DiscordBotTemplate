@@ -10,11 +10,8 @@ module.exports = {
     args_needed: false,
     args_min_length: 0,
     usage: async function (msg) { return await gt(msg, "usage", s) },
+    disabled: !enable_lang_change,
     async execute(msg, args) {
-        if (!enable_lang_change) {
-            return msg.reply(`Could not run, because lang change is not enabled`)
-        }
-
         if (args.length > 0) {
             if (iv(args[0])) {
                 await db_helper.set_lang(msg, args[0])
