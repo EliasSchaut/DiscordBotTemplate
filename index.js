@@ -10,7 +10,7 @@ const helper = require('./js/helper.js')
 const prefix = config.prefix
 const commands_path = "./commands"
 const User_Lang = (config.enable_lang_change) ? require("./db/db_init.js").User_Lang : null
-const { get_text } = require("./lang/lang_helper")
+const { get_text: gt } = require("./lang/lang_helper")
 const scope = "index"
 
 // create a new Discord client
@@ -59,31 +59,31 @@ client.on('message', async message => {
 
     // admin only
     if (command.hasOwnProperty("admin_only") && command.admin_only && !helper.is_admin(message)) {
-        return message.reply(get_text(message, "restricted", scope));
+        return message.reply(await gt(message, "restricted", scope));
     }
 
     // checks permissions
     if (command.hasOwnProperty("need_permission") && command.need_permission.length
         && !helper.has_permission(message, command.need_permission)) {
-        return message.reply(get_text(message, "restricted", scope));
+        return message.reply(await gt(message, "restricted", scope));
     }
 
     // guild only
     if (command.hasOwnProperty("guild_only") && command.guild_only && helper.from_guild(message)) {
-        return message.reply(get_text(message, "guild_only", scope));
+        return message.reply(await gt(message, "guild_only", scope));
     }
 
     // dm only
     if (command.hasOwnProperty("dm_only") && command.dm_only && helper.from_dm(message)) {
-        return message.reply(get_text(message, "dm_only", scope));
+        return message.reply(await gt(message, "dm_only", scope));
     }
 
     // check missing args
     if (command.hasOwnProperty("args_needed") && command.args_needed && !helper.check_args(command, args)) {
-        let reply = get_text(message, "missing_args", scope) + `, ${message.author}!`;
+        let reply = await gt(message, "missing_args", scope) + `, ${message.author}!`;
 
         if (command.usage) {
-            reply += "\n" + get_text(message, "missing_args_proper_use", scope) + `\`${prefix}${command.name} ${command.usage}\``;
+            reply += "\n" + await gt(message, "missing_args_proper_use", scope) + `\`${prefix}${command.name} ${command.usage}\``;
         }
 
         return message.channel.send(reply);
@@ -94,7 +94,7 @@ client.on('message', async message => {
         command.execute(message, args);
     } catch (error) {
         console.error(error);
-        message.reply(get_text(message, "error", scope));
+        message.reply(await gt(message, "error", scope));
     }
 });
 // ---------------------------------
