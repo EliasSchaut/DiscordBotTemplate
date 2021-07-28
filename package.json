@@ -20,7 +20,7 @@
     "sequelize": "^6.6.5",
     "sqlite3": "^5.0.2"
   },
-  "keywords": [],
+  "keywords": [ "discord.js", "bot-template" ],
   "author": "Elias Schaut",
   "license": "MIT"
 }
