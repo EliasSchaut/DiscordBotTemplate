@@ -18,9 +18,13 @@
     "discord-buttons": "^4.0.0",
     "discord.js": "^12.5.3",
     "sequelize": "^6.6.5",
-    "sqlite3": "^5.0.2"
+    "sqlite3": "^5.0.2",
+    "winston": "^3.3.3"
   },
-  "keywords": [ "discord.js", "bot-template" ],
+  "keywords": [
+    "discord.js",
+    "bot-template"
+  ],
   "author": "Elias Schaut",
   "license": "MIT"
 }
