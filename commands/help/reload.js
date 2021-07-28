@@ -1,5 +1,12 @@
+// ===============================
+// The reload command reloads a given command while executing.
+// This is useful for debugging, because a command can be updated without restarting the bot
+// The command can only executed by admins (see admin_only: true)
+// ===============================
+
 const fs = require('fs');
 const { get_text: gt } = require("../../lang/lang_helper")
+const { logger } = require("../../js/helper")
 const s = "commands.reload"
 const commands_path = "./commands"
 
@@ -30,7 +37,7 @@ module.exports = {
             msg.client.commands.set(newCommand.name, newCommand);
             msg.channel.send(`\`${newCommand.name}\` ${await gt(msg, "success", s)}`);
         } catch (error) {
-            console.error(error);
+            logger.log('error', error);
             msg.channel.send(`${await gt(msg, "fail", s)} \`${command.name}\`:\n\`${error.message}\``);
         }
     },

@@ -1,5 +1,7 @@
-// With this file you can set up or recreate the entire database
-// See also: https://discordjs.guide/sequelize and https://discordjs.guide/sequelize/currency.html
+// ===============================
+// This file creates the database from the models in ./models
+// See also: https://discordjs.guide/sequelize
+// ===============================
 
 const Sequelize = require('sequelize')
 

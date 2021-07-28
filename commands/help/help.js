@@ -1,3 +1,10 @@
+// ===============================
+// The help command provides useful information about all the oder commands. The command works dynamically.
+// If help is called without arguments, it will print all for the author from message executable commands.
+// If help is called with a command name as argument, it prints information about this specific command.
+// Here the help command uses the informations of the given command (like name, description, usage, ...).
+// ===============================
+
 const { prefix, embed_color, } = require('../../config/config.json');
 const helper = require("../../js/helper.js")
 const Discord = require("discord.js")
@@ -33,7 +40,7 @@ module.exports = {
                         .setColor(embed_color))
                 })
                 .catch(async error => {
-                    console.error(`${await gt(msg, "fail_console", s + ".dm")} ${msg.author.tag}.\n`, error);
+                    helper.logger.log('error', `${await gt(msg, "fail_console", s + ".dm")} ${msg.author.tag}.\n`, error);
                     msg.reply(await gt(msg, "fail_reply", s + ".dm"));
                 });
 

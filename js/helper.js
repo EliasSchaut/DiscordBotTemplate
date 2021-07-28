@@ -1,51 +1,66 @@
+// ===============================
+// This file provides different useful methods, which are used by commands or index
+// ===============================
+
 const config = require("../config/config.json")
 
 
-// Note: will used without getter/setter
+// require winston.js for logging
+const winston = require("winston");
+const logger = winston.createLogger({
+    transports: [
+        new winston.transports.Console(),
+        new winston.transports.File({ filename: config.log_file_name }),
+    ],
+    format: winston.format.printf(log => `[${log.level.toUpperCase()}] - ${log.message}`),
+})
+
+// save the dirtree of folder commands in a json representation
+// note: will used without getter/setter
 let command_tree = []
 
-// Checks, if given message is from guild (a discord server)
+// checks, if given message is from guild (a discord server)
 function from_dm(message) {
     return message.channel.type === 'dm'
 }
 
-// Checks, if given message is from dm (personal chat with bot)
+// checks, if given message is from dm (personal chat with bot)
 function from_guild(message) {
     return message.channel.type === 'text' || message.channel.type === 'news' || message.channel.type === 'store'
 }
 
-// Checks structural correctness of given args
+// checks structural correctness of given args (by now only command length)
 function check_args(command, args) {
     return !command.hasOwnProperty("args_min_length") || args.length >= command.args_min_length
 }
 
-// check if user from message is admin
+// check if author from message is admin
 function is_admin(message) {
     if (from_dm(message)) {
-        return is_admin_from_dm(message.author)
+        return is_admin_from_dm(message)
 
     } else {
-        return is_admin_from_guild(message.member)
+        return is_admin_from_guild(message)
     }
 }
 
-// check, if a given user is an admin when chatting per dm
-function is_admin_from_dm(user) {
-    return config.user_ids_admin.includes(user.id)
+// check, if the author from message is an admin when chatting per dm
+function is_admin_from_dm(message) {
+    return config.user_ids_admin.includes(message.author.id)
 }
 
-// check, if a given user is an admin when chatting per guild
-function is_admin_from_guild(member) {
-    return config.user_ids_admin.includes(member.id)
-        || member.roles.cache.some(role => config.role_ids_admin.includes(role.id))
+// check, if the author from message is an admin when chatting per guild
+function is_admin_from_guild(message) {
+    return config.user_ids_admin.includes(message.member.id)
+        || message.member.roles.cache.some(role => config.role_ids_admin.includes(role.id))
 }
 
-// Check, if a given user have all of the given permissions as list
+// check, if the author from message have all of the given permissions as list
 function has_permission(message, permission_list) {
     return message.member.hasPermission(permission_list)
 }
 
-// print all executable commands for a given user in a human readable string
+// print all executable commands for the author from message in a human readable string
 function permitted_commands_to_string(command_tree, message) {
     let out = ""
     Object.keys(command_tree).forEach(function (command_dir) {
@@ -70,7 +85,7 @@ function permitted_commands_to_string(command_tree, message) {
 }
 
 // returns a link of dm-channel between author and bot
-// Note: custom text works only in embed
+// note: custom text works only in embed
 function link_to_dm(message, text = "") {
     let link = `https://discord.com/channels/@me/${message.author.dmChannel.id}/`
     if (text !== "") link = custom_text_to_link(link, text)
@@ -78,7 +93,7 @@ function link_to_dm(message, text = "") {
 }
 
 // returns a link to the sended message
-// Note: custom text works only in embed
+// note: custom text works only in embed
 function link_to_message(message, text = "") {
     let link;
     if (from_dm(message)) {
@@ -96,5 +111,5 @@ function custom_text_to_link(link, text) {
     return `[${text}](${link})`
 }
 
-module.exports = { command_tree, from_guild, from_dm, check_args, is_admin, has_permission,
+module.exports = { logger, command_tree, from_guild, from_dm, check_args, is_admin, has_permission,
     permitted_commands_to_string, link_to_dm, link_to_message }

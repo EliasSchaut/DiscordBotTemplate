@@ -1,26 +1,33 @@
+// ===============================
+// This file provides different useful methods about handling with the database
+// ===============================
+
 const { User_Lang } = require("./db_init")
 const { default_lang } = require("../config/config.json")
+const { logger } = require("../js/helper")
 
+// add the author from message in the database 'User_Lang'. Also set lang to config.default_lang
 async function add_user_lang(message) {
-    console.log("try to add user:" + message.author.id)
+    logger.log("info", `try to add user ${message.author.username} to database 'User_Lang' (id: ${message.author.id})`)
 
     try {
-        const tag = await User_Lang.create({
+        await User_Lang.create({
             user_id: message.author.id,
             lang: default_lang
         })
-        console.log(`Tag ${tag.user_id} added.`);
+        logger.log("info",`user ${message.author.username} successfully added to database 'User_Lang' (id: ${message.author.id})`);
 
     } catch (e) {
         if (e.name === 'SequelizeUniqueConstraintError') {
-            console.log('That tag already exists.');
+            logger.log("warn",`user ${message.author.username} already exist in database 'User_Lang' (id: ${message.author.id})`);
 
         } else {
-            console.log('Something went wrong with adding a tag.');
+            logger.log("error",`Something went wrong with adding user ${message.author.username} in database 'User_Lang' (id: ${message.author.id})`);
         }
     }
 }
 
+// get lang of the author from message. If author doesn't exist in database, the author will added into it
 async function get_lang(message) {
     const tag = await User_Lang.findOne({ where: { user_id: message.author.id } });
 
@@ -28,21 +35,23 @@ async function get_lang(message) {
         return tag.lang
 
     } else {
-        console.log(`${message.author.id} not in database`)
-        await add_user_lang(User_Lang, message)
-        await get_lang(User_Lang, message)
+        logger.log("warn",`user ${message.author.username} not in database 'User_Lang' (id: ${message.author.id})'`)
+        await add_user_lang(message)
+        return await get_lang(message)
     }
 }
 
+// set lang of the author from message
 async function set_lang(message, to_set) {
-    const tag = await User_Lang.update({ lang: to_set }, { where: { user_id: message.author.id } });
+    const old_lang = await get_lang(message)
+    const new_tag = await User_Lang.update({ lang: to_set }, { where: { user_id: message.author.id } });
 
-    if (tag) {
-        return message.channel.send("Lang changed to: " + to_set);
+    if (new_tag) {
+        return message.channel.send(`Lang changed from ${old_lang} to ${to_set}`);
 
     } else {
-        console.log(`Could not get lang of ${message.author.id} in database User_Lang (set_lang)`)
-        return message.reply(`Could not get lang of ${message.author.id}`);
+        logger.log("error", `Could not get lang of user ${message.author.username} in database 'User_Lang' (id: ${message.author.id})`)
+        return message.reply(`Error: Could not get lang of ${message.author.username}`);
     }
 }
 

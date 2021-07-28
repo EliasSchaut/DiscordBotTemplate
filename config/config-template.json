@@ -2,6 +2,8 @@
   "prefix": "YOUR_PREFIX",
   "token": "YOUR_TOKEN",
 
+  "log_file_name": "combined.log",
+
   "role_ids_admin": [ "<Add_Discord_Permissions>" ],
   "user_ids_admin": [ "<Add_Discord_USER_ID>" ],
 

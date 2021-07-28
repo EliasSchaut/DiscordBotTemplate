@@ -1,14 +1,16 @@
-// example database model
-// See also: https://discordjs.guide/sequelize and https://discordjs.guide/sequelize/currency.html
+// ===============================
+// Example database model
+// See also: https://discordjs.guide/sequelize
+// ===============================
 
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize, Sequelize) => {
     return sequelize.define('Example', {
         guild_id: {
-            type: DataTypes.STRING,
+            type: Sequelize.STRING,
             unique: true,
         },
-        value1: DataTypes.TEXT,
-        value2: DataTypes.TEXT,
+        value1: Sequelize.TEXT,
+        value2: Sequelize.TEXT,
     }, {
         timestamp: false
     })

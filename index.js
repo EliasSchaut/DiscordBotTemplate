@@ -1,19 +1,25 @@
-// require node's native file system module.
-const fs = require('fs') // fs-promises
+// ===============================
+// This is the entry point of the whole programm!
+// This file will collect every needed package or code file together and start the discord bot.
+// In this file is also the event listener for every incoming message for the bot.
+// This file checks, if the message is a valid command and if so, it will execute.
+// ===============================
 
-// require the discord.js module (See also https://discord.js.org/#/docs/main/stable/general/welcome)
-const Discord = require('discord.js')
-
-// get required files and values
+// get/set required methods and values
 const config = require('./config/config.json')
 const helper = require('./js/helper.js')
 const prefix = config.prefix
 const commands_path = "./commands"
+const logger = helper.logger
 const User_Lang = (config.enable_lang_change) ? require("./db/db_init.js").User_Lang : null
-const { get_text: gt } = require("./lang/lang_helper")
-const scope = "index"
+const { get_text: gt } = require("./lang/lang_helper") // get text in the correct language (used for responses in Discord)
+const s = "index"
 
-// create a new Discord client
+// require node's native file system module.
+const fs = require('fs')
+
+// require the discord.js module (See also https://discord.js.org/#/docs/main/stable/general/welcome)
+const Discord = require('discord.js')
 const client = new Discord.Client()
 client.commands = new Discord.Collection()
 
@@ -21,7 +27,7 @@ client.commands = new Discord.Collection()
 const disbut = require("discord-buttons")
 disbut(client)
 
-// dynamically retrieve all command files and save it into helper file
+// dynamically retrieve all command files and additionally save it into helper.command_tree
 let command_tree = {}
 const commandFolders = fs.readdirSync(commands_path);
 for (const folder of commandFolders) {
@@ -40,62 +46,63 @@ helper.command_tree = command_tree
 // Event-Handler
 // ---------------------------------
 
-// when the client is ready
-client.once('ready', () => {
-    if (config.enable_lang_change) User_Lang.sync()
-    console.log('Ready!');
+// when the client is ready (bot is ready)
+client.once('ready', async () => {
+    if (config.enable_lang_change) await User_Lang.sync()
+    logger.log('info', 'Ready!');
 });
 
 // react on messages
-client.on('message', async message => {
+client.on('message', async msg => {
     // check prefix and prepare message
-    if (!message.content.startsWith(prefix) || message.author.bot) return;
-    const args = message.content.slice(prefix.length).trim().split(/ +/);
+    if (!msg.content.startsWith(prefix) || msg.author.bot) return;
+    const args = msg.content.slice(prefix.length).trim().split(/ +/);
     const commandName = args.shift().toLowerCase();
 
-    // aliases
+    // search for aliases
     const command = client.commands.get(commandName)
         || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
     if (!command) return;
 
-    // admin only
-    if (command.hasOwnProperty("admin_only") && command.admin_only && !helper.is_admin(message)) {
-        return message.reply(await gt(message, "restricted", scope));
+    // checks admin only
+    if (command.hasOwnProperty("admin_only") && command.admin_only && !helper.is_admin(msg)) {
+        return msg.reply(await gt(msg, "restricted", s));
     }
 
     // checks permissions
     if (command.hasOwnProperty("need_permission") && command.need_permission.length
-        && !helper.has_permission(message, command.need_permission)) {
-        return message.reply(await gt(message, "restricted", scope));
+        && !helper.has_permission(msg, command.need_permission)) {
+        return msg.reply(await gt(msg, "restricted", s));
     }
 
-    // guild only
-    if (command.hasOwnProperty("guild_only") && command.guild_only && helper.from_guild(message)) {
-        return message.reply(await gt(message, "guild_only", scope));
+    // checks guild only
+    if (command.hasOwnProperty("guild_only") && command.guild_only && helper.from_guild(msg)) {
+        return msg.reply(await gt(msg, "guild_only", s));
     }
 
-    // dm only
-    if (command.hasOwnProperty("dm_only") && command.dm_only && helper.from_dm(message)) {
-        return message.reply(await gt(message, "dm_only", scope));
+    // checks dm only
+    if (command.hasOwnProperty("dm_only") && command.dm_only && helper.from_dm(msg)) {
+        return msg.reply(await gt(msg, "dm_only", s));
     }
 
-    // check missing args
+    // checks missing args
     if (command.hasOwnProperty("args_needed") && command.args_needed && !helper.check_args(command, args)) {
-        let reply = await gt(message, "missing_args", scope) + `, ${message.author}!`;
+        let reply = await gt(msg, "missing_args", s) + `, ${msg.author}!`;
 
         if (command.usage) {
-            reply += "\n" + await gt(message, "missing_args_proper_use", scope) + `\`${prefix}${command.name} ${command.usage}\``;
+            reply += "\n" + await gt(msg, "missing_args_proper_use", s) + `\`${prefix}${command.name} ${command.usage}\``;
         }
 
-        return message.channel.send(reply);
+        return msg.channel.send(reply);
     }
 
     // try to execute
     try {
-        command.execute(message, args);
-    } catch (error) {
-        console.error(error);
-        message.reply(await gt(message, "error", scope));
+        command.execute(msg, args);
+
+    } catch (e) {
+        logger.log("error", e);
+        msg.reply(await gt(msg, "error", s));
     }
 });
 // ---------------------------------
