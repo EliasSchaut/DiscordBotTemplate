@@ -7,6 +7,7 @@
 
 const { prefix, embed_color, } = require('../../config/config.json');
 const helper = require("../../js/helper.js")
+const { logger } = require("../../js/logger")
 const Discord = require("discord.js")
 const { get_text: gt } = require("../../lang/lang_helper")
 const s = "commands.help"
@@ -40,7 +41,7 @@ module.exports = {
                         .setColor(embed_color))
                 })
                 .catch(async error => {
-                    helper.logger.log('error', `${await gt(msg, "fail_console", s + ".dm")} ${msg.author.tag}.\n`, error);
+                    logger.log('error', `${await gt(msg, "fail_console", s + ".dm")} ${msg.author.tag}.\n`, error);
                     msg.reply(await gt(msg, "fail_reply", s + ".dm"));
                 });
 

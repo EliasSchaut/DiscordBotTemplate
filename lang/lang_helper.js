@@ -4,7 +4,7 @@
 
 const { default_lang, enable_lang_change, lang_paths } = require("../config/config.json")
 const db_helper = require("../db/db_helper")
-const { logger } = require("../js/helper")
+const { logger } = require("../js/logger")
 
 // get all language files and save it into text
 const text = {}

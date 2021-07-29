@@ -4,7 +4,7 @@
 
 const { DB } = require("./db_init")
 const { default_lang } = require("../config/config.json")
-const { logger } = require("../js/helper")
+const { logger } = require("../js/logger")
 const User_Lang = DB.User_Lang
 
 // add the author from message in the database 'User_Lang'. Also set lang to config.default_lang

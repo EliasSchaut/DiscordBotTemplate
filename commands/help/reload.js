@@ -6,7 +6,7 @@
 
 const fs = require('fs');
 const { get_text: gt } = require("../../lang/lang_helper")
-const { logger } = require("../../js/helper")
+const { logger } = require("../../js/logger")
 const s = "commands.reload"
 const commands_path = "./commands"
 

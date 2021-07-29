@@ -5,16 +5,6 @@
 const config = require("../config/config.json")
 
 
-// require winston.js for logging
-const winston = require("winston");
-const logger = winston.createLogger({
-    transports: [
-        new winston.transports.Console(),
-        new winston.transports.File({ filename: config.log_file_name }),
-    ],
-    format: winston.format.printf(log => `[${log.level.toUpperCase()}] - ${log.message}`),
-})
-
 // save the dirtree of folder commands in a json representation
 // note: will used without getter/setter
 let command_tree = []
@@ -111,5 +101,5 @@ function custom_text_to_link(link, text) {
     return `[${text}](${link})`
 }
 
-module.exports = { logger, command_tree, from_guild, from_dm, check_args, is_admin, has_permission,
+module.exports = { command_tree, from_guild, from_dm, check_args, is_admin, has_permission,
     permitted_commands_to_string, link_to_dm, link_to_message }
