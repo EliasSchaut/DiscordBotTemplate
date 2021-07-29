@@ -1,15 +1,15 @@
 {
-  "prefix": "YOUR_PREFIX",
-  "token": "YOUR_TOKEN",
+  "prefix": "<YOUR_PREFIX>",
+  "token": "<YOUR_TOKEN>",
 
   "enable_logging": true,
   "log_file_name": "combined.log",
 
-  "role_ids_admin": [ "<Add_Discord_Permissions>" ],
-  "user_ids_admin": [ "<Add_Discord_USER_ID>" ],
+  "role_ids_admin": [ "" ],
+  "user_ids_admin": [ "" ],
 
-  "embed_color": "<COLOR>",
-  "embed_avatar_url": "<URL-TO-PICTURE>",
+  "embed_color": "RANDOM",
+  "embed_avatar_url": "",
 
   "default_lang": "en",
   "enable_lang_change": true,
