@@ -13,7 +13,7 @@
       "usage": "[Text]"
     },
     "help": {
-      "help": "Listet alle Befehle auf bzw. Informationen zu einem bestimmten Befehl.",
+      "help": "Ohne Argumente listet dieser Befehl alle ausführbaren Befehle auf. Falls ein Befehl als Argument übergeben wird, werden Informationen zu diesem Befehl zurückgegeben.",
       "usage": "[Name eines Befehls]",
       "invalid_command": "Das ist kein gültiger Befehl!",
       "command": "Kommando",
@@ -50,7 +50,7 @@
       "fail": "Es gab einen Fehler beim Nachladen des Befehls"
     },
     "lang": {
-      "help": "Ohne Argumente gibt dieser Befehl deine aktuell gesetzte Sprache aus. Mit einem Argument setzt dieser Befehl deine Sprache auf die übergebende Sprache, sofern diese existiert.",
+      "help": "Ohne Argumente gibt dieser Befehl deine aktuell gesetzte Sprache aus. Mit einem Argument setzt dieser Befehl deine Sprache auf die übergebende Sprache, sofern diese existiert.\nUnterstütze Sprachen: ",
       "usage": "[Sprache]",
       "invalid": "Diese Sprache existiert nicht!",
       "set": "Deine Sprache wurde geupdated nach:",

@@ -43,15 +43,15 @@ async function get_lang(message) {
 }
 
 // set lang of the author from message
-async function set_lang(message, to_set) {
-    await get_lang(message)
-    const new_tag = await User_Lang.update({ lang: to_set }, { where: { user_id: message.author.id } })
+async function set_lang(message, new_lang) {
+    const old_lang = await get_lang(message)
+    const new_tag = await User_Lang.update({ lang: new_lang }, { where: { user_id: message.author.id } })
 
     if (new_tag) {
         return true
 
     } else {
-        logger.log("error", `Could not get lang of user ${message.author.username} in database 'User_Lang' (id: ${message.author.id})`)
+        logger.log("error", `Could not get lang from ${old_lang} to ${new_lang} of user ${message.author.username} in database 'User_Lang' (id: ${message.author.id})`)
         return false
     }
 }

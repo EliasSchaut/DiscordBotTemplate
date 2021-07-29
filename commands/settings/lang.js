@@ -6,12 +6,12 @@
 
 const db_helper = require("../../db/db_helper.js")
 const { get_text: gt, is_valid: iv } = require("../../lang/lang_helper")
-const { enable_lang_change } = require("../../config/config.json")
+const { enable_lang_change, lang_paths } = require("../../config/config.json")
 const s = "commands.lang."
 
 module.exports = {
     name: 'lang',
-    description: async function (msg) { return await gt(msg, s + "help") },
+    description: async function (msg) { return `${(await gt(msg, s + "help"))} ${Object.keys(lang_paths).join(", ")}` },
     aliases: ['change_lang', 'language', 'cl'],
     args_needed: false,
     args_min_length: 0,

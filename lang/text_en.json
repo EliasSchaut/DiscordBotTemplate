@@ -13,7 +13,7 @@
       "usage": "[text]"
     },
     "help": {
-      "help": "Lists all commands or information about a specific command.",
+      "help": "Without arguments, this command lists all executable commands. If a command is passed as argument, information about this command will returned.",
       "usage": "[command name]",
       "invalid_command": "That's not a valid command!",
       "command": "Command",
@@ -50,7 +50,7 @@
       "fail": "There was an error while reloading the command"
     },
     "lang": {
-      "help": "Without arguments, this command outputs your currently set language. With an argument, this command sets your language to the passing language, if it exists.",
+      "help": "Without arguments, this command outputs your currently set language. With an argument, this command sets your language to the passing language, if it exists.\nSupported languages:",
       "usage": "[language]",
       "invalid": "This language is not supported!",
       "set": "Your language has been updated to:",
