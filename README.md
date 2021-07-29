@@ -48,7 +48,7 @@ Alternative you can use `npm start`, `npm reload` and `npm stop`. This will use 
    **Note**: Every command has to be in a folder in the folder `commands`. A command, which is directly in the folder 
    `commands` or in a folder in a folder in `commands` is not allowed! But you can create own folders in `commands`.
 2. Fill the newly created JS file with the [Command Skeleton](#command-skeleton) (\<something\> means you have to insert something here (without the \<\>)):
-3. Fill in your modifications and write your execution code.
+3. Fill in your [modifications](#command-modificators) and write your execution code.
 
 ### Command Skeleton
 ```js
@@ -70,7 +70,7 @@ module.exports = {
 };
 ```
 
-### Command Properties
+### Command Modificators
 | Key | Description | Value-Type | Required |
   --- |         --- |   ---      |   ---
 | name | The name of the command | String + should be also the name of the file | yes |
