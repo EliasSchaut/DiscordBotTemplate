@@ -87,10 +87,10 @@ client.on('message', async msg => {
 
     // checks missing args
     if (command.hasOwnProperty("args_needed") && command.args_needed && !helper.check_args(command, args)) {
-        let reply = await gt(msg, s + "missing_args") + `, ${msg.author}!`;
+        let reply = await gt(msg, s + "missing_args") + `, ${msg.author}`;
 
-        if (command.usage) {
-            reply += "\n" + await gt(msg, s + "missing_args_proper_use") + `\`${prefix}${command.name} ${command.usage}\``;
+        if (command.hasOwnProperty("usage") && command.usage) {
+            reply += `\n${(await gt(msg, s + "missing_args_proper_use"))} \`${prefix}${command.name} ${command.usage}\``;
         }
 
         return msg.channel.send(reply);

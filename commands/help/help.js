@@ -29,7 +29,7 @@ module.exports = {
         if (!args.length) {
             data.push(`${await gt(msg, s + "intro.0")}`);
             data.push(helper.permitted_commands_to_string(helper.command_tree, msg));
-            data.push(`\n${await gt(msg, s + "intro.1")} \`${prefix}${this.name} ${await this.usage(msg)}\` ${await gt(msg, s + "intro.2")}!`);
+            data.push(`\n${await gt(msg, s + "intro.1")} \`${prefix}${this.name} ${await this.usage(msg)}\` ${await gt(msg, s + "intro.2")}`);
             data.push(helper.link_to_message(msg, await gt(msg, s + "back_to_message")))
             embed.setTitle(`${this.name.toUpperCase()} ${(await gt(msg, s + "command")).toUpperCase()}`)
             embed.setDescription(data)

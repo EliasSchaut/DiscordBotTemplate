@@ -1,10 +1,10 @@
 {
   "index": {
-    "guild_only": "Ich kann diesen Befehl leider nur in Servern ausführen!",
-    "dm_only": "Ich kann diesen Befehl leider nur im privaten Chat mit dir ausführen!",
+    "guild_only": "Ich kann diesen Befehl nur in Servern ausführen!",
+    "dm_only": "Ich kann diesen Befehl nur im privaten Chat mit dir ausführen!",
     "restricted": "Du bist leider nicht berechtigt, diesen Befehl auszuführen!",
-    "missing_args": "Du hast die falsche Anzahl an Argummente abgegeben",
-    "missing_args_proper_use": "Die korrekte Verwendung wäre: ",
+    "missing_args": "Du hast die falsche Anzahl an Argumenten abgegeben!",
+    "missing_args_proper_use": "Die korrekte Verwendung wäre:",
     "error": "Es gab einen Fehler beim Versuch, diesen Befehl auszuführen!"
   },
   "commands": {
@@ -13,7 +13,7 @@
       "usage": "[Text]"
     },
     "help": {
-      "help": "Listet alle Befehle auf bzw. Informationen zu einem bestimmten Befehl",
+      "help": "Listet alle Befehle auf bzw. Informationen zu einem bestimmten Befehl.",
       "usage": "[Name eines Befehls]",
       "invalid_command": "Das ist kein gültiger Befehl!",
       "command": "Kommando",
@@ -22,7 +22,7 @@
       "intro": {
         "0": "Liste mit allen Befehlen:",
         "1": "Du kannst",
-        "2": "senden, um Informationen zu einem bestimmten Befehl zu erhalten"
+        "2": "senden, um Informationen zu einem bestimmten Befehl zu erhalten!"
       },
       "dm": {
         "success": "Dir wurde eine DM mit allen Befehlen geschickt!",
@@ -31,19 +31,19 @@
       },
       "success": {
         "name": "**Name:**",
-        "aliases": "**Aliase:**",
+        "aliases": "**Aliasse:**",
         "description": "**Beschreibung:**",
         "usage": "**Verwendung:**"
       }
     },
     "ping": {
-      "help": "Den Ping des Bots abrufen",
+      "help": "Rufe den Ping des Bots ab.",
       "websocket": "Websocket Heartbeat:",
       "pinging": "Senden...",
       "roundtrip": "Roundtrip Latenz:"
     },
     "reload": {
-      "help": "Lädt einen Befehl erneut",
+      "help": "Lädt einen Befehl erneut.",
       "usage": "[Name eines Befehls]",
       "invalid_command": "Es gibt keinen Befehl mit diesem Namen oder Alias",
       "success": "wurde neu geladen!",
@@ -51,10 +51,11 @@
     },
     "lang": {
       "help": "Ohne Argumente gibt dieser Befehl deine aktuell gesetzte Sprache aus. Mit einem Argument setzt dieser Befehl deine Sprache auf die übergebende Sprache, sofern diese existiert.",
-      "usage": "[lang]",
+      "usage": "[Sprache]",
       "invalid": "Diese Sprache existiert nicht!",
-      "set": "Deine Sprache wurde gesetzt auf:",
-      "get": "Deine aktuelle Sprache ist:"
+      "set": "Deine Sprache wurde geupdated:",
+      "get": "Deine aktuelle Sprache ist:",
+      "error": "Error, ich konnte deine Sprache nicht ändern"
     }
   }
 }

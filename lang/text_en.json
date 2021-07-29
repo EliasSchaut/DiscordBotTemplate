@@ -1,19 +1,19 @@
 {
   "index": {
-    "guild_only": "I can't execute that command inside DMs!",
-    "dm_only": "I can't execute that command inside guilds! Please send me that command private",
-    "restricted": "Unfortunately, you are not authorised to execute this command!",
-    "missing_args": "You have given the wrong number of arguments",
-    "missing_args_proper_use": "The proper usage would be: ",
-    "error": "There was an error trying to execute that command! Ask the holy Ilias for help!"
+    "guild_only": "I can execute this command only in servers!",
+    "dm_only": "I can execute this command only in private chat with you!",
+    "restricted": "You are not authorized to execute this command!",
+    "missing_args": "You have given the wrong number of arguments!",
+    "missing_args_proper_use": "The correct usage would be:",
+    "error": "There was an error trying to execute that command!"
   },
   "commands": {
     "echo": {
-      "help": "Sends back the arguments.",
+      "help": "Sends back the passed arguments.",
       "usage": "[text]"
     },
     "help": {
-      "help": "List all commands or give info about a specific command.",
+      "help": "Lists all commands or information about a specific command.",
       "usage": "[command name]",
       "invalid_command": "That's not a valid command!",
       "command": "Command",
@@ -22,7 +22,7 @@
       "intro": {
         "0": "List with all commands:",
         "1": "You can send",
-        "2": "to get info on a specific command"
+        "2": "to get information about a specific command!"
       },
       "dm": {
         "success": "I've sent you a DM with all my commands!",
@@ -37,7 +37,7 @@
       }
     },
     "ping": {
-      "help": "Get the bot's ping",
+      "help": "Get the bot's ping.",
       "websocket": "Websocket heartbeat:",
       "pinging": "Pinging...",
       "roundtrip": "Roundtrip latency:"
@@ -47,14 +47,15 @@
       "usage": "[command name]",
       "invalid_command": "There is no command with this name or alias",
       "success": "was reloaded!",
-      "fail": "There was an error while reloading a command"
+      "fail": "There was an error while reloading the command"
     },
     "lang": {
       "help": "Without arguments, this command outputs your currently set language. With an argument, this command sets your language to the passing language, if it exists.",
-      "usage": "[lang]",
-      "invalid": "This language does not exist!",
-      "set": "Your language is set to: ",
-      "get": "Your current language is: "
+      "usage": "[language]",
+      "invalid": "This language is not supported!",
+      "set": "Your language has been updated:",
+      "get": "Your current language is:",
+      "error": "Error, I could not change your language"
     }
   }
 }

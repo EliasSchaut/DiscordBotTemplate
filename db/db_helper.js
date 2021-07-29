@@ -5,7 +5,9 @@
 const { DB } = require("./db_init")
 const { default_lang } = require("../config/config.json")
 const { logger } = require("../js/logger")
+const { get_text : gt } = require("../lang/lang_helper")
 const User_Lang = DB.User_Lang
+const s = "commands.lang."
 
 // add the author from message in the database 'User_Lang'. Also set lang to config.default_lang
 async function add_user_lang(message) {
@@ -48,11 +50,11 @@ async function set_lang(message, to_set) {
     const new_tag = await User_Lang.update({ lang: to_set }, { where: { user_id: message.author.id } });
 
     if (new_tag) {
-        return message.channel.send(`Lang changed from ${old_lang} to ${to_set}`);
+        return message.channel.send(`${await gt(message, `${s}set`)} ${old_lang} -> ${to_set}`);
 
     } else {
         logger.log("error", `Could not get lang of user ${message.author.username} in database 'User_Lang' (id: ${message.author.id})`)
-        return message.reply(`Error: Could not get lang of ${message.author.username}`);
+        return message.reply(`${await gt(message, `${s}error`)} (${message.author.username})!`);
     }
 }
 
