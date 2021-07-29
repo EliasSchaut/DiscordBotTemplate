@@ -53,7 +53,7 @@
       "help": "Without arguments, this command outputs your currently set language. With an argument, this command sets your language to the passing language, if it exists.",
       "usage": "[language]",
       "invalid": "This language is not supported!",
-      "set": "Your language has been updated:",
+      "set": "Your language has been updated to:",
       "get": "Your current language is:",
       "error": "Error, I could not change your language"
     }

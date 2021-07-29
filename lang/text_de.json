@@ -53,7 +53,7 @@
       "help": "Ohne Argumente gibt dieser Befehl deine aktuell gesetzte Sprache aus. Mit einem Argument setzt dieser Befehl deine Sprache auf die übergebende Sprache, sofern diese existiert.",
       "usage": "[Sprache]",
       "invalid": "Diese Sprache existiert nicht!",
-      "set": "Deine Sprache wurde geupdated:",
+      "set": "Deine Sprache wurde geupdated nach:",
       "get": "Deine aktuelle Sprache ist:",
       "error": "Error, ich konnte deine Sprache nicht ändern"
     }

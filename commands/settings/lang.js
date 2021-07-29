@@ -18,10 +18,14 @@ module.exports = {
     usage: async function (msg) { return await gt(msg, s + "usage") },
     disabled: !enable_lang_change,
     async execute(msg, args) {
-
         if (args.length > 0) {
             if (iv(args[0])) {
-                await db_helper.set_lang(msg, args[0])
+                if (await db_helper.set_lang(msg, args[0])) {
+                    msg.channel.send(`${await gt(msg, `${s}set`)} ${args[0]}`)
+
+                } else {
+                    msg.reply(`${await gt(msg, `${s}error`)} (${msg.author.username})!`)
+                }
 
             } else {
                 return msg.reply(await gt(msg, s + "invalid"))
