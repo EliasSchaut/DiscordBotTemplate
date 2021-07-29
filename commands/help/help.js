@@ -5,7 +5,7 @@
 // Here the help command uses the informations of the given command (like name, description, usage, ...).
 // ===============================
 
-const { prefix, embed_color, } = require('../../config/config.json');
+const { prefix, embed_color, embed_avatar_url } = require('../../config/config.json');
 const helper = require("../../js/helper.js")
 const { logger } = require("../../js/logger")
 const Discord = require("discord.js")
@@ -23,6 +23,7 @@ module.exports = {
         const data = [];
         const { commands } = msg.client;
         const embed = new Discord.MessageEmbed().setColor(embed_color)
+        embed.setThumbnail(embed_avatar_url)
 
         // help information for all command
         if (!args.length) {
