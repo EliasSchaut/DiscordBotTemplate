@@ -4,14 +4,14 @@
 // ===============================
 
 const { get_text: gt } = require("../../lang/lang_helper")
-const s = "commands.echo"
+const s = "commands.echo."
 
 module.exports = {
     name: 'echo',
-    description: async function (msg) { return await gt(msg, "help", s) },
+    description: async function (msg) { return await gt(msg, s + "help") },
     aliases: ['echos'],
     args_needed: true,
-    usage: async function (msg) { return await gt(msg, "usage", s) },
+    usage: async function (msg) { return await gt(msg, s + "usage") },
     args_min_length: 1,
     async execute(msg, args) {
         msg.channel.send(args.join(" "));

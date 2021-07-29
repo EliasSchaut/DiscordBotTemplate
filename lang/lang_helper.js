@@ -18,19 +18,18 @@ function is_valid(lang) {
     return text.hasOwnProperty(lang)
 }
 
-// returns text in the correct language (scope = path to parent json object (e.g. commands.help); key = json key in scope (e.g. help))
-async function get_text(message, key, scope) {
+// returns text in the correct language (key = json key with its scope (e.g. commands.echo.help))
+async function get_text(message, key) {
     const lang = (enable_lang_change) ? await db_helper.get_lang(message) : default_lang
-    const scope_arr = scope.split(".")
-    scope_arr.push(key)
+    const key_arr = key.split(".")
 
     let scope_text = text[lang]
-    for (const element of scope_arr) {
+    for (const element of key_arr) {
         if (scope_text.hasOwnProperty(element)) {
             scope_text = scope_text[element]
 
         } else {
-            logger.log('error', `Text-Key ${key} dont exist for the scope ${scope} and lang ${lang}!`)
+            logger.log('error', `Text-Key ${key} dont exist for lang ${lang}!`)
             return "??"
         }
     }

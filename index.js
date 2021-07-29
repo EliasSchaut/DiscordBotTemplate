@@ -13,7 +13,7 @@ const commands_path = "./commands"
 const { logger } = require("./js/logger")
 const { sequelize } = require('./db/db_init.js')
 const { get_text: gt } = require("./lang/lang_helper") // get text in the correct language (used for responses in Discord)
-const s = "index"
+const s = "index."
 
 // require node's native file system module.
 const fs = require('fs')
@@ -66,31 +66,31 @@ client.on('message', async msg => {
 
     // checks admin only
     if (command.hasOwnProperty("admin_only") && command.admin_only && !helper.is_admin(msg)) {
-        return msg.reply(await gt(msg, "restricted", s));
+        return msg.reply(await gt(msg, s + "restricted"));
     }
 
     // checks permissions
     if (command.hasOwnProperty("need_permission") && command.need_permission.length
         && !helper.has_permission(msg, command.need_permission)) {
-        return msg.reply(await gt(msg, "restricted", s));
+        return msg.reply(await gt(msg, s + "restricted"));
     }
 
     // checks guild only
     if (command.hasOwnProperty("guild_only") && command.guild_only && helper.from_guild(msg)) {
-        return msg.reply(await gt(msg, "guild_only", s));
+        return msg.reply(await gt(msg, s + "guild_only"));
     }
 
     // checks dm only
     if (command.hasOwnProperty("dm_only") && command.dm_only && helper.from_dm(msg)) {
-        return msg.reply(await gt(msg, "dm_only", s));
+        return msg.reply(await gt(msg, s + "dm_only"));
     }
 
     // checks missing args
     if (command.hasOwnProperty("args_needed") && command.args_needed && !helper.check_args(command, args)) {
-        let reply = await gt(msg, "missing_args", s) + `, ${msg.author}!`;
+        let reply = await gt(msg, s + "missing_args") + `, ${msg.author}!`;
 
         if (command.usage) {
-            reply += "\n" + await gt(msg, "missing_args_proper_use", s) + `\`${prefix}${command.name} ${command.usage}\``;
+            reply += "\n" + await gt(msg, s + "missing_args_proper_use") + `\`${prefix}${command.name} ${command.usage}\``;
         }
 
         return msg.channel.send(reply);
@@ -102,7 +102,7 @@ client.on('message', async msg => {
 
     } catch (e) {
         logger.log("error", e);
-        msg.reply(await gt(msg, "error", s));
+        msg.reply(await gt(msg, s + "error"));
     }
 });
 // ---------------------------------
