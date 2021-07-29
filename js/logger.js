@@ -7,12 +7,22 @@
 // require winston.js for logging
 const winston = require("winston");
 const config = require("../config/config.json");
-const logger = winston.createLogger({
-    transports: [
-        new winston.transports.Console(),
-        new winston.transports.File({ filename: config.log_file_name }),
-    ],
-    format: winston.format.printf(log => `[${log.level.toUpperCase()}] - ${log.message}`),
-})
 
+// create logger; if enable_logging is true, logger will also log in file
+const logger = (config.enable_logging) ?
+    winston.createLogger({
+        transports: [
+            new winston.transports.Console(),
+            new winston.transports.File({ filename: config.log_file_name })
+        ],
+        format: winston.format.printf(log => `[${log.level.toUpperCase()}] - ${log.message}`),
+    }) :
+    winston.createLogger({
+        transports: [
+            new winston.transports.Console()
+        ],
+        format: winston.format.printf(log => `[${log.level.toUpperCase()}] - ${log.message}`),
+    })
+
+// export logger
 module.exports = { logger }
