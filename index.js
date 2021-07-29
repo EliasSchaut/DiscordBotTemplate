@@ -11,7 +11,7 @@ const helper = require('./js/helper.js')
 const prefix = config.prefix
 const commands_path = "./commands"
 const logger = helper.logger
-const User_Lang = (config.enable_lang_change) ? require("./db/db_init.js").User_Lang : null
+const { sequelize } = require('./db/db_init.js')
 const { get_text: gt } = require("./lang/lang_helper") // get text in the correct language (used for responses in Discord)
 const s = "index"
 
@@ -48,7 +48,7 @@ helper.command_tree = command_tree
 
 // when the client is ready (bot is ready)
 client.once('ready', async () => {
-    if (config.enable_lang_change) await User_Lang.sync()
+    await sequelize.sync()
     logger.log('info', 'Ready!');
 });
 

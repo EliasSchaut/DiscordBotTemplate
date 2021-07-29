@@ -2,9 +2,10 @@
 // This file provides different useful methods about handling with the database
 // ===============================
 
-const { User_Lang } = require("./db_init")
+const { DB } = require("./db_init")
 const { default_lang } = require("../config/config.json")
 const { logger } = require("../js/helper")
+const User_Lang = DB.User_Lang
 
 // add the author from message in the database 'User_Lang'. Also set lang to config.default_lang
 async function add_user_lang(message) {
