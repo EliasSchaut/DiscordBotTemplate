@@ -1,52 +1,98 @@
 # Discord.js-Template
 A template for creating discord bots with node.js and discord.js \
-NOTE: This README.md is outdated. Better docu is in progress.
+This project was guided by [Discord.js Guide](https://discordjs.guide/)
+
+
+## Features
+* Easy create new commands with lots of precreated modifications (see [add a command](#add-a-command))
+* Use precreated database (see [db_init.js](db/db_init.js))
+* Add own languages or use the precreated english and german for responses in discord (see [add a language](#add-a-language))
+* Customise bot in config file (see [Config File](#config-file))
+
 
 ## Preparations
 * You need [node.js](https://nodejs.org/en/) installed.
 * You need a [Discord API Bot](https://discord.com/developers/applications) with it's token.
-* You need a [Discord server](https://support.discord.com/hc/en-us/articles/204849977-How-do-I-create-a-server) on which you can set permissions, so you can invite the bot and give it permissions.
+* You need a [Discord Server](https://support.discord.com/hc/en-us/articles/204849977-How-do-I-create-a-server) in which you can set permissions and invite the API Bot.
 
-## Configuration
+
+## Set Up
 1. Download the code
-2. Rename the configuration file *(/config/config-template.json)* from ```config-template.json``` to ```config.json```
-3. Open the configuration file (now ```config.json```) and set:
-   * your bot's prefix
-   * your bot's token
-   * your admin id's: Enter a discord user id in quotation marks and separate several with a comma ```[ "<id>", "<id>", ..., "<id>"]```.\
-     These are the only users who have the permission to execute the restricted commands
-   * OPTIONAL: change lang from "en" to "de" for german instead of english language
-   * OPTIONAL: change the name or place of the commands directory by editing the file path `commands_path`
-4. Run `npm install`.
+2. Rename the [configuration file](/config/config-template.json) from ```config-template.json``` to ```config.json```
+3. Open the configuration file (now ```config.json```) and set values. The [Config-File-Table](#config-file) shows what can be set and how:
+4. Optional: Configure [`package.json`](https://discordjs.guide/improving-dev-environment/package-json-scripts.html) 
+5. Run `npm install`.
+
+### Config File
+| Key | Description | Value-Type | Need to set |
+  --- |         --- |   --- |   ---
+| prefix | The bot's prefix | String | yes |
+| token | The bot's token | String | yes |
+| enable_logging | When true, every console-output will log into a log file | Boolean | yes |
+| log_file_name | The name of the log-file | String | Only when enable_logging is true |
+| role_ids_admin | Users which have a corresponding role are admins and can execute admin_only command | `[ "<String>", ..., "<String>"]` | no |
+| user_ids_admin | Users which have a corresponding id are admins and can execute admin_only command | `[ "<String>", ..., "<String>"]` | no |
+| embed_color | Color of embed messages. Use Hex or [Discord-Color](https://discord.js.org/#/docs/main/stable/typedef/ColorResolvable).  | String | no |
+| embed_avatar_url | Url to avatar of embed messages | String | no |
+| default_lang | The default language in which the bot responds (discord response only) | String + value must be a key in lang_paths | yes |
+| enable_lang_change | If true the lang command is executable which allows users to change their personal language (language will only change for the specific user, not globally) | Boolean | yes |
+| lang_paths | Another json object which holds all supported languages. The keys in the json are the language names and the values the source relative to lang folder | String | yes |
+
+
+## Run
+Run `index.js` with `node index.js`. \
+Alternative you can use `npm start`, `npm reload` and `npm stop`. This will use [pm2](https://discordjs.guide/improving-dev-environment/pm2.html) for executing
 
 ## Add a command 
-1. Create a new JS file with the name [command name].js inside a folder in the folder `commands`.\
+1. Create a new JS file with the name <command name>.js inside a folder in the folder `commands`. \
    **Note**: Every command has to be in a folder in the folder `commands`. A command, which is directly in the folder 
-   `commands` or in a folder in a folder in `commands` is not allowed!
-2. Write down the following skeleton (\<something\> means you have to insert something here): 
+   `commands` or in a folder in a folder in `commands` is not allowed! But you can create own folders in `commands`.
+2. Fill the newly created JS file with the [Command Skeleton](#command-skeleton) (\<something\> means you have to insert something here (without the \<\>)):
+3. Fill in your modifications and write your execution code.
+
+### Command Skeleton
 ```js
 module.exports = {
-    name: '<name>',                         // REQUIRED: insert the name of the command
-    description: '<help>',                  // REQUIRED: describe your command
-    aliases: ['<alias_1>', '<alias_2>'],    // OPTIONAL: make optional aliases
-    args_needed: true,                      // OPTIONAL: user must enter arguments
-    args_min_length: 2,                     // ONLY WHEN args_needed: user must enter a minumum of this number arguments
-    usage: '<usage>',                       // ONLY WHEN args_needed: how the arguments must look like
-    guild_only: true,                       // OPTIONAL: this command runs only in guilds
-    dm_only: true,                          // OPTIONAL: this command runs only in dms
-    need_permission: ['<permission1>'],     // OPTIONAL: only members with this permissions can execute this command (See also: https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS)
-    admin_only: true,                       // OPTIONAL: only admins (see config file) can run this command 
-    disabled: true,                         // OPTIONAL: if disabled, the command is not useable
-    execute(message, args) {                // message = discord.js 'Message' object; args = given arguments as list
+    name: '<name>',
+    description: '<help>',
+    aliases: ['<alias_1>', '<alias_2>'],
+    args_needed: true,
+    args_min_length: 2,
+    usage: '<usage>',
+    guild_only: true,
+    dm_only: true,
+    need_permission: ['<permission1>'],
+    admin_only: true,
+    disabled: true,
+    execute(message, args) {  // message = discord.js 'Message' object; args = given arguments as list
         // your lovely code to execute
     },
 };
 ```
-3. Fill in your modifications and write your execution code.
 
-## Run
-Run `index.js` with `node index.js` or config your generated `package.json`.
+### Command Properties
+| Key | Description | Value-Type | Required |
+  --- |         --- |   ---      |   ---
+| name | The name of the command | String + should be also the name of the file | yes |
+| description | The description of the command. It will be shown in help command | String | yes |
+| aliases | Aliases for the command | `['<String>', ..., '<String>']` | no |
+| args_needed | If true, the command will only execute, if at least one argument is given. If args_min_length is set, the command needs at least this number of argument | Boolean | only if args_min_length is set |
+| args_min_length | The minimal number arguments, the command needs to be executed | Number | no |
+| usage | The description, how the arguments must look like | String | only if args_needed is set |
+| guild_only | If true the command runs only in guilds | Boolean | no |
+| dm_only | If true the command runs only in dms | Boolean | no |
+| need_permission | Users who want to execute the command need to have these permissions. | `['<Discord-Permission>, ..., <Discord-Permission>']` (see [Discord-Permissions](https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS)) | no |
+| admin_only | If true, only admins (see [config file](#config-file)) can run this command | Boolean | no |
+| disabled | If true, the command is not usable | Boolean | no |
 
 
+## Add a language
+1. Create a JSON file in folder [lang](/lang) and name is `text_<lang>.json`
+2. Copy json from another language file and translate it
+3. Edit lang_paths in [config file](#config-file)
 
-   
+
+## Add and use a database
+1. Add a [sequelize model](https://discordjs.guide/sequelize/#alpha-connection-information) in folder [models](/db/models) in a new file (name file like database name)
+2. Require the DB object from db_init
+3. Database is usable with DB.<model_file_name> 
