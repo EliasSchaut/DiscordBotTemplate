@@ -1,7 +1,7 @@
 {
-  "name": "my-bot",
-  "version": "1.0.0",
-  "description": "A Discord bot!",
+  "name": "@elias.schaut/discord-bot-template",
+  "version": "1.0.0-beta",
+  "description": "A template for creating discord bots with node.js and discord.js! (See also https://github.com/EliasSchaut/Discord-Bot-Template)",
   "main": "index.js",
   "devDependencies": {
     "@types/jest": "^23.3.12",
@@ -19,11 +19,11 @@
     "discord.js": "^12.5.3",
     "sequelize": "^6.6.5",
     "sqlite3": "^5.0.2",
-    "winston": "^3.3.3"
+    "winston": "^3.3.3",
+    "node": "^14.17.4"
   },
   "keywords": [
-    "discord.js",
-    "bot-template"
+    "discord-bot-template"
   ],
   "author": "Elias Schaut",
   "license": "MIT"
