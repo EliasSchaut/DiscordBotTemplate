@@ -10,7 +10,7 @@
 
   "enable_activity": true,
   "activity": {
-    "status": "<prefix>help",
+    "name": "<prefix>help",
     "type": "PLAYING"
   },
 

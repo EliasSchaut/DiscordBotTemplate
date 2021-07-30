@@ -51,7 +51,7 @@ client.once('ready', async () => {
 
     // set activity
     if (config.enable_activity) {
-        await client.user.setActivity(config.activity.status, {type: config.activity.type})
+        await client.user.setActivity(config.activity.name, {type: config.activity.type})
     }
 
     // sync database
