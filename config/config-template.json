@@ -8,8 +8,16 @@
   "role_ids_admin": [ "" ],
   "user_ids_admin": [ "" ],
 
-  "embed_color": "RANDOM",
-  "embed_avatar_url": "",
+  "enable_activity": true,
+  "activity": {
+    "status": "<prefix>help",
+    "type": "PLAYING"
+  },
+
+  "embed": {
+    "color": "RANDOM",
+    "avatar_url": ""
+  },
 
   "default_lang": "en",
   "enable_lang_change": true,

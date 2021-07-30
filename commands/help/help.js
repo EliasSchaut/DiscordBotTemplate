@@ -5,7 +5,7 @@
 // Here the help command uses the informations of the given command (like name, description, usage, ...).
 // ===============================
 
-const { prefix, embed_color, embed_avatar_url } = require('../../config/config.json');
+const { prefix, embed } = require('../../config/config.json');
 const helper = require("../../js/helper.js")
 const { logger } = require("../../js/logger")
 const Discord = require("discord.js")
@@ -22,8 +22,8 @@ module.exports = {
     async execute(msg, args) {
         const data = [];
         const { commands } = msg.client;
-        const embed = new Discord.MessageEmbed().setColor(embed_color)
-        embed.setThumbnail(embed_avatar_url)
+        const embed_msg = new Discord.MessageEmbed().setColor(embed.color)
+        embed_msg.setThumbnail(embed.avatar_url)
 
         // help information for all command
         if (!args.length) {
@@ -31,15 +31,16 @@ module.exports = {
             data.push(helper.permitted_commands_to_string(helper.command_tree, msg));
             data.push(`\n${await gt(msg, s + "intro.1")} \`${prefix}${this.name} ${await this.usage(msg)}\` ${await gt(msg, s + "intro.2")}`);
             data.push(helper.link_to_message(msg, await gt(msg, s + "back_to_message")))
-            embed.setTitle(`${this.name.toUpperCase()} ${(await gt(msg, s + "command")).toUpperCase()}`)
-            embed.setDescription(data)
+            embed_msg.setTitle(`${this.name.toUpperCase()} ${(await gt(msg, s + "command")).toUpperCase()}`)
+            embed_msg.setDescription(data)
 
-            return msg.author.send(embed)
+            return msg.author.send(embed_msg)
                 .then(async () => {
                     if (helper.from_dm(msg)) return;
                     msg.channel.send(new Discord.MessageEmbed()
                         .setDescription(`<@${msg.author.id}> ${await gt(msg, s + "dm.success")} ${helper.link_to_dm(msg, await gt(msg, s + "jump_to_dm"))}!`)
-                        .setColor(embed_color))
+                        .setColor(embed.color)
+                        .setThumbnail(embed.avatar_url))
                 })
                 .catch(async error => {
                     logger.log('error', `${await gt(msg, s + "dm.fail_console")} ${msg.author.tag}.\n`, error);
@@ -58,9 +59,9 @@ module.exports = {
             if (command.description) data.push(`${await gt(msg, s + "success.description")}\n${await command.description(msg)}\n`);
             if (command.usage) data.push(`${await gt(msg, s + "success.usage")}\n\`${prefix}${command.name} ${await command.usage(msg)}\`\n`);
 
-            embed.setTitle(`${command.name.toUpperCase()} ${(await gt(msg, s + "command")).toUpperCase()}`)
-            embed.setDescription(data)
-            msg.channel.send(embed)
+            embed_msg.setTitle(`${command.name.toUpperCase()} ${(await gt(msg, s + "command")).toUpperCase()}`)
+            embed_msg.setDescription(data)
+            msg.channel.send(embed_msg)
         }
     },
 };
