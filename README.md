@@ -1,3 +1,6 @@
+![GitHub package.json version](https://img.shields.io/github/package-json/v/EliasSchaut/Discord-Bot-Template?style=flat-square)
+![NPM](https://img.shields.io/npm/l/@elias.schaut/discord-bot-template?style=flat-square)
+
 # Discord.js-Template
 A template for creating discord bots with node.js and discord.js \
 This project was guided by [Discord.js Guide](https://discordjs.guide/)
