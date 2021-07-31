@@ -130,19 +130,22 @@ client.on('message', async msg => {
 
 // when a discord-button was pressed
 client.on("clickButton", async (button) => {
-    button.reply.send("Button not set")
+
 })
 
+// when a discord-menu was chosen
 client.on("clickMenu", async (menu) => {
-    if (menu.id === "commands") {
-        const msg = menu.message
+    if (menu.id === "help") {
+        const menu_msg = menu.message
         const val = menu.values[0]
+        const clicker_msg = menu_msg
+        clicker_msg.author = menu.clicker.user
 
         if (val === 'all') {
-            await msg.edit(await msg.client.commands.get("help").create_embed_all_commands(msg), menu)
+            await menu_msg.edit(await menu.client.commands.get("help").create_embed_all_commands(clicker_msg), menu)
 
         } else {
-            await msg.edit(await msg.client.commands.get("help").create_embed_specific_command(msg, msg.client.commands.get(val)), menu)
+            await menu_msg.edit(await menu.client.commands.get("help").create_embed_specific_command(clicker_msg, menu.client.commands.get(val)), menu)
         }
 
         menu.reply.defer(true)

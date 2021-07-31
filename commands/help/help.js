@@ -95,9 +95,9 @@ module.exports = {
 
     async create_command_menu(msg, commands) {
         let options = [await new MessageMenuOption()
-            .setLabel("All Commands")
+            .setLabel(await gt(msg, s + "menu.all_label"))
             .setValue("all")
-            .setDescription("List a summary of all commands")]
+            .setDescription(await gt(msg, s + "menu.all_description"))]
         for (const command of commands) {
             let description = await command[1].description(msg)
             if (description.length >= 46) {
@@ -110,12 +110,13 @@ module.exports = {
                 .setDescription(description))
         }
 
-        return new MessageMenu()
-            .setID('commands')
-            .setPlaceholder('Select Commands')
-            .setMaxValues(1)
-            .setMinValues(1)
+        const menu = await new MessageMenu()
+            .setID('help')
+            .setPlaceholder(await gt(msg, s + "menu.placeholder"))
             .addOptions(options)
+
+        menu.message = msg
+        return menu
     },
     // ----------------------------
 };

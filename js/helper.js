@@ -72,10 +72,6 @@ function permitted_commands_to_string(command_tree, message) {
 // returns a link of dm-channel between author and bot
 // note: custom text works only in embed
 function link_to_dm(message, text = "") {
-    if (!message.author.hasOwnProperty("dmChannel")) {
-        return ""
-    }
-
     let link = `https://discord.com/channels/@me/${message.author.dmChannel.id}/`
     if (text !== "") link = custom_text_to_link(link, text)
     return link
