@@ -11,21 +11,28 @@ const helper = require('./js/helper.js')
 const prefix = config.prefix
 const commands_path = "./commands"
 const { logger } = require("./js/logger")
-const { sequelize } = require('./db/db_init.js')
+const { DB, sequelize } = require('./db/db_init.js')
 const { get_text: gt } = require("./lang/lang_helper") // get text in the correct language (used for responses in Discord)
 const s = "index."
 
 // require node's native file system module.
 const fs = require('fs')
 
-// require the discord.js module (See also https://discord.js.org/#/docs/main/stable/general/welcome)
+// require the discord.js module (See also https://discord.js.org/#/docs/main/stable/general/welcome) and set everything important to client
 const Discord = require('discord.js')
 const client = new Discord.Client()
 client.commands = new Discord.Collection()
+client.config = config
+client.helper = helper
+client.lang_helper = require("./lang/lang_helper")
+client.db_helper = require('./db/db_helper')
+client.DB = DB
+client.logger = logger
+client.sequelize = sequelize
 
 // get discord buttons (See also https://discord-buttons.js.org/docs/stable/)
-const disbut = require("discord-buttons")
-disbut(client)
+const disbut = require('discord-buttons');
+disbut(client);
 
 // dynamically retrieve all command files and additionally save it into helper.command_tree
 let command_tree = {}
@@ -41,6 +48,7 @@ for (const folder of commandFolders) {
     }
 }
 helper.command_tree = command_tree
+client.command_tree = command_tree
 
 // ---------------------------------
 // Event-Handler
@@ -119,6 +127,30 @@ client.on('message', async msg => {
         msg.reply(await gt(msg, s + "error"));
     }
 });
+
+// when a discord-button was pressed
+client.on("clickButton", async (button) => {
+
+})
+
+// when a discord-menu was chosen
+client.on("clickMenu", async (menu) => {
+    if (menu.id === "help") {
+        const menu_msg = menu.message
+        const val = menu.values[0]
+        const clicker_msg = menu_msg
+        clicker_msg.author = menu.clicker.user
+
+        if (val === 'all') {
+            await menu_msg.edit(await menu.client.commands.get("help").create_embed_all_commands(clicker_msg), menu)
+
+        } else {
+            await menu_msg.edit(await menu.client.commands.get("help").create_embed_specific_command(clicker_msg, menu.client.commands.get(val)), menu)
+        }
+
+        menu.reply.defer(true)
+    }
+})
 // ---------------------------------
 
 // login to Discord with app's token

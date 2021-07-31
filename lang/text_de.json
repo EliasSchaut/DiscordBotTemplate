@@ -35,6 +35,11 @@
         "aliases": "**Aliasse:**",
         "description": "**Beschreibung:**",
         "usage": "**Verwendung:**"
+      },
+      "menu": {
+        "placeholder": "Wähle Befehle für weitere Details",
+        "all_label": "Alle Kommandos",
+        "all_description": "Liste mit allen Befehlen"
       }
     },
     "ping": {
