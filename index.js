@@ -24,8 +24,9 @@ const client = new Discord.Client()
 client.commands = new Discord.Collection()
 
 // get discord buttons (See also https://discord-buttons.js.org/docs/stable/)
-const disbut = require("discord-buttons")
-disbut(client)
+const disbut = require('discord-buttons');
+disbut(client);
+
 
 // dynamically retrieve all command files and additionally save it into helper.command_tree
 let command_tree = {}
@@ -119,6 +120,17 @@ client.on('message', async msg => {
         msg.reply(await gt(msg, s + "error"));
     }
 });
+
+// when a discord-button was pressed
+client.on("clickButton", async (button) => {
+    if (button.id === 'help') {
+
+    }
+
+    else {
+        button.reply.send("Dont know")
+    }
+})
 // ---------------------------------
 
 // login to Discord with app's token
