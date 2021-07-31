@@ -11,22 +11,28 @@ const helper = require('./js/helper.js')
 const prefix = config.prefix
 const commands_path = "./commands"
 const { logger } = require("./js/logger")
-const { sequelize } = require('./db/db_init.js')
+const { DB, sequelize } = require('./db/db_init.js')
 const { get_text: gt } = require("./lang/lang_helper") // get text in the correct language (used for responses in Discord)
 const s = "index."
 
 // require node's native file system module.
 const fs = require('fs')
 
-// require the discord.js module (See also https://discord.js.org/#/docs/main/stable/general/welcome)
+// require the discord.js module (See also https://discord.js.org/#/docs/main/stable/general/welcome) and set everything important to client
 const Discord = require('discord.js')
 const client = new Discord.Client()
 client.commands = new Discord.Collection()
+client.config = config
+client.helper = helper
+client.lang_helper = require("./lang/lang_helper")
+client.db_helper = require('./db/db_helper')
+client.DB = DB
+client.logger = logger
+client.sequelize = sequelize
 
 // get discord buttons (See also https://discord-buttons.js.org/docs/stable/)
 const disbut = require('discord-buttons');
 disbut(client);
-
 
 // dynamically retrieve all command files and additionally save it into helper.command_tree
 let command_tree = {}
@@ -42,6 +48,7 @@ for (const folder of commandFolders) {
     }
 }
 helper.command_tree = command_tree
+client.command_tree = command_tree
 
 // ---------------------------------
 // Event-Handler
@@ -123,12 +130,22 @@ client.on('message', async msg => {
 
 // when a discord-button was pressed
 client.on("clickButton", async (button) => {
-    if (button.id === 'help') {
+    button.reply.send("Button not set")
+})
 
-    }
+client.on("clickMenu", async (menu) => {
+    if (menu.id === "commands") {
+        const msg = menu.message
+        const val = menu.values[0]
 
-    else {
-        button.reply.send("Dont know")
+        if (val === 'all') {
+            await msg.edit(await msg.client.commands.get("help").create_embed_all_commands(msg), menu)
+
+        } else {
+            await msg.edit(await msg.client.commands.get("help").create_embed_specific_command(msg, msg.client.commands.get(val)), menu)
+        }
+
+        menu.reply.defer(true)
     }
 })
 // ---------------------------------
