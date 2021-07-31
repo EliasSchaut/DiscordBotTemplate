@@ -9,9 +9,10 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "pm2 start index.js --name my-bot",
-    "restart": "pm2 reload my-bot",
-    "stop": "pm2 delete my-bot"
+    "start": "node .",
+    "pm": "pm2 start index.js --name my-bot",
+    "pm-restart": "pm2 reload my-bot",
+    "pm-stop": "pm2 delete my-bot"
   },
   "dependencies": {
     "pm2": "^5.1.0",
