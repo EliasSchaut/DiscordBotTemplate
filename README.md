@@ -69,6 +69,7 @@ module.exports = {
     dm_only: true,
     need_permission: ['<permission1>'],
     admin_only: true,
+    nfsw: true,
     disabled: true,
     execute(message, args) {  // message = discord.js 'Message' object; args = given arguments as list
         // your lovely code to execute
@@ -89,6 +90,7 @@ module.exports = {
 | dm_only | If true the command runs only in dms | Boolean | no |
 | need_permission | Users who want to execute the command need to have these permissions. | `['<Discord-Permission>, ..., <Discord-Permission>']` (see [Discord-Permissions](https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS)) | no |
 | admin_only | If true, only admins (see [config file](#config-file)) can run this command | Boolean | no |
+| nfsw | If true, the command runs only in nfsw channels | Boolean | no |
 | disabled | If true, the command is not usable | Boolean | no |
 
 

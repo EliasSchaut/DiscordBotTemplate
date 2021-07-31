@@ -94,12 +94,17 @@ client.on('message', async msg => {
         return msg.reply(await gt(msg, s + "dm_only"));
     }
 
+    // nsfw
+    if (command.hasOwnProperty("nsfw") && command.nsfw && !helper.is_nsfw_channel(msg)) {
+        return msg.reply(await gt(msg, s + "nsfw_only"))
+    }
+
     // checks missing args
     if (command.hasOwnProperty("args_needed") && command.args_needed && !helper.check_args(command, args)) {
         let reply = await gt(msg, s + "missing_args") + `, ${msg.author}`;
 
         if (command.hasOwnProperty("usage") && command.usage) {
-            reply += `\n${(await gt(msg, s + "missing_args_proper_use"))} \`${prefix}${command.name} ${command.usage}\``;
+            reply += `\n${(await gt(msg, s + "missing_args_proper_use"))} \`${prefix}${command.name} ${await command.usage(msg)}\``;
         }
 
         return msg.channel.send(reply);

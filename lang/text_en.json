@@ -5,6 +5,7 @@
     "restricted": "You are not authorized to execute this command!",
     "missing_args": "You have given the wrong number of arguments!",
     "missing_args_proper_use": "The correct usage would be:",
+    "nsfw_only": "You can execute this command only in NSFW channels!",
     "error": "There was an error trying to execute that command!"
   },
   "commands": {

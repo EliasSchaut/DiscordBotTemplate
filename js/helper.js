@@ -4,7 +4,9 @@
 
 const config = require("../config/config.json")
 
-
+// ----------------------------
+// Export
+// ----------------------------
 // save the dirtree of folder commands in a json representation
 // note: will used without getter/setter
 let command_tree = []
@@ -16,7 +18,11 @@ function from_dm(message) {
 
 // checks, if given message is from dm (personal chat with bot)
 function from_guild(message) {
-    return message.channel.type === 'text' || message.channel.type === 'news' || message.channel.type === 'store'
+    return message.channel.type === 'text' || message.channel.type === 'news'
+}
+
+function is_nsfw_channel(message) {
+    return from_dm(message) || message.channel.nsfw
 }
 
 // checks structural correctness of given args (by now only command length)
@@ -32,17 +38,6 @@ function is_admin(message) {
     } else {
         return is_admin_from_guild(message)
     }
-}
-
-// check, if the author from message is an admin when chatting per dm
-function is_admin_from_dm(message) {
-    return config.user_ids_admin.includes(message.author.id)
-}
-
-// check, if the author from message is an admin when chatting per guild
-function is_admin_from_guild(message) {
-    return config.user_ids_admin.includes(message.member.id)
-        || message.member.roles.cache.some(role => config.role_ids_admin.includes(role.id))
 }
 
 // check, if the author from message have all of the given permissions as list
@@ -95,11 +90,29 @@ function link_to_message(message, text = "") {
     if (text !== "") link = custom_text_to_link(link, text)
     return link
 }
+// ----------------------------
 
+
+// ----------------------------
+// Private
+// ----------------------------
 // add custom text to a link with markdown-syntax -> [Link Text](link)
 function custom_text_to_link(link, text) {
     return `[${text}](${link})`
 }
 
-module.exports = { command_tree, from_guild, from_dm, check_args, is_admin, has_permission,
+// check, if the author from message is an admin when chatting per dm
+function is_admin_from_dm(message) {
+    return config.user_ids_admin.includes(message.author.id)
+}
+
+// check, if the author from message is an admin when chatting per guild
+function is_admin_from_guild(message) {
+    return config.user_ids_admin.includes(message.member.id)
+        || message.member.roles.cache.some(role => config.role_ids_admin.includes(role.id))
+}
+// ----------------------------
+
+
+module.exports = { command_tree, from_guild, from_dm, is_nsfw_channel, check_args, is_admin, has_permission,
     permitted_commands_to_string, link_to_dm, link_to_message }
