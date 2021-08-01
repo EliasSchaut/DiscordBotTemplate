@@ -89,12 +89,13 @@ module.exports = {
             .setLabel(await gt(msg, s + "menu.all_label"))
             .setValue("all")
             .setDescription(await gt(msg, s + "menu.all_description"))]
+
         for (const command of commands) {
+            if (!helper.is_permitted(msg, command[1])) continue
             let description = await command[1].description(msg)
             if (description.length >= 46) {
                 description = description.substring(0, 46).trim() + " ..."
             }
-
             options.push(await new MessageMenuOption()
                 .setLabel(command[1].name)
                 .setValue(command[1].name)
