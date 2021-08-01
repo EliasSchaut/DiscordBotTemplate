@@ -59,9 +59,16 @@
       "help": "Without arguments, this command outputs your currently set language. With an argument, this command sets your language to the passing language, if it exists.\nSupported languages:",
       "usage": "[language]",
       "invalid": "This language is not supported!",
-      "set": "Your language has been updated to:",
+      "set": "Your language has been been set to:",
       "get": "Your current language is:",
       "error": "Error, I could not change your language"
+    },
+    "prefix": {
+      "help": "Without arguments, this command prints the current prefix of the guild. With an argument, this command sets the prefix of the guild to the given one",
+      "usage": "[prefix]",
+      "too_long": "The passed prefix is too long!",
+      "get": "The prefix of this server is:",
+      "set": "The prefix of this server has been set to:"
     }
   }
 }

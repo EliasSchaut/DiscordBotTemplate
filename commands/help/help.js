@@ -5,9 +5,7 @@
 // Here the help command uses the informations of the given command (like name, description, usage, ...).
 // ===============================
 
-const { prefix, embed } = require('../../config/config.json');
 const helper = require("../../js/helper.js")
-const { logger } = require("../../js/logger")
 const Discord = require("discord.js")
 const { MessageMenuOption, MessageMenu } = require('discord-buttons')
 const { get_text: gt } = require("../../lang/lang_helper")
@@ -25,16 +23,7 @@ module.exports = {
 
         // help information for all command
         if (!args.length) {
-            return msg.author.send(await this.create_embed_all_commands(msg), await this.create_command_menu(msg, commands))
-                .then(async () => {
-                    if (helper.from_guild(msg)) {
-                        msg.channel.send(await this.create_embed_to_dm(msg))
-                    }
-                })
-                .catch(async error => {
-                    logger.log('error', `${await gt(msg, s + "dm.fail_console")} ${msg.author.tag}.\n`, error);
-                    msg.reply(await gt(msg, s + "dm.fail_reply"));
-                });
+            return msg.channel.send(await this.create_embed_all_commands(msg), await this.create_command_menu(msg, commands))
 
         // help information for a specific command
         } else {
@@ -63,6 +52,7 @@ module.exports = {
 
     async create_embed_all_commands(msg) {
         const s = "commands.help."
+        const prefix = await msg.client.db_helper.get_prefix(msg)
         const data = []
         const embed_msg = new Discord.MessageEmbed().setColor(msg.client.config.embed.color)
         embed_msg.setThumbnail(msg.client.config.embed.avatar_url)
@@ -79,6 +69,7 @@ module.exports = {
 
     async create_embed_specific_command(msg, command) {
         const s = "commands.help."
+        const prefix = await msg.client.db_helper.get_prefix(msg)
         const data = []
         const embed_msg = new Discord.MessageEmbed().setColor(msg.client.config.embed.color)
 

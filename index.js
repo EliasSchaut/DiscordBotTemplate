@@ -8,7 +8,6 @@
 // get/set required methods and values
 const config = require('./config/config.json')
 const helper = require('./js/helper.js')
-const prefix = config.prefix
 const commands_path = "./commands"
 const { logger } = require("./js/logger")
 const { DB, sequelize } = require('./db/db_init.js')
@@ -72,6 +71,7 @@ client.once('ready', async () => {
 // react on messages
 client.on('message', async msg => {
     // check prefix and prepare message
+    const prefix = await msg.client.db_helper.get_prefix(msg)
     if (!msg.content.startsWith(prefix) || msg.author.bot) return;
     const args = msg.content.slice(prefix.length).trim().split(/ +/);
     const commandName = args.shift().toLowerCase();
@@ -93,12 +93,12 @@ client.on('message', async msg => {
     }
 
     // checks guild only
-    if (command.hasOwnProperty("guild_only") && command.guild_only && helper.from_guild(msg)) {
+    if (command.hasOwnProperty("guild_only") && command.guild_only && !helper.from_guild(msg)) {
         return msg.reply(await gt(msg, s + "guild_only"));
     }
 
     // checks dm only
-    if (command.hasOwnProperty("dm_only") && command.dm_only && helper.from_dm(msg)) {
+    if (command.hasOwnProperty("dm_only") && command.dm_only && !helper.from_dm(msg)) {
         return msg.reply(await gt(msg, s + "dm_only"));
     }
 
@@ -142,10 +142,12 @@ client.on("clickMenu", async (menu) => {
         clicker_msg.author = menu.clicker.user
 
         if (val === 'all') {
-            await menu_msg.edit(await menu.client.commands.get("help").create_embed_all_commands(clicker_msg), menu)
+            await menu_msg.edit(await menu.client.commands.get("help").create_embed_all_commands(clicker_msg),
+                menu.client.commands.get("help").create_command_menu(clicker_msg, menu.client.commands))
 
         } else {
-            await menu_msg.edit(await menu.client.commands.get("help").create_embed_specific_command(clicker_msg, menu.client.commands.get(val)), menu)
+            await menu_msg.edit(await menu.client.commands.get("help").create_embed_specific_command(clicker_msg, menu.client.commands.get(val)),
+                menu.client.commands.get("help").create_command_menu(clicker_msg, menu.client.commands))
         }
 
         menu.reply.defer(true)

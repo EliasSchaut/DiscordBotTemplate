@@ -42,6 +42,9 @@ function is_admin(message) {
 
 // check, if the author from message have all of the given permissions as list
 function has_permission(message, permission_list) {
+    if (from_dm(message)) {
+        return false
+    }
     return message.member.hasPermission(permission_list)
 }
 
