@@ -2,64 +2,58 @@
 // This file provides different useful methods about handling with the database
 // ===============================
 
-const { DB } = require("./db_init")
-const { default_lang, prefix } = require("../config/config.json")
-const { logger } = require("../js/logger")
-const Guild = DB.Guild
-const User_Lang = DB.User_Lang
-
 // -----------------------------------
 // Guild
 // -----------------------------------
 // add the guild from message in the database 'Guild'. Also set prefix to config.prefix
-async function create_guild_tag(message) {
-    logger.log("info", `try to add guild ${message.member.guild.name} to database 'Guild'`)
+async function create_guild_tag(msg) {
+    msg.client.logger.log("info", `try to add guild ${msg.member.guild.name} to database 'Guild'`)
 
     try {
-        await Guild.create({
-            guild_id: message.member.guild.id,
-            prefix: prefix
+        await msg.client.DB.Guild.create({
+            guild_id: msg.member.guild.id,
+            prefix: msg.client.config.prefix
         })
-        logger.log("info",`guild ${message.member.guild.name} successfully added to database 'Guild'`)
+        msg.client.logger.log("info",`guild ${msg.member.guild.name} successfully added to database 'Guild'`)
 
     } catch (e) {
         if (e.name === 'SequelizeUniqueConstraintError') {
-            logger.log("warn",`guild ${message.member.guild.name} already exist in database 'Guild'`)
+            msg.client.logger.log("warn",`guild ${msg.member.guild.name} already exist in database 'Guild'`)
 
         } else {
-            logger.log("error",`Something went wrong with adding guild ${message.member.guild.name} in database 'Guild'`)
+            msg.client.logger.log("error",`Something went wrong with adding guild ${msg.member.guild.name} in database 'Guild'`)
         }
     }
 }
 
 // get prefix of the guild from message. If guild doesn't exist in database, the guild will added into it
-async function get_prefix(message) {
-    if (message.client.helper.from_dm(message)) {
-        return message.client.config.prefix
+async function get_prefix(msg) {
+    if (msg.client.helper.from_dm(msg)) {
+        return msg.client.config.prefix
     }
 
-    const tag = await Guild.findOne({ where: { guild_id: message.member.guild.id } })
+    const tag = await msg.client.DB.Guild.findOne({ where: { guild_id: msg.member.guild.id } })
 
     if (tag) {
         return tag.prefix
 
     } else {
-        logger.log("warn",`guild ${message.member.guild.name} not in database 'Guild'`)
-        await create_guild_tag(message)
-        return await get_prefix(message)
+        msg.client.logger.log("warn",`guild ${msg.member.guild.name} not in database 'Guild'`)
+        await create_guild_tag(msg)
+        return await get_prefix(msg)
     }
 }
 
 // set prefix of the author from message
-async function set_prefix(message, new_prefix) {
-    const old_prefix = await get_prefix(message)
-    const new_tag = await Guild.update({ prefix: new_prefix }, { where: { guild_id: message.member.guild.id } })
+async function set_prefix(msg, new_prefix) {
+    const old_prefix = await get_prefix(msg)
+    const new_tag = await msg.client.DB.Guild.update({ prefix: new_prefix }, { where: { guild_id: msg.member.guild.id } })
 
     if (new_tag) {
         return true
 
     } else {
-        logger.log("error", `Could not set prefix from ${old_prefix} to ${new_prefix} of guild ${message.member.guild.name} in database 'Guild'`)
+        msg.client.logger.log("error", `Could not set prefix from ${old_prefix} to ${new_prefix} of guild ${msg.member.guild.name} in database 'Guild'`)
         return false
     }
 }
@@ -71,50 +65,50 @@ async function set_prefix(message, new_prefix) {
 // User_Lang
 // -----------------------------------
 // add the author from message in the database 'User_Lang'. Also set lang to config.default_lang
-async function add_user_lang(message) {
-    logger.log("info", `try to add user ${message.author.username} to database 'User_Lang' (id: ${message.author.id})`)
+async function add_user_lang(msg) {
+    msg.client.logger.log("info", `try to add user ${msg.author.username} to database 'User_Lang' (id: ${msg.author.id})`)
 
     try {
-        await User_Lang.create({
-            user_id: message.author.id,
-            lang: default_lang
+        await msg.client.DB.User_Lang.create({
+            user_id: msg.author.id,
+            lang: msg.client.config.default_lang
         })
-        logger.log("info",`user ${message.author.username} successfully added to database 'User_Lang' (id: ${message.author.id})`)
+        msg.client.logger.log("info",`user ${msg.author.username} successfully added to database 'User_Lang' (id: ${msg.author.id})`)
 
     } catch (e) {
         if (e.name === 'SequelizeUniqueConstraintError') {
-            logger.log("warn",`user ${message.author.username} already exist in database 'User_Lang' (id: ${message.author.id})`)
+            msg.client.logger.log("warn",`user ${msg.author.username} already exist in database 'User_Lang' (id: ${msg.author.id})`)
 
         } else {
-            logger.log("error",`Something went wrong with adding user ${message.author.username} in database 'User_Lang' (id: ${message.author.id})`)
+            msg.client.logger.log("error",`Something went wrong with adding user ${msg.author.username} in database 'User_Lang' (id: ${msg.author.id})`)
         }
     }
 }
 
 // get lang of the author from message. If author doesn't exist in database, the author will added into it
-async function get_lang(message) {
-    const tag = await User_Lang.findOne({ where: { user_id: message.author.id } })
+async function get_lang(msg) {
+    const tag = await msg.client.DB.User_Lang.findOne({ where: { user_id: msg.author.id } })
 
     if (tag) {
         return tag.lang
 
     } else {
-        logger.log("warn",`user ${message.author.username} not in database 'User_Lang' (id: ${message.author.id})'`)
-        await add_user_lang(message)
-        return await get_lang(message)
+        msg.client.logger.log("warn",`user ${msg.author.username} not in database 'User_Lang' (id: ${msg.author.id})'`)
+        await add_user_lang(msg)
+        return await get_lang(msg)
     }
 }
 
 // set lang of the author from message
-async function set_lang(message, new_lang) {
-    const old_lang = await get_lang(message)
-    const new_tag = await User_Lang.update({ lang: new_lang }, { where: { user_id: message.author.id } })
+async function set_lang(msg, new_lang) {
+    const old_lang = await get_lang(msg)
+    const new_tag = await msg.client.DB.User_Lang.update({ lang: new_lang }, { where: { user_id: msg.author.id } })
 
     if (new_tag) {
         return true
 
     } else {
-        logger.log("error", `Could not set lang from ${old_lang} to ${new_lang} of user ${message.author.username} in database 'User_Lang' (id: ${message.author.id})`)
+        msg.client.logger.log("error", `Could not set lang from ${old_lang} to ${new_lang} of user ${msg.author.username} in database 'User_Lang' (id: ${msg.author.id})`)
         return false
     }
 }

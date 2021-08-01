@@ -4,7 +4,6 @@
 // If prefix is called with a prefix as argument, it will change the prefix for the guild from message to it.
 // ===============================
 
-const db_helper = require("../../db/db_helper.js")
 const { get_text: gt } = require("../../lang/lang_helper")
 const { enable_prefix_change } = require("../../config/config.json")
 const s = "commands.prefix."
@@ -22,11 +21,11 @@ module.exports = {
             if (args[0].length > 2000) {
                 return msg.channel.send(`${await gt(msg, s + "too_long")}`)
             }
-            await db_helper.set_prefix(msg, args[0])
+            await msg.client.db_helper.set_prefix(msg, args[0])
             return msg.channel.send(`${await gt(msg, s + "set")} \`${args[0]}\``)
 
         } else {
-            return msg.channel.send(`${await gt(msg, s + "get")} \`${await db_helper.get_prefix(msg)}\``)
+            return msg.channel.send(`${await gt(msg, s + "get")} \`${await msg.client.db_helper.get_prefix(msg)}\``)
         }
     },
 };

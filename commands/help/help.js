@@ -5,7 +5,6 @@
 // Here the help command uses the informations of the given command (like name, description, usage, ...).
 // ===============================
 
-const helper = require("../../js/helper.js")
 const Discord = require("discord.js")
 const { MessageMenuOption, MessageMenu } = require('discord-buttons')
 const { get_text: gt } = require("../../lang/lang_helper")
@@ -45,7 +44,7 @@ module.exports = {
     async create_embed_to_dm(msg) {
         const s = "commands.help."
         return new Discord.MessageEmbed()
-            .setDescription(`<@${msg.author.id}> ${await gt(msg, s + "dm.success")} ${helper.link_to_dm(msg, await gt(msg, s + "jump_to_dm"))}!`)
+            .setDescription(`<@${msg.author.id}> ${await gt(msg, s + "dm.success")} ${msg.client.helper.link_to_dm(msg, await gt(msg, s + "jump_to_dm"))}!`)
             .setColor(msg.client.config.embed.color)
             .setThumbnail(msg.client.config.embed.avatar_url)
     },
@@ -58,9 +57,9 @@ module.exports = {
         embed_msg.setThumbnail(msg.client.config.embed.avatar_url)
 
         data.push(`${await gt(msg, s + "intro.0")}`);
-        data.push(helper.permitted_commands_to_string(helper.command_tree, msg));
+        data.push(msg.client.helper.permitted_commands_to_string(msg));
         data.push(`\n${await gt(msg, s + "intro.1")} \`${prefix}${this.name} ${await this.usage(msg)}\` ${await gt(msg, s + "intro.2")}`);
-        data.push(helper.link_to_message(msg, await gt(msg, s + "back_to_message")))
+        data.push(msg.client.helper.link_to_message(msg, await gt(msg, s + "back_to_message")))
         embed_msg.setTitle(`${this.name.toUpperCase()} ${(await gt(msg, s + "command")).toUpperCase()}`)
         embed_msg.setDescription(data)
 
@@ -91,7 +90,7 @@ module.exports = {
             .setDescription(await gt(msg, s + "menu.all_description"))]
 
         for (const command of commands) {
-            if (!helper.is_permitted(msg, command[1])) continue
+            if (!msg.client.helper.is_permitted(msg, command[1])) continue
             let description = await command[1].description(msg)
             if (description.length >= 46) {
                 description = description.substring(0, 46).trim() + " ..."

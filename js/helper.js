@@ -2,27 +2,21 @@
 // This file provides different useful methods, which are used by commands or index
 // ===============================
 
-const config = require("../config/config.json")
-
 // ----------------------------
 // Export
 // ----------------------------
-// save the dirtree of folder commands in a json representation
-// note: will used without getter/setter
-let command_tree = []
-
 // checks, if given message is from guild (a discord server)
-function from_dm(message) {
-    return message.channel.type === 'dm'
+function from_dm(msg) {
+    return msg.channel.type === 'dm'
 }
 
 // checks, if given message is from dm (personal chat with bot)
-function from_guild(message) {
-    return message.channel.type === 'text' || message.channel.type === 'news'
+function from_guild(msg) {
+    return msg.channel.type === 'text' || msg.channel.type === 'news'
 }
 
-function is_nsfw_channel(message) {
-    return from_dm(message) || message.channel.nsfw
+function is_nsfw_channel(msg) {
+    return from_dm(msg) || msg.channel.nsfw
 }
 
 // checks structural correctness of given args (by now only command length)
@@ -31,21 +25,21 @@ function check_args(command, args) {
 }
 
 // check if author from message is admin
-function is_admin(message) {
-    if (from_dm(message)) {
-        return is_admin_from_dm(message)
+function is_admin(msg) {
+    if (from_dm(msg)) {
+        return is_admin_from_dm(msg)
 
     } else {
-        return is_admin_from_guild(message)
+        return is_admin_from_guild(msg)
     }
 }
 
 // check, if the author from message have all of the given permissions as list
-function has_permission(message, permission_list) {
-    if (from_dm(message)) {
+function has_permission(msg, permission_list) {
+    if (from_dm(msg)) {
         return false
     }
-    return message.member.hasPermission(permission_list)
+    return msg.member.hasPermission(permission_list)
 }
 
 // check, it the author from message is permitted to run given command
@@ -55,16 +49,16 @@ function is_permitted(msg, command) {
 }
 
 // print all executable commands for the author from message in a human readable string
-function permitted_commands_to_string(command_tree, message) {
+function permitted_commands_to_string(msg) {
     let out = ""
-    Object.keys(command_tree).forEach(function (command_dir) {
+    Object.keys(msg.client.command_tree).forEach(function (command_dir) {
         let data = []
 
-        Object.keys(command_tree[command_dir]).forEach(function (command_name) {
-            const command = command_tree[command_dir][command_name]
+        Object.keys(msg.client.command_tree[command_dir]).forEach(function (command_name) {
+            const command = msg.client.command_tree[command_dir][command_name]
 
             // user is admin or permitted
-            if (is_permitted(message, command)) {
+            if (is_permitted(msg, command)) {
                 data.push(`${command_name}`)
             }
         })
@@ -79,21 +73,21 @@ function permitted_commands_to_string(command_tree, message) {
 
 // returns a link of dm-channel between author and bot
 // note: custom text works only in embed
-function link_to_dm(message, text = "") {
-    let link = `https://discord.com/channels/@me/${message.author.dmChannel.id}/`
+function link_to_dm(msg, text = "") {
+    let link = `https://discord.com/channels/@me/${msg.author.dmChannel.id}/`
     if (text !== "") link = custom_text_to_link(link, text)
     return link
 }
 
 // returns a link to the sended message
 // note: custom text works only in embed
-function link_to_message(message, text = "") {
+function link_to_message(msg, text = "") {
     let link;
-    if (from_dm(message)) {
-        link = link_to_dm(message) + message.id
+    if (from_dm(msg)) {
+        link = link_to_dm(msg) + msg.id
 
-    } else if (from_guild(message)) {
-        link = `https://discord.com/channels/${message.channel.guild.id}/${message.channel.id}/${message.id}`
+    } else if (from_guild(msg)) {
+        link = `https://discord.com/channels/${msg.channel.guild.id}/${msg.channel.id}/${msg.id}`
     }
     if (text !== "") link = custom_text_to_link(link, text)
     return link
@@ -110,17 +104,17 @@ function custom_text_to_link(link, text) {
 }
 
 // check, if the author from message is an admin when chatting per dm
-function is_admin_from_dm(message) {
-    return config.user_ids_admin.includes(message.author.id)
+function is_admin_from_dm(msg) {
+    return msg.client.config.user_ids_admin.includes(msg.author.id)
 }
 
 // check, if the author from message is an admin when chatting per guild
-function is_admin_from_guild(message) {
-    return config.user_ids_admin.includes(message.member.id)
-        || message.member.roles.cache.some(role => config.role_ids_admin.includes(role.id))
+function is_admin_from_guild(msg) {
+    return msg.client.config.user_ids_admin.includes(msg.member.id)
+        || msg.member.roles.cache.some(role => msg.client.config.role_ids_admin.includes(role.id))
 }
 // ----------------------------
 
 
-module.exports = { command_tree, from_guild, from_dm, is_nsfw_channel, check_args, is_admin, has_permission,
+module.exports = { from_guild, from_dm, is_nsfw_channel, check_args, is_admin, has_permission,
     is_permitted, permitted_commands_to_string, link_to_dm, link_to_message }

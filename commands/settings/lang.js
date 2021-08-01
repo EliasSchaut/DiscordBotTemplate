@@ -4,7 +4,6 @@
 // If lang is called with a valid language as argument (see config), it will change the language for the author from message to it
 // ===============================
 
-const db_helper = require("../../db/db_helper.js")
 const { get_text: gt, is_valid: iv } = require("../../lang/lang_helper")
 const { enable_lang_change, lang_paths } = require("../../config/config.json")
 const s = "commands.lang."
@@ -19,7 +18,7 @@ module.exports = {
     async execute(msg, args) {
         if (args.length > 0) {
             if (iv(args[0])) {
-                if (await db_helper.set_lang(msg, args[0])) {
+                if (await msg.client.db_helper.set_lang(msg, args[0])) {
                     msg.channel.send(`${await gt(msg, `${s}set`)} \`${args[0]}\``)
 
                 } else {
@@ -31,7 +30,7 @@ module.exports = {
             }
 
         } else {
-            return msg.channel.send(`${await gt(msg, s + "get")} \`${await db_helper.get_lang(msg)}\``)
+            return msg.channel.send(`${await gt(msg, s + "get")} \`${await msg.client.db_helper.get_lang(msg)}\``)
         }
     },
 };
