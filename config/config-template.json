@@ -1,6 +1,7 @@
 {
   "prefix": "<YOUR_PREFIX>",
   "token": "<YOUR_TOKEN>",
+  "enable_prefix_change": true,
 
   "enable_logging": true,
   "log_file_name": "combined.log",

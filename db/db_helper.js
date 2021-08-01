@@ -3,10 +3,73 @@
 // ===============================
 
 const { DB } = require("./db_init")
-const { default_lang } = require("../config/config.json")
+const { default_lang, prefix } = require("../config/config.json")
 const { logger } = require("../js/logger")
+const Guild = DB.Guild
 const User_Lang = DB.User_Lang
 
+// -----------------------------------
+// Guild
+// -----------------------------------
+// add the guild from message in the database 'Guild'. Also set prefix to config.prefix
+async function create_guild_tag(message) {
+    logger.log("info", `try to add guild ${message.member.guild.name} to database 'Guild'`)
+
+    try {
+        await Guild.create({
+            guild_id: message.member.guild.id,
+            prefix: prefix
+        })
+        logger.log("info",`guild ${message.member.guild.name} successfully added to database 'Guild'`)
+
+    } catch (e) {
+        if (e.name === 'SequelizeUniqueConstraintError') {
+            logger.log("warn",`guild ${message.member.guild.name} already exist in database 'Guild'`)
+
+        } else {
+            logger.log("error",`Something went wrong with adding guild ${message.member.guild.name} in database 'Guild'`)
+        }
+    }
+}
+
+// get prefix of the guild from message. If guild doesn't exist in database, the guild will added into it
+async function get_prefix(message) {
+    if (message.client.helper.from_dm(message)) {
+        return message.client.config.prefix
+    }
+
+    const tag = await Guild.findOne({ where: { guild_id: message.member.guild.id } })
+
+    if (tag) {
+        return tag.prefix
+
+    } else {
+        logger.log("warn",`guild ${message.member.guild.name} not in database 'Guild'`)
+        await create_guild_tag(message)
+        return await get_prefix(message)
+    }
+}
+
+// set prefix of the author from message
+async function set_prefix(message, new_prefix) {
+    const old_prefix = await get_prefix(message)
+    const new_tag = await Guild.update({ prefix: new_prefix }, { where: { guild_id: message.member.guild.id } })
+
+    if (new_tag) {
+        return true
+
+    } else {
+        logger.log("error", `Could not set prefix from ${old_prefix} to ${new_prefix} of guild ${message.member.guild.name} in database 'Guild'`)
+        return false
+    }
+}
+// -----------------------------------
+
+
+
+// -----------------------------------
+// User_Lang
+// -----------------------------------
 // add the author from message in the database 'User_Lang'. Also set lang to config.default_lang
 async function add_user_lang(message) {
     logger.log("info", `try to add user ${message.author.username} to database 'User_Lang' (id: ${message.author.id})`)
@@ -51,9 +114,10 @@ async function set_lang(message, new_lang) {
         return true
 
     } else {
-        logger.log("error", `Could not get lang from ${old_lang} to ${new_lang} of user ${message.author.username} in database 'User_Lang' (id: ${message.author.id})`)
+        logger.log("error", `Could not set lang from ${old_lang} to ${new_lang} of user ${message.author.username} in database 'User_Lang' (id: ${message.author.id})`)
         return false
     }
 }
+// -----------------------------------
 
-module.exports = { add_user: add_user_lang, get_lang, set_lang }
+module.exports = { add_user: add_user_lang, get_lang, set_lang, get_prefix, set_prefix }

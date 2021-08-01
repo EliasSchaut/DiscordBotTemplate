@@ -42,7 +42,16 @@ function is_admin(message) {
 
 // check, if the author from message have all of the given permissions as list
 function has_permission(message, permission_list) {
+    if (from_dm(message)) {
+        return false
+    }
     return message.member.hasPermission(permission_list)
+}
+
+// check, it the author from message is permitted to run given command
+function is_permitted(msg, command) {
+    return (!((command.hasOwnProperty("admin_only") && command.admin_only && !is_admin(msg))
+        ||  (command.hasOwnProperty("need_permission") && !has_permission(msg, command.need_permission))))
 }
 
 // print all executable commands for the author from message in a human readable string
@@ -55,8 +64,7 @@ function permitted_commands_to_string(command_tree, message) {
             const command = command_tree[command_dir][command_name]
 
             // user is admin or permitted
-            if (!((command.hasOwnProperty("admin_only") && command.admin_only && !is_admin(message))
-                ||  (command.hasOwnProperty("need_permission") && !has_permission(message, command.need_permission)))) {
+            if (is_permitted(message, command)) {
                 data.push(`${command_name}`)
             }
         })
@@ -115,4 +123,4 @@ function is_admin_from_guild(message) {
 
 
 module.exports = { command_tree, from_guild, from_dm, is_nsfw_channel, check_args, is_admin, has_permission,
-    permitted_commands_to_string, link_to_dm, link_to_message }
+    is_permitted, permitted_commands_to_string, link_to_dm, link_to_message }
