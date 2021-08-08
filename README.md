@@ -35,8 +35,11 @@ This project was guided by [Discord.js Guide](https://discordjs.guide/)
 | log_file_name | The name of the log-file | String | Only when enable_logging is true |
 | role_ids_admin | Users which have a corresponding role are admins and can execute admin_only command | `[ "<String>", ..., "<String>"]` | no |
 | user_ids_admin | Users which have a corresponding id are admins and can execute admin_only command | `[ "<String>", ..., "<String>"]` | no |
-| embed_color | Color of embed messages. Use Hex or [Discord-Color](https://discord.js.org/#/docs/main/stable/typedef/ColorResolvable).  | String | no |
-| embed_avatar_url | Url to avatar of embed messages | String | no |
+| enable_activity | If true, the bot has use activity.status and activity.type to create a activity status `<type> <name>` (e.g. Playing help) | Boolean | have to be true, if status or type is set |
+| activity.name | Name of the activity | String | no |
+| activity.type | [Type](https://discord.com/developers/docs/topics/gateway#activity-object-activity-types) of the activity | String | no |
+| embed.color | Color of embed messages. Use Hex or [Discord-Color](https://discord.js.org/#/docs/main/stable/typedef/ColorResolvable).  | String | no |
+| embed.avatar_url | Url to avatar of embed messages | String | no |
 | default_lang | The default language in which the bot responds (discord response only) | String + value must be a key in lang_paths | yes |
 | enable_lang_change | If true the lang command is executable which allows users to change their personal language (language will only change for the specific user, not globally) | Boolean | yes |
 | lang_paths | Another json object which holds all supported languages. The keys in the json are the language names and the values the source relative to lang folder | String | yes |
@@ -66,6 +69,7 @@ module.exports = {
     dm_only: true,
     need_permission: ['<permission1>'],
     admin_only: true,
+    nfsw: true,
     disabled: true,
     execute(message, args) {  // message = discord.js 'Message' object; args = given arguments as list
         // your lovely code to execute
@@ -86,6 +90,7 @@ module.exports = {
 | dm_only | If true the command runs only in dms | Boolean | no |
 | need_permission | Users who want to execute the command need to have these permissions. | `['<Discord-Permission>, ..., <Discord-Permission>']` (see [Discord-Permissions](https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS)) | no |
 | admin_only | If true, only admins (see [config file](#config-file)) can run this command | Boolean | no |
+| nfsw | If true, the command runs only in nfsw channels | Boolean | no |
 | disabled | If true, the command is not usable | Boolean | no |
 
 

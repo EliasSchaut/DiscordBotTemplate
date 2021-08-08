@@ -6,7 +6,6 @@
 
 const fs = require('fs');
 const { get_text: gt } = require("../../lang/lang_helper")
-const { logger } = require("../../js/logger")
 const s = "commands.reload."
 const commands_path = "./commands"
 
@@ -37,7 +36,7 @@ module.exports = {
             msg.client.commands.set(newCommand.name, newCommand);
             msg.channel.send(`\`${newCommand.name}\` ${await gt(msg, s + "success")}`);
         } catch (error) {
-            logger.log('error', error);
+            msg.client.logger.log('error', error);
             msg.channel.send(`${await gt(msg, s + "fail")} \`${command.name}\`:\n\`${error.message}\``);
         }
     },

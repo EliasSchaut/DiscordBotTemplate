@@ -1,6 +1,6 @@
 {
   "name": "@elias.schaut/discord-bot-template",
-  "version": "1.0.0-beta",
+  "version": "1.0.0-beta.2",
   "description": "A template for creating discord bots with node.js and discord.js! (See also https://github.com/EliasSchaut/Discord-Bot-Template)",
   "main": "index.js",
   "devDependencies": {
@@ -9,18 +9,19 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "pm2 start index.js --name my-bot",
-    "restart": "pm2 reload my-bot",
-    "stop": "pm2 delete my-bot"
+    "start": "node .",
+    "pm": "pm2 start index.js --name my-bot",
+    "pm-restart": "pm2 reload my-bot",
+    "pm-stop": "pm2 delete my-bot"
   },
   "dependencies": {
-    "pm2": "^5.1.0",
     "discord-buttons": "^4.0.0",
     "discord.js": "^12.5.3",
+    "node": "^14.17.4",
+    "pm2": "^5.1.0",
     "sequelize": "^6.6.5",
-    "sqlite3": "^5.0.2",
-    "winston": "^3.3.3",
-    "node": "^14.17.4"
+    "sqlite3": "^4.2.0",
+    "winston": "^3.3.3"
   },
   "keywords": [
     "discord-bot-template"

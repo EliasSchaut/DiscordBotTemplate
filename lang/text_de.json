@@ -2,9 +2,10 @@
   "index": {
     "guild_only": "Ich kann diesen Befehl nur in Servern ausführen!",
     "dm_only": "Ich kann diesen Befehl nur im privaten Chat mit dir ausführen!",
-    "restricted": "Du bist leider nicht berechtigt, diesen Befehl auszuführen!",
+    "restricted": "Du bist nicht berechtigt, diesen Befehl auszuführen!",
     "missing_args": "Du hast die falsche Anzahl an Argumenten abgegeben!",
     "missing_args_proper_use": "Die korrekte Verwendung wäre:",
+    "nsfw_only": "Diesen Befehl kannst du nur in NSFW-Kanälen!",
     "error": "Es gab einen Fehler beim Versuch, diesen Befehl auszuführen!"
   },
   "commands": {
@@ -34,6 +35,11 @@
         "aliases": "**Aliasse:**",
         "description": "**Beschreibung:**",
         "usage": "**Verwendung:**"
+      },
+      "menu": {
+        "placeholder": "Wähle Befehle für weitere Details",
+        "all_label": "Alle Kommandos",
+        "all_description": "Liste mit allen Befehlen"
       }
     },
     "ping": {
@@ -53,9 +59,16 @@
       "help": "Ohne Argumente gibt dieser Befehl deine aktuell gesetzte Sprache aus. Mit einem Argument setzt dieser Befehl deine Sprache auf die übergebende Sprache, sofern diese existiert.\nUnterstütze Sprachen: ",
       "usage": "[Sprache]",
       "invalid": "Diese Sprache existiert nicht!",
-      "set": "Deine Sprache wurde geupdated nach:",
+      "set": "Deine Sprache wurde gesetzt auf:",
       "get": "Deine aktuelle Sprache ist:",
       "error": "Error, ich konnte deine Sprache nicht ändern"
+    },
+    "prefix": {
+      "help": "Ohne Argumente gibt dieser Befehl den aktuellen Prefix des aus. Mit einem Argument setzt dieser Befehl den Prefix des Servers auf den Übergebenen",
+      "usage": "[Prefix]",
+      "too_long": "Der übergebene Prefix ist zu lang!",
+      "get": "Der Prefix dieses Servers ist:",
+      "set": "Der Prefix dieses Server wurde gesetzt auf:"
     }
   }
 }
