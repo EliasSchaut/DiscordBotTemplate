@@ -46,8 +46,8 @@ This project was guided by [Discord.js Guide](https://discordjs.guide/)
 
 
 ## Run
-Run `index.js` with `node index.js`. \
-Alternative you can use `npm start`, `npm reload` and `npm stop`. This will use [pm2](https://discordjs.guide/improving-dev-environment/pm2.html) for executing
+Run `index.js` with `node index.js`. Alternative you can use `npm start`. \
+If you want to execute with [pm2](https://discordjs.guide/improving-dev-environment/pm2.html) run `npm run pm2`. You can restart the process with `npm run pm-restart` and kill it with `npm run pm-stop`.
 
 ## Add a command 
 1. Create a new JS file with the name <command name>.js inside a folder in the folder `commands`. \
