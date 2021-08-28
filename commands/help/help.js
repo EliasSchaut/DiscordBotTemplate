@@ -41,8 +41,7 @@ module.exports = {
     // Helper
     // ----------------------------
     async send_all_commands(msg) {
-        if (msg.client.config.help.send_always_to_dm && msg.client.helper.from_guild(msg)) {
-            console.log(msg.author)
+        if (msg.client.config.help.send_to_dm && msg.client.helper.from_guild(msg)) {
             return await msg.author.send({ embeds: [await this.create_embed_all_commands(msg)] }).then(async () => {
                 msg.channel.send({embeds: [await this.create_embed_to_dm(msg)]})
             })
@@ -68,9 +67,11 @@ module.exports = {
         embed_msg.setThumbnail(msg.client.config.embed.avatar_url)
 
         data.push(`${await gt(msg, s + "intro.0")}\n`);
-        data.push(msg.client.helper.permitted_commands_to_string(msg));
+        data.push(msg.client.helper.commands_to_string(msg));
         data.push(`\n${await gt(msg, s + "intro.1")} \`${prefix}${this.name} ${await this.usage(msg)}\` ${await gt(msg, s + "intro.2")}\n`);
-        data.push(msg.client.helper.link_to_message(msg, await gt(msg, s + "back_to_message")))
+        if (msg.client.config.help.send_to_dm && msg.client.helper.from_guild(msg)) {
+            data.push(msg.client.helper.link_to_message(msg, await gt(msg, s + "back_to_message")))
+        }
         embed_msg.setTitle(`${this.name.toUpperCase()} ${(await gt(msg, s + "command")).toUpperCase()}`)
         embed_msg.setDescription(data.join(""))
 

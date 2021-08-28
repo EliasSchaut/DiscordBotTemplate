@@ -49,8 +49,8 @@ function is_permitted(msg, command) {
         ||  (command.hasOwnProperty("need_permission") && !has_permission(msg, command.need_permission))))
 }
 
-// print all executable commands for the author from message in a human readable string
-function permitted_commands_to_string(msg) {
+// print all commands for the author from message in a human readable string
+function commands_to_string(msg) {
     let out = ""
     Object.keys(msg.client.command_tree).forEach(function (command_dir) {
         let data = []
@@ -58,8 +58,8 @@ function permitted_commands_to_string(msg) {
         Object.keys(msg.client.command_tree[command_dir]).forEach(function (command_name) {
             const command = msg.client.command_tree[command_dir][command_name]
 
-            // user is admin or permitted
-            if (is_permitted(msg, command)) {
+            // user is admin or permitted (only needed if help.show_only_permitted_commands is true
+            if (!msg.client.config.help.show_only_permitted_commands || is_permitted(msg, command)) {
                 data.push(`${command_name}`)
             }
         })
@@ -118,4 +118,4 @@ function is_admin_from_guild(msg) {
 
 
 module.exports = { from_guild, from_dm, is_nsfw_channel, check_args, is_admin, has_permission,
-    is_permitted, permitted_commands_to_string, link_to_dm, link_to_message }
+    is_permitted, commands_to_string, link_to_dm, link_to_message }
