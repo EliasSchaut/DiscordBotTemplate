@@ -26,7 +26,7 @@
         "2": "to get information about a specific command!"
       },
       "dm": {
-        "success": "I've sent you a DM with all my commands!",
+        "success": "I've sent you a DM!",
         "fail_console": "Could not send help DM to",
         "fail_reply": "It seems like I can't DM you! Do you have DMs disabled?"
       },

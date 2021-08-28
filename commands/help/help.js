@@ -33,7 +33,7 @@ module.exports = {
                 return msg.reply(await gt(msg, s + "invalid_command"));
             }
 
-            msg.channel.send({ embeds: [await this.create_embed_specific_command(msg, command)], components: [await this.create_command_menu(msg)] })
+            return this.send_specific_command(msg, command)
         }
     },
 
@@ -49,6 +49,17 @@ module.exports = {
 
         } else {
             return msg.channel.send({ embeds: [await this.create_embed_all_commands(msg)], components: [await this.create_command_menu(msg)] })
+        }
+    },
+
+    async send_specific_command(msg, command) {
+        if (msg.client.config.help.send_to_dm && msg.client.helper.from_guild(msg)) {
+            return await msg.author.send({ embeds: [await this.create_embed_specific_command(msg, command)], components: [await this.create_command_menu(msg)] }).then(async () => {
+                msg.channel.send({embeds: [await this.create_embed_to_dm(msg)]})
+            })
+
+        } else {
+            return msg.channel.send({ embeds: [await this.create_embed_specific_command(msg, command)], components: [await this.create_command_menu(msg)] })
         }
     },
 

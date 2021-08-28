@@ -137,8 +137,6 @@ client.on("interactionCreate", async (interaction) => {
     if (!interaction.isSelectMenu()) return;
 
     if (interaction.customId === "help") {
-        console.log(interaction)
-
         const menu_msg = interaction.message
         const val = interaction.values[0]
         const clicker_msg = menu_msg

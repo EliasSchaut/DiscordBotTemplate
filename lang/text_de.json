@@ -26,7 +26,7 @@
         "2": "senden, um Informationen zu einem bestimmten Befehl zu erhalten!"
       },
       "dm": {
-        "success": "Dir wurde eine DM mit allen Befehlen geschickt!",
+        "success": "Dir wurde eine DM geschickt!",
         "fail_console": "Konnte keine DM senden an",
         "fail_reply": "Es scheint so, als ob ich dir keine DMs schicken kann! Hast du DMs deaktiviert?"
       },
