@@ -6,6 +6,7 @@
 // ===============================
 
 const Discord = require("discord.js")
+const { MessageActionRow, MessageSelectMenu } = require('discord.js');
 const { get_text: gt } = require("../../lang/lang_helper")
 const s = "commands.help."
 
@@ -32,7 +33,7 @@ module.exports = {
                 return msg.reply(await gt(msg, s + "invalid_command"));
             }
 
-            msg.channel.send({ embeds: [await this.create_embed_specific_command(msg, command)] })
+            msg.channel.send({ embeds: [await this.create_embed_specific_command(msg, command)], components: [await this.create_command_menu(msg)] })
         }
     },
 
@@ -42,12 +43,12 @@ module.exports = {
     // ----------------------------
     async send_all_commands(msg) {
         if (msg.client.config.help.send_to_dm && msg.client.helper.from_guild(msg)) {
-            return await msg.author.send({ embeds: [await this.create_embed_all_commands(msg)] }).then(async () => {
+            return await msg.author.send({ embeds: [await this.create_embed_all_commands(msg)], components: [await this.create_command_menu(msg)] }).then(async () => {
                 msg.channel.send({embeds: [await this.create_embed_to_dm(msg)]})
             })
 
         } else {
-            return msg.channel.send({ embeds: [await this.create_embed_all_commands(msg)] })
+            return msg.channel.send({ embeds: [await this.create_embed_all_commands(msg)], components: [await this.create_command_menu(msg)] })
         }
     },
 
@@ -95,32 +96,33 @@ module.exports = {
         return embed_msg
     },
 
-    /**
-    async create_command_menu(msg, commands) {
-        let options = [await new MessageMenuOption()
-            .setLabel(await gt(msg, s + "menu.all_label"))
-            .setValue("all")
-            .setDescription(await gt(msg, s + "menu.all_description"))]
+    async create_command_menu(msg) {
+        let options = [{
+            label: await gt(msg, s + "menu.all_label"),
+            value: "all",
+            description: await gt(msg, s + "menu.all_description")
+        }]
 
-        for (const command of commands) {
-            if (!msg.client.helper.is_permitted(msg, command[1])) continue
+        for (const command of msg.client.commands) {
+            if (msg.client.config.help.show_only_permitted_commands && !msg.client.helper.is_permitted(msg, command[1])) continue
             let description = await command[1].description(msg)
             if (description.length >= 46) {
                 description = description.substring(0, 46).trim() + " ..."
             }
-            options.push(await new MessageMenuOption()
-                .setLabel(command[1].name)
-                .setValue(command[1].name)
-                .setDescription(description))
+            options.push({
+                label: command[1].name,
+                value: command[1].name,
+                description: description
+            })
         }
 
-        const menu = await new MessageMenu()
-            .setID('help')
+        const menu = await new MessageSelectMenu()
+            .setCustomId('help')
             .setPlaceholder(await gt(msg, s + "menu.placeholder"))
             .addOptions(options)
 
         menu.message = msg
-        return menu
-    },*/
+        return new MessageActionRow().addComponents(menu)
+    },
     // ----------------------------
 };
