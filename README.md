@@ -14,7 +14,7 @@ This project was guided by [Discord.js Guide](https://discordjs.guide/)
 
 
 ## Preparations
-* You need [node.js](https://nodejs.org/en/) installed.
+* You need [node.js](https://nodejs.org/en/) installed (version 16.6.0 or newer).
 * You need a [Discord API Bot](https://discord.com/developers/applications) with it's token.
 * You need a [Discord Server](https://support.discord.com/hc/en-us/articles/204849977-How-do-I-create-a-server) in which you can set permissions and invite the API Bot.
 
@@ -48,8 +48,9 @@ This project was guided by [Discord.js Guide](https://discordjs.guide/)
 
 
 ## Run
-Run `index.js` with `node index.js`. \
-Alternative you can use `npm start`, `npm reload` and `npm stop`. This will use [pm2](https://discordjs.guide/improving-dev-environment/pm2.html) for executing
+Run `index.js` with `node index.js` or `npm start`. \
+Alternative you can use `npm run pm`, `npm run pm-restart` and `npm run pm-stop`. 
+This will use [pm2](https://discordjs.guide/improving-dev-environment/pm2.html) for executing
 
 ## Add a command 
 1. Create a new JS file with the name <command name>.js inside a folder in the folder `commands`. \
@@ -73,7 +74,7 @@ module.exports = {
     admin_only: true,
     nfsw: true,
     disabled: true,
-    execute(message, args) {  // message = discord.js 'Message' object; args = given arguments as list
+    execute(msg, args) {  // msg = discord.js 'Message' object; args = given arguments as list
         // your lovely code to execute
     },
 };
