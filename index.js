@@ -1,5 +1,5 @@
 // ===============================
-// This is the entry point of the whole programm!
+// This is the entry point of the whole program!
 // This file will collect every needed package or code file together and start the discord bot.
 // In this file is also the event listener for every incoming message for the bot.
 // This file checks, if the message is a valid command and if so, it will execute.
@@ -151,8 +151,18 @@ client.on("interactionCreate", async (interaction) => {
                 components: [await menu_msg.client.commands.get("help").create_command_menu(clicker_msg)]})
         }
     }
+
+    // add menu code here
+
 })
 
+// when a discord-button was pressed
+client.on("interactionCreate", async (interaction) => {
+    if (!interaction.isButton()) return;
+
+    // add button code here
+
+})
 // ---------------------------------
 
 // login to Discord with app's token
