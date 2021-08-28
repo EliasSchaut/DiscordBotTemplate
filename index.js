@@ -131,6 +131,30 @@ client.on('messageCreate', async msg => {
         msg.reply(await gt(msg, `${s}error`))
     }
 });
+
+// when a discord-menu was chosen
+client.on("interactionCreate", async (interaction) => {
+    if (!interaction.isSelectMenu()) return;
+
+    if (interaction.customId === "help") {
+        console.log(interaction)
+
+        const menu_msg = interaction.message
+        const val = interaction.values[0]
+        const clicker_msg = menu_msg
+        clicker_msg.author = interaction.user
+
+        if (val === 'all') {
+            await interaction.update({ embeds: [await menu_msg.client.commands.get("help").create_embed_all_commands(clicker_msg)],
+                components: [await menu_msg.client.commands.get("help").create_command_menu(clicker_msg)]})
+
+        } else {
+            await interaction.update({ embeds: [await menu_msg.client.commands.get("help").create_embed_specific_command(clicker_msg, menu_msg.client.commands.get(val))],
+                components: [await menu_msg.client.commands.get("help").create_command_menu(clicker_msg)]})
+        }
+    }
+})
+
 // ---------------------------------
 
 // login to Discord with app's token
