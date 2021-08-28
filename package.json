@@ -15,12 +15,11 @@
     "pm-stop": "pm2 delete my-bot"
   },
   "dependencies": {
-    "discord-buttons": "^4.0.0",
-    "discord.js": "^12.5.3",
-    "node": "^14.17.4",
+    "discord.js": "^13.1.0",
+    "node": "^16.6.1",
     "pm2": "^5.1.0",
     "sequelize": "^6.6.5",
-    "sqlite3": "^4.2.0",
+    "sqlite3": "^5.0.2",
     "winston": "^3.3.3"
   },
   "keywords": [

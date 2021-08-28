@@ -7,16 +7,17 @@
 // ----------------------------
 // checks, if given message is from guild (a discord server)
 function from_dm(msg) {
-    return msg.channel.type === 'dm'
+    return msg.channel.type === 'DM'
 }
 
 // checks, if given message is from dm (personal chat with bot)
 function from_guild(msg) {
-    return msg.channel.type === 'text' || msg.channel.type === 'news'
+    return msg.channel.type === 'GUILD_TEXT' || msg.channel.type === 'GROUP_DM'
+        || msg.channel.type === 'GUILD_PUBLIC_THREAD' || msg.channel.type === 'GUILD_PRIVATE_THREAD'
 }
 
 function is_nsfw_channel(msg) {
-    return from_dm(msg) || msg.channel.nsfw
+    return from_dm(msg) || (from_guild(msg) && msg.channel.nsfw)
 }
 
 // checks structural correctness of given args (by now only command length)
@@ -39,7 +40,7 @@ function has_permission(msg, permission_list) {
     if (from_dm(msg)) {
         return false
     }
-    return msg.member.hasPermission(permission_list)
+    return msg.member.permissions.has(permission_list)
 }
 
 // check, it the author from message is permitted to run given command

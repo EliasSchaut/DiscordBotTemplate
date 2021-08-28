@@ -14,7 +14,10 @@ const fs = require('fs')
 
 // require the discord.js module and set everything important to client
 const Discord = require('discord.js')
-const client = new Discord.Client()
+const client = new Discord.Client({ intents: [
+        Discord.Intents.FLAGS.DIRECT_MESSAGES, Discord.Intents.FLAGS.DIRECT_MESSAGE_TYPING, Discord.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
+        Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_INTEGRATIONS],
+        partials: ['CHANNEL']})
 
 // get required methods and fields and save it into client. This will always be accessible with message.client!
 client.commands = new Discord.Collection()
@@ -30,10 +33,6 @@ client.logger = require("./js/logger").logger
 const gt = client.lang_helper.get_text
 const commands_path = "./commands"
 const s = "index."
-
-// get discord buttons (See also https://discord-buttons.js.org/docs/stable/)
-const disbut = require('discord-buttons')
-disbut(client)
 
 // dynamically retrieve all command files and additionally save it into client.command_tree
 let command_tree = {}
@@ -73,7 +72,7 @@ client.once('ready', async () => {
 });
 
 // react on messages
-client.on('message', async msg => {
+client.on('messageCreate', async msg => {
     // check prefix and prepare message
     const prefix = client.config.enable_prefix_change ? await client.db_helper.get_prefix(msg) : client.config.prefix
     if (!msg.content.startsWith(prefix) || msg.author.bot) return
@@ -131,32 +130,6 @@ client.on('message', async msg => {
         msg.reply(await gt(msg, `${s}error`))
     }
 });
-
-// when a discord-button was pressed
-client.on("clickButton", async (button) => {
-
-})
-
-// when a discord-menu was chosen
-client.on("clickMenu", async (menu) => {
-    if (menu.id === "help") {
-        const menu_msg = menu.message
-        const val = menu.values[0]
-        const clicker_msg = menu_msg
-        clicker_msg.author = menu.clicker.user
-
-        if (val === 'all') {
-            await menu_msg.edit(await menu.client.commands.get("help").create_embed_all_commands(clicker_msg),
-                menu.client.commands.get("help").create_command_menu(clicker_msg, menu.client.commands))
-
-        } else {
-            await menu_msg.edit(await menu.client.commands.get("help").create_embed_specific_command(clicker_msg, menu.client.commands.get(val)),
-                menu.client.commands.get("help").create_command_menu(clicker_msg, menu.client.commands))
-        }
-
-        menu.reply.defer(true)
-    }
-})
 // ---------------------------------
 
 // login to Discord with app's token

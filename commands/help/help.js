@@ -6,7 +6,6 @@
 // ===============================
 
 const Discord = require("discord.js")
-const { MessageMenuOption, MessageMenu } = require('discord-buttons')
 const { get_text: gt } = require("../../lang/lang_helper")
 const s = "commands.help."
 
@@ -22,7 +21,7 @@ module.exports = {
 
         // help information for all command
         if (!args.length) {
-            return msg.channel.send(await this.create_embed_all_commands(msg), await this.create_command_menu(msg, commands))
+            return msg.channel.send({ embeds: [await this.create_embed_all_commands(msg)] }) // await this.create_command_menu(msg, commands)
 
         // help information for a specific command
         } else {
@@ -33,7 +32,7 @@ module.exports = {
                 return msg.reply(await gt(msg, s + "invalid_command"));
             }
 
-            msg.channel.send(await this.create_embed_specific_command(msg, command), await this.create_command_menu(msg, commands))
+            msg.channel.send({ embeds: [await this.create_embed_specific_command(msg, command)] }) // await this.create_command_menu(msg, commands)
         }
     },
 
@@ -56,12 +55,12 @@ module.exports = {
         const embed_msg = new Discord.MessageEmbed().setColor(msg.client.config.embed.color)
         embed_msg.setThumbnail(msg.client.config.embed.avatar_url)
 
-        data.push(`${await gt(msg, s + "intro.0")}`);
+        data.push(`${await gt(msg, s + "intro.0")}\n`);
         data.push(msg.client.helper.permitted_commands_to_string(msg));
-        data.push(`\n${await gt(msg, s + "intro.1")} \`${prefix}${this.name} ${await this.usage(msg)}\` ${await gt(msg, s + "intro.2")}`);
+        data.push(`\n${await gt(msg, s + "intro.1")} \`${prefix}${this.name} ${await this.usage(msg)}\` ${await gt(msg, s + "intro.2")}\n`);
         data.push(msg.client.helper.link_to_message(msg, await gt(msg, s + "back_to_message")))
         embed_msg.setTitle(`${this.name.toUpperCase()} ${(await gt(msg, s + "command")).toUpperCase()}`)
-        embed_msg.setDescription(data)
+        embed_msg.setDescription(data.join(""))
 
         return embed_msg
     },
@@ -72,17 +71,18 @@ module.exports = {
         const data = []
         const embed_msg = new Discord.MessageEmbed().setColor(msg.client.config.embed.color)
 
-        if (command.aliases) data.push(`${await gt(msg, s + "success.aliases")}\n${command.aliases.join(', ')}\n`);
-        if (command.description) data.push(`${await gt(msg, s + "success.description")}\n${await command.description(msg)}\n`);
+        if (command.aliases) data.push(`${await gt(msg, s + "success.aliases")}\n${command.aliases.join(', ')}\n\n`);
+        if (command.description) data.push(`${await gt(msg, s + "success.description")}\n${await command.description(msg)}\n\n`);
         if (command.usage) data.push(`${await gt(msg, s + "success.usage")}\n\`${prefix}${command.name} ${await command.usage(msg)}\`\n`);
 
         embed_msg.setTitle(`${command.name.toUpperCase()} ${(await gt(msg, s + "command")).toUpperCase()}`)
-        embed_msg.setDescription(data)
+        embed_msg.setDescription(data.join(""))
         embed_msg.setThumbnail(msg.client.config.embed.avatar_url)
 
         return embed_msg
     },
 
+    /**
     async create_command_menu(msg, commands) {
         let options = [await new MessageMenuOption()
             .setLabel(await gt(msg, s + "menu.all_label"))
@@ -108,6 +108,6 @@ module.exports = {
 
         menu.message = msg
         return menu
-    },
+    },*/
     // ----------------------------
 };
