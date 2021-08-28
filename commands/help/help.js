@@ -21,7 +21,7 @@ module.exports = {
 
         // help information for all command
         if (!args.length) {
-            return msg.channel.send({ embeds: [await this.create_embed_all_commands(msg)] }) // await this.create_command_menu(msg, commands)
+            return this.send_all_commands(msg)
 
         // help information for a specific command
         } else {
@@ -32,7 +32,7 @@ module.exports = {
                 return msg.reply(await gt(msg, s + "invalid_command"));
             }
 
-            msg.channel.send({ embeds: [await this.create_embed_specific_command(msg, command)] }) // await this.create_command_menu(msg, commands)
+            msg.channel.send({ embeds: [await this.create_embed_specific_command(msg, command)] })
         }
     },
 
@@ -40,6 +40,18 @@ module.exports = {
     // ----------------------------
     // Helper
     // ----------------------------
+    async send_all_commands(msg) {
+        if (msg.client.config.help.send_always_to_dm && msg.client.helper.from_guild(msg)) {
+            console.log(msg.author)
+            return await msg.author.send({ embeds: [await this.create_embed_all_commands(msg)] }).then(async () => {
+                msg.channel.send({embeds: [await this.create_embed_to_dm(msg)]})
+            })
+
+        } else {
+            return msg.channel.send({ embeds: [await this.create_embed_all_commands(msg)] })
+        }
+    },
+
     async create_embed_to_dm(msg) {
         const s = "commands.help."
         return new Discord.MessageEmbed()

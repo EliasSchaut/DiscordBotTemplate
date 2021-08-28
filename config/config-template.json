@@ -15,6 +15,11 @@
     "type": "PLAYING"
   },
 
+  "help": {
+    "show_only_permitted_commands": false,
+    "send_always_to_dm": false
+  },
+
   "embed": {
     "color": "RANDOM",
     "avatar_url": ""
