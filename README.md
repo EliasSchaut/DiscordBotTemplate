@@ -38,6 +38,8 @@ This project was guided by [Discord.js Guide](https://discordjs.guide/)
 | enable_activity | If true, the bot has use activity.status and activity.type to create a activity status `<type> <name>` (e.g. Playing help) | Boolean | have to be true, if status or type is set |
 | activity.name | Name of the activity | String | no |
 | activity.type | [Type](https://discord.com/developers/docs/topics/gateway#activity-object-activity-types) of the activity | String | no |
+| help.show_only_permitted_commands | If true, the help command only lists the commands that the author can execute. WARNING: Be careful if help.send_to_dm is also true. This may cause problems because some permissions checks may based on guild checks which aren't available in the dms | Boolean | no |
+| help.send_to_dm | If true, the help command sends the command list direct to the author (dm) | Boolean | no |
 | embed.color | Color of embed messages. Use Hex or [Discord-Color](https://discord.js.org/#/docs/main/stable/typedef/ColorResolvable).  | String | no |
 | embed.avatar_url | Url to avatar of embed messages | String | no |
 | default_lang | The default language in which the bot responds (discord response only) | String + value must be a key in lang_paths | yes |
