@@ -6,6 +6,9 @@
 // Export
 // ----------------------------
 // checks, if given message is from guild (a discord server)
+const Discord = require("discord.js");
+const {get_text: gt} = require("../lang/lang_helper");
+
 function from_dm(msg) {
     return msg.channel.type === 'DM'
 }
@@ -37,10 +40,7 @@ function is_admin(msg) {
 
 // check, if the author from message have all of the given permissions as list
 function has_permission(msg, permission_list) {
-    if (from_dm(msg)) {
-        return false
-    }
-    return msg.member.permissions.has(permission_list)
+    return !from_dm(msg) && msg.member.permissions.has(permission_list)
 }
 
 // check, it the author from message is permitted to run given command
@@ -80,7 +80,7 @@ function link_to_dm(msg, text = "") {
     return link
 }
 
-// returns a link to the sended message
+// returns a link to the sent message
 // note: custom text works only in embed
 function link_to_message(msg, text = "") {
     let link;
@@ -92,6 +92,14 @@ function link_to_message(msg, text = "") {
     }
     if (text !== "") link = custom_text_to_link(link, text)
     return link
+}
+
+async function create_embed_to_dm(msg) {
+    const s = "commands.help."
+    return new Discord.MessageEmbed()
+        .setDescription(`<@${msg.author.id}> ${await gt(msg, s + "dm.success")} ${msg.client.helper.link_to_dm(msg, await gt(msg, s + "jump_to_dm"))}!`)
+        .setColor(msg.client.config.embed.color)
+        .setThumbnail(msg.client.config.embed.avatar_url)
 }
 // ----------------------------
 
@@ -118,4 +126,4 @@ function is_admin_from_guild(msg) {
 
 
 module.exports = { from_guild, from_dm, is_nsfw_channel, check_args, is_admin, has_permission,
-    is_permitted, commands_to_string, link_to_dm, link_to_message }
+    is_permitted, commands_to_string, link_to_dm, link_to_message, create_embed_to_dm }

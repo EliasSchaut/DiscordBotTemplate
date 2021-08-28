@@ -44,7 +44,7 @@ module.exports = {
     async send_all_commands(msg) {
         if (msg.client.config.help.send_to_dm && msg.client.helper.from_guild(msg)) {
             return await msg.author.send({ embeds: [await this.create_embed_all_commands(msg)], components: [await this.create_command_menu(msg)] }).then(async () => {
-                msg.channel.send({embeds: [await this.create_embed_to_dm(msg)]})
+                msg.channel.send({embeds: [await msg.client.helper.create_embed_to_dm(msg)]})
             })
 
         } else {
@@ -55,20 +55,12 @@ module.exports = {
     async send_specific_command(msg, command) {
         if (msg.client.config.help.send_to_dm && msg.client.helper.from_guild(msg)) {
             return await msg.author.send({ embeds: [await this.create_embed_specific_command(msg, command)], components: [await this.create_command_menu(msg)] }).then(async () => {
-                msg.channel.send({embeds: [await this.create_embed_to_dm(msg)]})
+                msg.channel.send({embeds: [await msg.client.helper.create_embed_to_dm(msg)]})
             })
 
         } else {
             return msg.channel.send({ embeds: [await this.create_embed_specific_command(msg, command)], components: [await this.create_command_menu(msg)] })
         }
-    },
-
-    async create_embed_to_dm(msg) {
-        const s = "commands.help."
-        return new Discord.MessageEmbed()
-            .setDescription(`<@${msg.author.id}> ${await gt(msg, s + "dm.success")} ${msg.client.helper.link_to_dm(msg, await gt(msg, s + "jump_to_dm"))}!`)
-            .setColor(msg.client.config.embed.color)
-            .setThumbnail(msg.client.config.embed.avatar_url)
     },
 
     async create_embed_all_commands(msg) {
