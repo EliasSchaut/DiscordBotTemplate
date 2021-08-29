@@ -50,6 +50,7 @@ async function check_message(msg, prefix, command, args) {
     else if (!check_dm_only(msg, command)) await send_fail_dm_only(msg)
     else if (!check_nsfw(msg, command)) await send_fail_nsfw(msg)
     else if (!check_args(msg, command, args)) await send_fail_missing_args(msg, prefix, command)
+    // add more command modification checker here
     else return true
 
     return false

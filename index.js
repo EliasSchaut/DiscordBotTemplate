@@ -32,7 +32,8 @@ client.db_helper = require('./db/db_helper')
 client.DB = require('./db/db_init').DB
 client.sequelize = require('./db/db_init').sequelize
 client.logger = require("./js/logger").logger
-client.message_create = require("./js/event_helper/command_event").message_create
+client.command_event = require("./js/event_helper/command_event")
+client.menu_event = require("./js/event_helper/menu_event")
 
 // helper fields
 const commands_path = "./commands"
@@ -73,32 +74,10 @@ client.once('ready', async () => {
 });
 
 // react on messages
-client.on('messageCreate', async msg => await client.message_create(msg))
+client.on('messageCreate', async msg => await client.command_event.message_create(msg))
 
 // when a discord-menu was chosen
-client.on("interactionCreate", async (interaction) => {
-    if (!interaction.isSelectMenu()) return;
-
-    // when select menu for help command was chosen
-    if (interaction.customId === "help") {
-        const menu_msg = interaction.message
-        const val = interaction.values[0]
-        const clicker_msg = menu_msg
-        clicker_msg.author = interaction.user
-
-        if (val === 'all') {
-            await interaction.update({ embeds: [await menu_msg.client.commands.get("help").create_embed_all_commands(clicker_msg)],
-                components: [await menu_msg.client.commands.get("help").create_command_menu(clicker_msg)]})
-
-        } else {
-            await interaction.update({ embeds: [await menu_msg.client.commands.get("help").create_embed_specific_command(clicker_msg, menu_msg.client.commands.get(val))],
-                components: [await menu_msg.client.commands.get("help").create_command_menu(clicker_msg)]})
-        }
-    }
-
-    // add menu code here
-
-})
+client.on("interactionCreate", async (interaction) => await client.menu_event.interaction_create(interaction))
 
 // when a discord-button was pressed
 client.on("interactionCreate", async (interaction) => {
