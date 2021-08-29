@@ -1,5 +1,5 @@
 
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder, SlashCommandStringOption } = require('@discordjs/builders');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 
@@ -41,13 +41,21 @@ async function get_slash_commands(client) {
 async function create_slash_command(client, command) {
     const fake_msg = {author: {id: "-1", username: "slash_command"}, client: client}
 
-    return new SlashCommandBuilder()
+    const data = new SlashCommandBuilder()
         .setName(command.name)
         .setDescription(await command.description(fake_msg))
+
+    const option = create_options(client, command)
+    if (option) data.addStringOption(await option)
+
+    return data
 }
 
 async function create_options(client, command) {
+    const option = new SlashCommandStringOption()
 
+
+    return option
 }
 // ----------------------------
 

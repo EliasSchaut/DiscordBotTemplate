@@ -142,4 +142,5 @@ async function try_to_execute(msg, command, args) {
 }
 // ----------------------------------
 
-module.exports = { message_create }
+module.exports = { message_create, check_message, check_dm_only, check_guild_only, check_nsfw, check_args,
+    check_admin_only, check_permissions, check_bot}
