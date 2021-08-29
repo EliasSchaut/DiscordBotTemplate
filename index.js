@@ -9,33 +9,35 @@
 // ---------------------------------
 // Preparations
 // ---------------------------------
-// require node's native file system module.
+// require needed modules.
 const fs = require('fs')
-
-// require the discord.js module and set everything important to client
 const Discord = require('discord.js')
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { REST } = require('@discordjs/rest');
+const { Routes } = require('discord-api-types/v9');
+
+// create client with its intents
 const client = new Discord.Client({ intents: [
         Discord.Intents.FLAGS.DIRECT_MESSAGES, Discord.Intents.FLAGS.DIRECT_MESSAGE_TYPING, Discord.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
         Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_INTEGRATIONS,
         Discord.Intents.FLAGS.GUILD_MESSAGE_TYPING, Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS],
         partials: ['CHANNEL']})
 
-// get required methods and fields and save it into client. This will always be accessible with message.client!
+// get required methods and fields and save it into client. This will always be accessible with message.client
 client.commands = new Discord.Collection()
 client.config = require('./config/config.json')
-client.helper = require('./js/helper.js')
+client.helper = require('./js/command_helper')
 client.lang_helper = require("./lang/lang_helper")
 client.db_helper = require('./db/db_helper')
-client.DB = require('./db/db_init.js').DB
-client.sequelize = require('./db/db_init.js').sequelize
+client.DB = require('./db/db_init').DB
+client.sequelize = require('./db/db_init').sequelize
 client.logger = require("./js/logger").logger
+client.message_create = require("./js/event_helper/command_event").message_create
 
 // helper fields
-const gt = client.lang_helper.get_text
 const commands_path = "./commands"
-const s = "index."
 
-// dynamically retrieve all command files and additionally save it into client.command_tree
+// dynamically retrieve all command files and additionally save it into message.client.command_tree
 let command_tree = {}
 const commandFolders = fs.readdirSync(commands_path)
 for (const folder of commandFolders) {
@@ -56,86 +58,30 @@ client.command_tree = command_tree
 // ---------------------------------
 // Event-Handler
 // ---------------------------------
-
 // when the client is ready (bot is ready)
 client.once('ready', async () => {
-
     // set activity
     if (client.config.enable_activity) {
-        await client.user.setActivity(client.config.activity.name, {type: client.config.activity.type})
+        await client.user.setActivity(client.config.activity.name, { type: client.config.activity.type })
     }
 
     // sync database
     await client.sequelize.sync()
+
+
 
     // log ready info
     client.logger.log('info', 'Ready!')
 });
 
 // react on messages
-client.on('messageCreate', async msg => {
-    // check prefix and prepare message
-    const prefix = client.config.enable_prefix_change ? await client.db_helper.get_prefix(msg) : client.config.prefix
-    if (!msg.content.startsWith(prefix) || msg.author.bot) return
-    const args = msg.content.slice(prefix.length).trim().split(/ +/)
-    const commandName = args.shift().toLowerCase();
-
-    // search for aliases
-    const command = client.commands.get(commandName)
-        || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))
-    if (!command) return;
-
-    // checks admin only
-    if (command.hasOwnProperty("admin_only") && command.admin_only && !client.helper.is_admin(msg)) {
-        return msg.reply(await gt(msg, `${s}restricted`))
-    }
-
-    // checks permissions
-    if (command.hasOwnProperty("need_permission") && command.need_permission.length
-        && !client.helper.has_permission(msg, command.need_permission)) {
-        return msg.reply(await gt(msg, `${s}restricted`))
-    }
-
-    // checks guild only
-    if (command.hasOwnProperty("guild_only") && command.guild_only && !client.helper.from_guild(msg)) {
-        return msg.reply(await gt(msg, `${s}guild_only`))
-    }
-
-    // checks dm only
-    if (command.hasOwnProperty("dm_only") && command.dm_only && !client.helper.from_dm(msg)) {
-        return msg.reply(await gt(msg, `${s}dm_only`))
-    }
-
-    // nsfw
-    if (command.hasOwnProperty("nsfw") && command.nsfw && !client.helper.is_nsfw_channel(msg)) {
-        return msg.reply(await gt(msg, `${s}nsfw_only`))
-    }
-
-    // checks missing args
-    if (command.hasOwnProperty("args_needed") && command.args_needed && !client.helper.check_args(command, args)) {
-        let reply = `${await gt(msg, `${s}missing_args`)}, ${msg.author}`
-
-        if (command.hasOwnProperty("usage") && command.usage) {
-            reply += `\n${(await gt(msg, `${s}missing_args_proper_use`))} \`${prefix}${command.name} ${await command.usage(msg)}\``
-        }
-
-        return msg.channel.send(reply)
-    }
-
-    // try to execute
-    try {
-        command.execute(msg, args)
-
-    } catch (e) {
-        client.logger.log("error", e)
-        msg.reply(await gt(msg, `${s}error`))
-    }
-});
+client.on('messageCreate', async msg => await client.message_create(msg))
 
 // when a discord-menu was chosen
 client.on("interactionCreate", async (interaction) => {
     if (!interaction.isSelectMenu()) return;
 
+    // when select menu for help command was chosen
     if (interaction.customId === "help") {
         const menu_msg = interaction.message
         const val = interaction.values[0]
