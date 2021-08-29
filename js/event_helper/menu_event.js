@@ -3,9 +3,7 @@
 // Export
 // ---------------------------------
 async function interaction_create(interaction) {
-    if (!check_menu(interaction)) return
-
-    if (check_custom_id(interaction, "help")) await help_menu(interaction)
+    if (interaction.client.helper.check_interaction_custom_id(interaction, "help")) await help_menu(interaction)
     // add more specific menu handlers here and below in Specific Menu Handlers
 }
 // ---------------------------------
@@ -37,13 +35,7 @@ async function help_menu(interaction) {
 // ---------------------------------
 // Checker
 // ---------------------------------
-function check_menu(interaction) {
-    return interaction.isSelectMenu()
-}
 
-function check_custom_id(interaction, custom_id) {
-    return interaction.customId === custom_id
-}
 // ---------------------------------
 
 module.exports = { interaction_create }

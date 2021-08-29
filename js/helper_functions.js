@@ -101,6 +101,10 @@ async function create_embed_to_dm(msg) {
         .setColor(msg.client.config.embed.color)
         .setThumbnail(msg.client.config.embed.avatar_url)
 }
+
+function check_interaction_custom_id(interaction, custom_id) {
+    return interaction.customId === custom_id
+}
 // ----------------------------
 
 
@@ -126,4 +130,4 @@ function is_admin_from_guild(msg) {
 
 
 module.exports = { from_guild, from_dm, is_nsfw_channel, check_args, is_admin, has_permission,
-    is_permitted, commands_to_string, link_to_dm, link_to_message, create_embed_to_dm }
+    is_permitted, commands_to_string, link_to_dm, link_to_message, create_embed_to_dm, check_interaction_custom_id }

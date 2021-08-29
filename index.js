@@ -33,6 +33,7 @@ client.DB = require('./db/db_init').DB
 client.sequelize = require('./db/db_init').sequelize
 client.logger = require("./js/logger").logger
 client.command_event = require("./js/event_helper/command_event")
+client.slash_event = require("./js/event_helper/slash_command_event")
 client.menu_event = require("./js/event_helper/menu_event")
 client.button_event = require("./js/event_helper/button_event")
 
@@ -75,16 +76,19 @@ client.once('ready', async () => {
 });
 
 // react on messages
-client.on('messageCreate',
-    async msg => await client.command_event.message_create(msg))
+client.on('messageCreate',async msg => await client.command_event.message_create(msg))
 
-// when a discord-menu was chosen
-client.on("interactionCreate",
-    async (interaction) => await client.menu_event.interaction_create(interaction))
+// react on interactions
+client.on("interactionCreate", async (interaction) => {
+    // react on slash commands
+    if (interaction.isCommand()) await client.slash_event.interaction_create(interaction)
 
-// when a discord-button was pressed
-client.on("interactionCreate",
-    async (interaction) => await client.button_event.interaction_create(interaction))
+    // when a menu was chosen
+    else if (interaction.isSelectMenu()) await client.menu_event.interaction_create(interaction)
+
+    // when a button was pressed
+    else if (interaction.isButton()) await client.button_event.interaction_create(interaction)
+})
 // ---------------------------------
 
 // login to Discord with app's token
