@@ -9,6 +9,7 @@ This project was guided by [Discord.js Guide](https://discordjs.guide/)
 ## Features
 * Easy create new commands with lots of precreated modifications (see [add a command](#add-a-command))
 * Use precreated database or create new ones (see [database](#add-and-use-a-database))
+* Use precreated logger to log console outputs (see [use logger](#use-logger))
 * Add own languages or use the precreated english and german for responses in discord (see [add a language](#add-a-language))
 * Customise bot in config file (see [Config File](#config-file))
 
@@ -107,3 +108,7 @@ module.exports = {
 1. Add a [sequelize model](https://discordjs.guide/sequelize/#alpha-connection-information) in folder [models](/db/models) in a new file (name file like database name)
 2. Require the DB object from db_init
 3. Database is usable with DB.<model_file_name> 
+
+## Use logger
+* Write `message.client.logger.log("<class>", "<log_message>")` to log something
+* Available classes: `ready, debug, warn, error`
