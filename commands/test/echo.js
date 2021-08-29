@@ -13,6 +13,7 @@ module.exports = {
     args_needed: true,
     usage: async function (msg) { return await gt(msg, s + "usage") },
     args_min_length: 1,
+    enable_slash: true,
     async execute(msg, args) {
         msg.channel.send(args.join(" "));
     },

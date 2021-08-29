@@ -1,5 +1,6 @@
 {
   "prefix": "<YOUR_PREFIX>",
+  "client_id": "<YOUR_CLIENT_ID>",
   "token": "<YOUR_TOKEN>",
   "enable_prefix_change": true,
 

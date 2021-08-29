@@ -12,9 +12,6 @@
 // require needed modules.
 const fs = require('fs')
 const Discord = require('discord.js')
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
 
 // create client with its intents
 const client = new Discord.Client({ intents: [
@@ -32,6 +29,7 @@ client.db_helper = require('./db/db_helper')
 client.DB = require('./db/db_init').DB
 client.sequelize = require('./db/db_init').sequelize
 client.logger = require("./js/logger").logger
+client.slasher = require("./js/slasher")
 client.command_event = require("./js/event_helper/command_event")
 client.slash_event = require("./js/event_helper/slash_command_event")
 client.menu_event = require("./js/event_helper/menu_event")
@@ -70,6 +68,9 @@ client.once('ready', async () => {
 
     // sync database
     await client.sequelize.sync()
+
+    // sync slash commands
+    await client.slasher.register(client)
 
     // log ready info
     client.logger.log('info', 'Ready!')
