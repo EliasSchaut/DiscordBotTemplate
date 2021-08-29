@@ -1,5 +1,5 @@
 {
-  "index": {
+  "command_create": {
     "guild_only": "Ich kann diesen Befehl nur in Servern ausführen!",
     "dm_only": "Ich kann diesen Befehl nur im privaten Chat mit dir ausführen!",
     "restricted": "Du bist nicht berechtigt, diesen Befehl auszuführen!",

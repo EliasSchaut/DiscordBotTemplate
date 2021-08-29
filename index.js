@@ -68,8 +68,6 @@ client.once('ready', async () => {
     // sync database
     await client.sequelize.sync()
 
-
-
     // log ready info
     client.logger.log('info', 'Ready!')
 });
