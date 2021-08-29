@@ -6,7 +6,7 @@ async function interaction_create(interaction) {
     if (!check_menu(interaction)) return
 
     if (check_custom_id(interaction, "help")) await help_menu(interaction)
-    // add more specific menu handlers here
+    // add more specific menu handlers here and below in Specific Menu Handlers
 }
 // ---------------------------------
 

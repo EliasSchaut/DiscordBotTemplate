@@ -26,7 +26,7 @@ const client = new Discord.Client({ intents: [
 // get required methods and fields and save it into client. This will always be accessible with message.client
 client.commands = new Discord.Collection()
 client.config = require('./config/config.json')
-client.helper = require('./js/command_helper')
+client.helper = require('./js/helper_functions')
 client.lang_helper = require("./lang/lang_helper")
 client.db_helper = require('./db/db_helper')
 client.DB = require('./db/db_init').DB
@@ -34,6 +34,7 @@ client.sequelize = require('./db/db_init').sequelize
 client.logger = require("./js/logger").logger
 client.command_event = require("./js/event_helper/command_event")
 client.menu_event = require("./js/event_helper/menu_event")
+client.button_event = require("./js/event_helper/button_event")
 
 // helper fields
 const commands_path = "./commands"
@@ -74,18 +75,16 @@ client.once('ready', async () => {
 });
 
 // react on messages
-client.on('messageCreate', async msg => await client.command_event.message_create(msg))
+client.on('messageCreate',
+    async msg => await client.command_event.message_create(msg))
 
 // when a discord-menu was chosen
-client.on("interactionCreate", async (interaction) => await client.menu_event.interaction_create(interaction))
+client.on("interactionCreate",
+    async (interaction) => await client.menu_event.interaction_create(interaction))
 
 // when a discord-button was pressed
-client.on("interactionCreate", async (interaction) => {
-    if (!interaction.isButton()) return;
-
-    // add button code here
-
-})
+client.on("interactionCreate",
+    async (interaction) => await client.button_event.interaction_create(interaction))
 // ---------------------------------
 
 // login to Discord with app's token
