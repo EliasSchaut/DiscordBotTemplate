@@ -3,22 +3,23 @@
 // ===============================
 
 // ----------------------------
-// Export
+// Check Msg
 // ----------------------------
-// checks, if given message is from guild (a discord server)
 const Discord = require("discord.js");
 const {get_text: gt} = require("../lang/lang_helper");
 
+// checks, if given message is from dm (personal chat with bot)
 function from_dm(msg) {
     return msg.channel.type === 'DM'
 }
 
-// checks, if given message is from dm (personal chat with bot)
+// checks, if given message is from guild (a discord server)
 function from_guild(msg) {
     return msg.channel.type === 'GUILD_TEXT' || msg.channel.type === 'GROUP_DM'
         || msg.channel.type === 'GUILD_PUBLIC_THREAD' || msg.channel.type === 'GUILD_PRIVATE_THREAD'
 }
 
+// checks, if given message is from an nsfw channel
 function is_nsfw_channel(msg) {
     return from_dm(msg) || (from_guild(msg) && msg.channel.nsfw)
 }

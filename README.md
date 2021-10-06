@@ -73,7 +73,7 @@ module.exports = {
     dm_only: true,
     need_permission: ['<permission1>'],
     admin_only: true,
-    nfsw: true,
+    nsfw: true,
     disabled: true,
     execute(msg, args) {  // msg = discord.js 'Message' object; args = given arguments as list
         // your lovely code to execute

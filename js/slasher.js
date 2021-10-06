@@ -54,6 +54,9 @@ async function create_slash_command(client, command) {
 async function create_options(client, command) {
     const option = new SlashCommandStringOption()
 
+    if (command.args_max_length) {
+
+    }
 
     return option
 }

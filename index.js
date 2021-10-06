@@ -34,6 +34,7 @@ client.command_event = require("./js/event_helper/command_event")
 client.slash_event = require("./js/event_helper/slash_command_event")
 client.menu_event = require("./js/event_helper/menu_event")
 client.button_event = require("./js/event_helper/button_event")
+client.modificator_manager = require("./js/cmd_modificator_manager")
 
 // helper fields
 const commands_path = "./commands"
