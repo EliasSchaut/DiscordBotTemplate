@@ -31,5 +31,7 @@
   "lang_paths": {
     "de": "text_de.json",
     "en": "text_en.json"
-  }
+  },
+
+  "auto_slash_options": true
 }

@@ -1,7 +1,8 @@
 
-const { SlashCommandBuilder, SlashCommandStringOption } = require('@discordjs/builders');
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
+const { SlashCommandBuilder, SlashCommandStringOption } = require('@discordjs/builders')
+const { REST } = require('@discordjs/rest')
+const { Routes } = require('discord-api-types/v9')
+const fs = require("fs")
 
 // ----------------------------
 // Export
@@ -47,22 +48,53 @@ async function create_slash_command(client, command) {
         .setName(name)
         .setDescription(description)
 
-    const option = create_options(client, command)
-    if (option) data.addStringOption(await option)
+
+    const options = await create_options(client, command)
+    if (options) {
+        for (const option of options) {
+            data.addStringOption(await option)
+        }
+    }
 
     return data
 }
 
 async function create_options(client, command) {
-    const option = new SlashCommandStringOption()
+    const options = []
+    const name = client.mod_manager.get_name(command)
+    const args_min_length = client.mod_manager.get_args_min_length(command)
     const args_max_length = client.mod_manager.get_args_max_length(command)
 
-
-    if (args_max_length) {
-
+    if (fs.existsSync(`./js/slash_commands/option_models/${name}.js`)) {
+        const option_model = require(`./option_models/${name}.js`)
+        for (const option of option_model) {
+            options.push(create_option(option.name, option.description, option.required))
+        }
+        return options
     }
 
-    return option
+    if (client.config.auto_slash_options && args_min_length) {
+        let i = 0
+        for (i; i < args_min_length; i++) {
+            options.push(create_option(`${i}`, `${i}`, true))
+        }
+
+        if (args_max_length) {
+            for (let j = i; j < args_max_length; j++) {
+                options.push(create_option(`${j}`, `${j}`, false))
+            }
+        }
+        return options
+    }
+
+    return false
+}
+
+function create_option(name, description, required) {
+    return new SlashCommandStringOption()
+        .setName(name)
+        .setDescription(description)
+        .setRequired(required)
 }
 // ----------------------------
 

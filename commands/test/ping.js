@@ -9,6 +9,7 @@ module.exports = {
     name: 'ping',
     description: async function (msg) { return await gt(msg, s + "help") },
     aliases: ['p'],
+    enable_slash: true,
     async execute(msg, args) {
         // websocket heartbeat
         msg.channel.send(`${await gt(msg, s + "websocket")} ${msg.mentions.client.ws.ping}ms.`);

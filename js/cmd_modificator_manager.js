@@ -63,7 +63,7 @@ function get_disabled(command) {
 }
 
 function get_enable_slash(command) {
-    return (has_enable_slash(command) && (typeof command.disabled === "boolean")) ? command.enable_slash : false
+    return (has_enable_slash(command) && (typeof command.enable_slash === "boolean")) ? command.enable_slash : false
 }
 
 // ----------------------------

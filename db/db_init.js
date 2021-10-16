@@ -1,11 +1,11 @@
 // ===============================
-// This file creates the database from the models in ./models
+// This file creates the database from the option_models in ./option_models
 // See also: https://discordjs.guide/sequelize
 // ===============================
 
 const Sequelize = require('sequelize')
-const path = require("path");
-const fs = require("fs");
+const path = require("path")
+const fs = require("fs")
 
 const sequelize = new Sequelize('database', 'username', 'password', {
     host: 'localhost',
