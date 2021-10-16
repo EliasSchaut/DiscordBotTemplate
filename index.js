@@ -34,7 +34,7 @@ client.command_event = require("./js/event_helper/command_event")
 client.slash_event = require("./js/event_helper/slash_command_event")
 client.menu_event = require("./js/event_helper/menu_event")
 client.button_event = require("./js/event_helper/button_event")
-client.modificator_manager = require("./js/cmd_modificator_manager")
+client.mod_manager = require("./js/cmd_modificator_manager")
 
 // helper fields
 const commands_path = "./commands"
@@ -47,9 +47,11 @@ for (const folder of commandFolders) {
     const commandFiles = fs.readdirSync(`${commands_path}/${folder}`).filter(file => file.endsWith('.js'))
     for (const file of commandFiles) {
         const command = require(`${commands_path}/${folder}/${file}`)
-        if (command.hasOwnProperty("disabled") && command.disabled) continue
-        client.commands.set(command.name, command)
-        command_tree[folder][command.name] = command
+        const name = client.mod_manager.get_name(command)
+
+        if (client.mod_manager.get_disabled(command)) continue
+        client.commands.set(name, command)
+        command_tree[folder][name] = command
     }
 }
 client.command_tree = command_tree
@@ -81,7 +83,7 @@ client.once('ready', async () => {
 client.on('messageCreate',async msg => await client.command_event.message_create(msg))
 
 // react on interactions
-client.on("interactionCreate", async (interaction) => {
+client.on("interactionCreate", async interaction => {
     // react on slash commands
     if (interaction.isCommand()) await client.slash_event.interaction_create(interaction)
 

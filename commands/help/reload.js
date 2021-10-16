@@ -28,16 +28,17 @@ module.exports = {
 
         const commandFolders = fs.readdirSync(commands_path);
         const folderName = commandFolders.find(folder => fs.readdirSync(`${commands_path}/${folder}`).includes(`${commandName}.js`));
+        const name = msg.client.mod_manager.get_name(command)
 
-        delete require.cache[require.resolve(`../${folderName}/${command.name}.js`)];
+        delete require.cache[require.resolve(`../${folderName}/${name}.js`)];
 
         try {
-            const newCommand = require(`../${folderName}/${command.name}.js`);
-            msg.client.commands.set(newCommand.name, newCommand);
-            msg.channel.send(`\`${newCommand.name}\` ${await gt(msg, s + "success")}`);
+            const newCommand = require(`../${folderName}/${name}.js`);
+            await msg.client.commands.set(name, newCommand);
+            msg.channel.send(`\`${name}\` ${await gt(msg, s + "success")}`);
         } catch (error) {
             msg.client.logger.log('error', error);
-            msg.channel.send(`${await gt(msg, s + "fail")} \`${command.name}\`:\n\`${error.message}\``);
+            msg.channel.send(`${await gt(msg, s + "fail")} \`${name}\`:\n\`${error.message}\``);
         }
     },
 };

@@ -65,28 +65,30 @@ function check_bot(msg) {
 }
 
 function check_admin_only(msg, command) {
-    return !(command.hasOwnProperty("admin_only") && command.admin_only) || msg.client.helper.is_admin(msg)
+    return !(msg.client.mod_manager.get_admin_only(command)) || msg.client.helper.is_admin(msg)
 }
 
 function check_permissions(msg, command) {
-    return !(command.hasOwnProperty("need_permission") && command.need_permission.length)
-        || msg.client.helper.has_permission(msg, command.need_permission)
+    const need_permission = msg.client.mod_manager.get_need_permission(command)
+
+    return !(need_permission.length)
+        || msg.client.helper.has_permission(msg, need_permission)
 }
 
 function check_guild_only(msg, command) {
-    return !(command.hasOwnProperty("guild_only") && command.guild_only) || msg.client.helper.from_guild(msg)
+    return !(msg.client.mod_manager.get_guild_only(command)) || msg.client.helper.from_guild(msg)
 }
 
 function check_dm_only(msg, command) {
-    return !(command.hasOwnProperty("dm_only") && command.dm_only) || msg.client.helper.from_dm(msg)
+    return !(msg.client.mod_manager.get_dm_only(command)) || msg.client.helper.from_dm(msg)
 }
 
 function check_nsfw(msg, command) {
-    return !(command.hasOwnProperty("nsfw") && command.nsfw) || msg.client.helper.is_nsfw_channel(msg)
+    return !(msg.client.mod_manager.get_nsfw(command)) || msg.client.helper.is_nsfw_channel(msg)
 }
 
-function check_args (msg, command, args) {
-    return !(command.hasOwnProperty("args_needed") && command.args_needed) || msg.client.helper.check_args(command, args)
+function check_args(msg, command, args) {
+    return !(msg.client.mod_manager.get_args_needed(command)) || msg.client.helper.check_args(msg, command, args)
 }
 // ----------------------------------
 
@@ -117,9 +119,11 @@ async function send_fail_nsfw(msg) {
 
 async function send_fail_missing_args(msg, prefix, command) {
     let reply = `${await msg.client.lang_helper.get_text(msg, `${s}missing_args`)}, ${msg.author}`
+    const usage = await msg.client.mod_manager.get_usage(msg, command)
 
-    if (command.hasOwnProperty("usage") && command.usage) {
-        reply += `\n${(await msg.client.lang_helper.get_text(msg, `${s}missing_args_proper_use`))} \`${prefix}${command.name} ${await command.usage(msg)}\``
+    if (usage) {
+        const name = msg.client.mod_manager.get_name(command)
+        reply += `\n${(await msg.client.lang_helper.get_text(msg, `${s}missing_args_proper_use`))} \`${prefix}${name} ${usage}\``
     }
 
     return msg.channel.send(reply)

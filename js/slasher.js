@@ -40,10 +40,12 @@ async function get_slash_commands(client) {
 
 async function create_slash_command(client, command) {
     const fake_msg = {author: {id: "-1", username: "slash_command"}, client: client}
+    const name = client.mod_manager.get_name(command)
+    const description = await client.mod_manager.get_description(fake_msg, command)
 
     const data = new SlashCommandBuilder()
-        .setName(command.name)
-        .setDescription(await command.description(fake_msg))
+        .setName(name)
+        .setDescription(description)
 
     const option = create_options(client, command)
     if (option) data.addStringOption(await option)
@@ -53,8 +55,10 @@ async function create_slash_command(client, command) {
 
 async function create_options(client, command) {
     const option = new SlashCommandStringOption()
+    const args_max_length = client.mod_manager.get_args_max_length(command)
 
-    if (command.args_max_length) {
+
+    if (args_max_length) {
 
     }
 
@@ -67,7 +71,7 @@ async function create_options(client, command) {
 // Checker
 // ----------------------------
 function check_slash(client, command) {
-    return command.hasOwnProperty("enable_slash") && command.enable_slash
+    return client.mod_manager.get_enable_slash(command)
 }
 // ----------------------------
 
