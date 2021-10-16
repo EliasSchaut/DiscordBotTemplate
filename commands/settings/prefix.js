@@ -11,7 +11,7 @@ const s = "commands.prefix."
 module.exports = {
     name: 'prefix',
     description: async function (msg) { return `${(await gt(msg, s + "help"))}}` },
-    aliases: ['p'],
+    aliases: ['pre'],
     usage: async function (msg) { return await gt(msg, s + "usage") },
     guild_only: true,
     need_permission: [ "ADMINISTRATOR" ],

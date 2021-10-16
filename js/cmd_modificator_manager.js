@@ -7,10 +7,11 @@ function get_name(command) {
 }
 
 async function get_description(msg, command) {
-    return await (await has_description(command)) ? async () => {
+    if (has_description(command)) {
         const description = await command.description(msg)
         return (typeof description === "string") ? description : false
-    } : false
+    }
+    return false
 }
 
 function get_aliases(command) {
@@ -30,10 +31,11 @@ function get_args_max_length(command) {
 }
 
 async function get_usage(msg, command) {
-    return await (await has_usage(command)) ? async () => {
+    if (has_usage(command)) {
         const usage = await command.usage(msg)
         return (typeof usage === "string") ? usage : false
-    } : false
+    }
+    return false
 }
 
 function get_guild_only(command) {
