@@ -1,12 +1,14 @@
 {
   "command_create": {
+    "error": "There was an error trying to execute that command!"
+  },
+  "error": {
     "guild_only": "I can execute this command only in servers!",
     "dm_only": "I can execute this command only in private chat with you!",
     "restricted": "You are not authorized to execute this command!",
     "missing_args": "You have given the wrong number of arguments!",
     "missing_args_proper_use": "The correct usage would be:",
-    "nsfw_only": "You can execute this command only in NSFW channels!",
-    "error": "There was an error trying to execute that command!"
+    "nsfw_only": "You can execute this command only in NSFW channels!"
   },
   "commands": {
     "echo": {

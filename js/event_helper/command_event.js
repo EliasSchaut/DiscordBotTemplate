@@ -44,12 +44,12 @@ function get_command(msg, command_name) {
 // Checker
 // ----------------------------------
 async function check_message(msg, prefix, command, args) {
-    if (!check_admin_only(msg, command)) await send_fail_admin_only(msg)
-    else if (!check_permissions(msg, command)) await send_fail_permissions(msg)
-    else if (!check_guild_only(msg, command)) await send_fail_guild_only(msg)
-    else if (!check_dm_only(msg, command)) await send_fail_dm_only(msg)
-    else if (!check_nsfw(msg, command)) await send_fail_nsfw(msg)
-    else if (!check_args(msg, command, args)) await send_fail_missing_args(msg, prefix, command)
+    if (!check_admin_only(msg, command)) await msg.client.output.send_fail_admin_only(msg)
+    else if (!check_permissions(msg, command)) await msg.client.output.send_fail_permissions(msg)
+    else if (!check_guild_only(msg, command)) await msg.client.output.send_fail_guild_only(msg)
+    else if (!check_dm_only(msg, command)) await msg.client.output.send_fail_dm_only(msg)
+    else if (!check_nsfw(msg, command)) await msg.client.output.send_fail_nsfw(msg)
+    else if (!check_args(msg, command, args)) await msg.client.output.send_fail_missing_args(msg, prefix, command)
     // add more command modification checker here
     else return true
 
@@ -91,45 +91,6 @@ function check_args(msg, command, args) {
     return !(msg.client.mod_getter.get_args_needed(command)) || msg.client.helper.check_args(msg, command, args)
 }
 // ----------------------------------
-
-
-
-// ----------------------------------
-// Check-Fail-Messages
-// ----------------------------------
-async function send_fail_admin_only(msg) {
-    return msg.reply(await msg.client.lang_helper.get_text(msg, `${s}restricted`))
-}
-
-async function send_fail_permissions(msg) {
-    return msg.reply(await msg.client.lang_helper.get_text(msg, `${s}restricted`))
-}
-
-async function send_fail_guild_only(msg) {
-    return msg.reply(await msg.client.lang_helper.get_text(msg, `${s}guild_only`))
-}
-
-async function send_fail_dm_only(msg) {
-    return msg.reply(await msg.client.lang_helper.get_text(msg, `${s}dm_only`))
-}
-
-async function send_fail_nsfw(msg) {
-    return msg.reply(await msg.client.lang_helper.get_text(msg, `${s}nsfw_only`))
-}
-
-async function send_fail_missing_args(msg, prefix, command) {
-    let reply = `${await msg.client.lang_helper.get_text(msg, `${s}missing_args`)}, ${msg.author}`
-    const usage = await msg.client.mod_getter.get_usage(msg, command)
-
-    if (usage) {
-        const name = msg.client.mod_getter.get_name(command)
-        reply += `\n${(await msg.client.lang_helper.get_text(msg, `${s}missing_args_proper_use`))} \`${prefix}${name} ${usage}\``
-    }
-
-    return msg.channel.send(reply)
-}
-// ----------------------------------
-
 
 
 // ----------------------------------
