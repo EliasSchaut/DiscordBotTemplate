@@ -65,30 +65,30 @@ function check_bot(msg) {
 }
 
 function check_admin_only(msg, command) {
-    return !(msg.client.mod_manager.get_admin_only(command)) || msg.client.helper.is_admin(msg)
+    return !(msg.client.mod_getter.get_admin_only(command)) || msg.client.helper.is_admin(msg)
 }
 
 function check_permissions(msg, command) {
-    const need_permission = msg.client.mod_manager.get_need_permission(command)
+    const need_permission = msg.client.mod_getter.get_need_permission(command)
 
     return !(need_permission.length)
         || msg.client.helper.has_permission(msg, need_permission)
 }
 
 function check_guild_only(msg, command) {
-    return !(msg.client.mod_manager.get_guild_only(command)) || msg.client.helper.from_guild(msg)
+    return !(msg.client.mod_getter.get_guild_only(command)) || msg.client.helper.from_guild(msg)
 }
 
 function check_dm_only(msg, command) {
-    return !(msg.client.mod_manager.get_dm_only(command)) || msg.client.helper.from_dm(msg)
+    return !(msg.client.mod_getter.get_dm_only(command)) || msg.client.helper.from_dm(msg)
 }
 
 function check_nsfw(msg, command) {
-    return !(msg.client.mod_manager.get_nsfw(command)) || msg.client.helper.is_nsfw_channel(msg)
+    return !(msg.client.mod_getter.get_nsfw(command)) || msg.client.helper.is_nsfw_channel(msg)
 }
 
 function check_args(msg, command, args) {
-    return !(msg.client.mod_manager.get_args_needed(command)) || msg.client.helper.check_args(msg, command, args)
+    return !(msg.client.mod_getter.get_args_needed(command)) || msg.client.helper.check_args(msg, command, args)
 }
 // ----------------------------------
 
@@ -119,10 +119,10 @@ async function send_fail_nsfw(msg) {
 
 async function send_fail_missing_args(msg, prefix, command) {
     let reply = `${await msg.client.lang_helper.get_text(msg, `${s}missing_args`)}, ${msg.author}`
-    const usage = await msg.client.mod_manager.get_usage(msg, command)
+    const usage = await msg.client.mod_getter.get_usage(msg, command)
 
     if (usage) {
-        const name = msg.client.mod_manager.get_name(command)
+        const name = msg.client.mod_getter.get_name(command)
         reply += `\n${(await msg.client.lang_helper.get_text(msg, `${s}missing_args_proper_use`))} \`${prefix}${name} ${usage}\``
     }
 
@@ -147,4 +147,4 @@ async function try_to_execute(msg, command, args) {
 // ----------------------------------
 
 module.exports = { message_create, check_message, check_dm_only, check_guild_only, check_nsfw, check_args,
-    check_admin_only, check_permissions, check_bot}
+    check_admin_only, check_permissions, check_bot, try_to_execute}

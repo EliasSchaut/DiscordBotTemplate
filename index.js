@@ -23,7 +23,7 @@ const client = new Discord.Client({ intents: [
 // get required methods and fields and save it into client. This will always be accessible with message.client
 client.commands = new Discord.Collection()
 client.config = require('./config/config.json')
-client.helper = require('./js/helper_functions')
+client.helper = require('./js/cmd_helper')
 client.lang_helper = require("./lang/lang_helper")
 client.db_helper = require('./db/db_helper')
 client.DB = require('./db/db_init').DB
@@ -31,10 +31,10 @@ client.sequelize = require('./db/db_init').sequelize
 client.logger = require("./js/logger").logger
 client.slasher = require("./js/slash_commands/slasher")
 client.command_event = require("./js/event_helper/command_event")
-client.slash_event = require("./js/event_helper/slash_command_event")
+client.slash_event = require("./js/event_helper/slash_event")
 client.menu_event = require("./js/event_helper/menu_event")
 client.button_event = require("./js/event_helper/button_event")
-client.mod_manager = require("./js/cmd_modificator_manager")
+client.mod_getter = require("./js/cmd_modificator_getter")
 
 // helper fields
 const commands_path = "./commands"

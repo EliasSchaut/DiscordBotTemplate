@@ -26,7 +26,7 @@ function is_nsfw_channel(msg) {
 
 // checks structural correctness of given args (by now only command length)
 function check_args(msg, command, args) {
-    const args_min_length = msg.client.mod_manager.get_args_min_length(command)
+    const args_min_length = msg.client.mod_getter.get_args_min_length(command)
     return !args_min_length || args.length >= args_min_length
 }
 
@@ -47,9 +47,9 @@ function has_permission(msg, permission_list) {
 
 // check, it the author from message is permitted to run given command
 function is_permitted(msg, command) {
-    const need_permission = msg.client.mod_manager.get_need_permission(command)
+    const need_permission = msg.client.mod_getter.get_need_permission(command)
 
-    return (!((msg.client.mod_manager.get_admin_only(command) && !is_admin(msg))
+    return (!((msg.client.mod_getter.get_admin_only(command) && !is_admin(msg))
         ||  (need_permission.length && !has_permission(msg, need_permission))))
 }
 
