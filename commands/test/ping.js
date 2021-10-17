@@ -12,11 +12,11 @@ module.exports = {
     enable_slash: true,
     async execute(msg, args) {
         // websocket heartbeat
-        msg.channel.send(`${await gt(msg, s + "websocket")} ${msg.mentions.client.ws.ping}ms.`);
+        msg.client.output.send(msg, `${await gt(msg, s + "websocket")} ${msg.mentions.client.ws.ping}ms.`);
 
         // roundtrip latency
-        msg.channel.send(await gt(msg, s + "pinging")).then(async send => {
-            send.edit(`${await gt(msg, s + "roundtrip")} ${send.createdTimestamp - msg.createdTimestamp}ms`);
+        msg.client.output.send(msg, await gt(msg, s + "pinging")).then(async send => {
+            msg.client.output.edit(send, `${await gt(msg, s + "roundtrip")} ${send.createdTimestamp - msg.createdTimestamp}ms`);
         });
     },
 };

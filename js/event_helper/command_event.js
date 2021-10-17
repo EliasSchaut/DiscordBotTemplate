@@ -102,7 +102,7 @@ async function try_to_execute(msg, command, args) {
 
     } catch (e) {
         msg.client.logger.log("error", e)
-        msg.reply(await msg.client.lang_helper.get_text(msg, `${s}error`))
+        msg.client.output.reply(await msg.client.lang_helper.get_text(msg, `${s}error`))
     }
 }
 // ----------------------------------

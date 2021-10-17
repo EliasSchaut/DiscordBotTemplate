@@ -19,18 +19,18 @@ module.exports = {
         if (args.length > 0) {
             if (iv(args[0])) {
                 if (await msg.client.db_helper.set_lang(msg, args[0])) {
-                    msg.channel.send(`${await gt(msg, `${s}set`)} \`${args[0]}\``)
+                    msg.client.output.send(msg, `${await gt(msg, `${s}set`)} \`${args[0]}\``)
 
                 } else {
-                    msg.reply(`${await gt(msg, `${s}error`)} (${msg.author.username})!`)
+                    msg.client.output.reply(msg, `${await gt(msg, `${s}error`)} (${msg.author.username})!`)
                 }
 
             } else {
-                return msg.reply(await gt(msg, s + "invalid"))
+                return msg.client.output.reply(msg, await gt(msg, s + "invalid"))
             }
 
         } else {
-            return msg.channel.send(`${await gt(msg, s + "get")} \`${await msg.client.db_helper.get_lang(msg)}\``)
+            return msg.client.output.send(msg, `${await gt(msg, s + "get")} \`${await msg.client.db_helper.get_lang(msg)}\``)
         }
     },
 };

@@ -15,6 +15,6 @@ module.exports = {
     args_min_length: 1,
     enable_slash: true,
     async execute(msg, args) {
-        msg.channel.send(args.join(" "));
+        msg.client.output.send(msg, args.join(" "));
     },
 };
