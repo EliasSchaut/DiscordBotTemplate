@@ -4,23 +4,23 @@ const s = "error."
 // Output
 // ----------------------------
 async function send(msg, content) {
-    if (msg.type === 'APPLICATION_COMMAND') await send_slash(msg, content)
-    else await send_cmd(msg, content)
+    if (msg.type === 'APPLICATION_COMMAND') return await send_slash(msg, content)
+    else return await send_cmd(msg, content)
 }
 
 async function reply(msg, content) {
-    if (msg.type === 'APPLICATION_COMMAND') await send_slash(msg, content)
-    else await reply_cmd(msg, content)
+    if (msg.type === 'APPLICATION_COMMAND') return await send_slash(msg, content)
+    else return await reply_cmd(msg, content)
 }
 
 async function send_to_dm(msg, content) {
-    if (msg.type === 'APPLICATION_COMMAND') await send_to_dm_slash(msg, content)
-    else await send_to_dm_cmd(msg, content)
+    if (msg.type === 'APPLICATION_COMMAND') return await send_to_dm_slash(msg, content)
+    else return await send_to_dm_cmd(msg, content)
 }
 
 async function edit(msg_to_edit, new_content) {
-    if (msg_to_edit.type === 'APPLICATION_COMMAND') await edit_slash(msg, new_content)
-    else await edit_cmd(msg_to_edit, new_content)
+    if (msg_to_edit.type === 'APPLICATION_COMMAND') return await edit_slash(msg_to_edit, new_content)
+    else return await edit_cmd(msg_to_edit, new_content)
 }
 // ----------------------------
 
@@ -29,23 +29,23 @@ async function edit(msg_to_edit, new_content) {
 // Errors
 // ----------------------------
 async function send_fail_admin_only(msg) {
-    return reply(await msg.client.lang_helper.get_text(msg, `${s}restricted`))
+    return reply(msg, await msg.client.lang_helper.get_text(msg, `${s}restricted`))
 }
 
 async function send_fail_permissions(msg) {
-    return reply(await msg.client.lang_helper.get_text(msg, `${s}restricted`))
+    return reply(msg, await msg.client.lang_helper.get_text(msg, `${s}restricted`))
 }
 
 async function send_fail_guild_only(msg) {
-    return reply(await msg.client.lang_helper.get_text(msg, `${s}guild_only`))
+    return reply(msg, await msg.client.lang_helper.get_text(msg, `${s}guild_only`))
 }
 
 async function send_fail_dm_only(msg) {
-    return reply(await msg.client.lang_helper.get_text(msg, `${s}dm_only`))
+    return reply(msg, await msg.client.lang_helper.get_text(msg, `${s}dm_only`))
 }
 
 async function send_fail_nsfw(msg) {
-    return reply(await msg.client.lang_helper.get_text(msg, `${s}nsfw_only`))
+    return reply(msg, await msg.client.lang_helper.get_text(msg, `${s}nsfw_only`))
 }
 
 async function send_fail_missing_args(msg, prefix, command) {
@@ -57,7 +57,7 @@ async function send_fail_missing_args(msg, prefix, command) {
         reply_content += `\n${(await msg.client.lang_helper.get_text(msg, `${s}missing_args_proper_use`))} \`${prefix}${name} ${usage}\``
     }
 
-    return reply(reply_content)
+    return reply(msg, reply_content)
 }
 // ----------------------------
 
@@ -66,19 +66,19 @@ async function send_fail_missing_args(msg, prefix, command) {
 // Output from command
 // ----------------------------
 async function send_cmd(msg, content) {
-    await msg.channel.send(content)
+    return await msg.channel.send(content)
 }
 
 async function reply_cmd(msg, content) {
-    await msg.reply(content)
+    return await msg.reply(content)
 }
 
 async function send_to_dm_cmd(msg, content) {
-    await msg.author.send(content)
+    return await msg.author.send(content)
 }
 
-async function edit_cmd(msg, new_content) {
-    await msg.edit(new_content)
+async function edit_cmd(new_msg, new_content) {
+    return await new_msg.edit(new_content)
 }
 // ----------------------------
 
@@ -88,20 +88,20 @@ async function edit_cmd(msg, new_content) {
 // ----------------------------
 async function send_slash(interaction, content) {
     if (!interaction.replied) {
-        await interaction.reply(content)
+        return await interaction.reply(content)
 
     } else {
-        await interaction.followUp(content)
+        return await interaction.followUp(content)
     }
 }
 
 async function send_to_dm_slash(interaction, content) {
     const user = interaction.client.users.cache.get(interaction.member.user.id);
-    await user.send(content)
+    return await user.send(content)
 }
 
 async function edit_slash(interaction, new_content) {
-    await interaction.editReply(new_content)
+    return await interaction.editReply(new_content)
 }
 // ----------------------------
 

@@ -18,7 +18,7 @@ async function register(client) {
             { body: await get_slash_commands(client) },
         )
 
-        await client.application?.commands.permissions.set(get_permissions(client, slash_commands))
+        //await client.application?.commands.permissions.set(get_permissions(client, slash_commands))
 
         client.logger.log("info", 'Successfully reloaded application (/) commands.');
     } catch (error) {
