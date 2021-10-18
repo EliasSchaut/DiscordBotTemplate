@@ -12,7 +12,7 @@ module.exports = {
     enable_slash: true,
     async execute(msg, args) {
         // websocket heartbeat
-        msg.client.output.send(msg, `${await gt(msg, s + "websocket")} ${msg.client.ws.ping}ms.`)
+        await msg.client.output.send(msg, `${await gt(msg, s + "websocket")} ${msg.client.ws.ping}ms.`)
 
         // roundtrip latency
         msg.client.output.send(msg, await gt(msg, s + "pinging")).then(async send => {
