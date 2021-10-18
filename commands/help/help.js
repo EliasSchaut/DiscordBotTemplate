@@ -17,6 +17,7 @@ module.exports = {
     args_needed: true,
     args_min_length: 0,
     usage: async function (msg) { return await gt(msg, s + "usage") },
+    enable_slash: true,
     async execute(msg, args) {
         const { commands } = msg.client
 
@@ -113,10 +114,7 @@ module.exports = {
         for (const command of msg.client.commands) {
             if (msg.client.config.help.show_only_permitted_commands && !msg.client.helper.is_permitted(msg, command[1])) continue
             let name = msg.client.mod_getter.get_name(command[1])
-            let description = await msg.client.mod_getter.get_description(msg, command[1])
-            if (description.length >= 46) {
-                description = description.substring(0, 46).trim() + " ..."
-            }
+            let description = msg.client.helper.trim_text(await msg.client.mod_getter.get_description(msg, command[1]), 50, true)
 
             options.push({
                 label: name,

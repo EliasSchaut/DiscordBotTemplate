@@ -17,6 +17,7 @@ module.exports = {
     args_min_length: 1,
     usage: async function (msg) { return await gt(msg, s + "usage") },
     admin_only: true,
+    enable_slash: true,
     async execute(msg, args) {
         const commandName = args[0].toLowerCase();
         const command = msg.client.commands.get(commandName)

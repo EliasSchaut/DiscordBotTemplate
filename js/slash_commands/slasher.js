@@ -17,8 +17,10 @@ async function register(client) {
             Routes.applicationCommands(client.config.client_id),
             { body: await get_slash_commands(client) },
         )
-
+        //console.log(slash_commands)
         //await client.application?.commands.permissions.set(get_permissions(client, slash_commands))
+        //await client.guilds.cache.get('801473859227222017')?.commands.permissions.set({ get_permissions(client, slash_commands) });
+        //console.log(await client.application?.commands.fetch(slash_commands[0].id))
 
         client.logger.log("info", 'Successfully reloaded application (/) commands.');
     } catch (error) {
@@ -48,8 +50,8 @@ async function create_slash_command(client, command) {
 
     const data = new SlashCommandBuilder()
         .setName(name)
-        .setDescription(description)
-        .setDefaultPermission(client.mod_getter.get_admin_only(command) || client.mod_getter.get_need_permission(command))
+        .setDescription(client.helper.trim_text(description, 100, true))
+        .setDefaultPermission(!(client.mod_getter.get_admin_only(command) || client.mod_getter.get_need_permission(command)))
 
     const options = await create_options(client, command)
     if (options.length) {
@@ -92,11 +94,16 @@ async function create_options(client, command) {
 }
 
 function create_option(name, description, required, choices) {
-    return new SlashCommandStringOption()
+    const option = new SlashCommandStringOption()
         .setName(name)
         .setDescription(description)
         .setRequired(required)
-        .addChoices(choices)
+
+    for (const choice of choices) {
+        option.addChoice(choice.name, choice.value)
+    }
+
+    return option
 }
 // ----------------------------
 
@@ -114,7 +121,7 @@ function get_permissions(client, slash_commands) {
 
         if (permissions.length) {
             full_permissions.push({
-                "id": slash_command.application_id,
+                "id": slash_command.id,
                 "permissions": permissions
             })
         }

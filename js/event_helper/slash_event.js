@@ -2,10 +2,11 @@
 // Export
 // ---------------------------------
 async function interaction_create(interaction) {
+    interaction = interaction_to_message(interaction)
+
     // add more specific menu handlers here and below in Specific Menu Handlers
     const [command_name, args] = get_command_name_and_args(interaction)
     const command = get_command(interaction, command_name)
-    interaction.author = interaction.user
 
     if (await interaction.client.command_event.check_message(interaction, "/", command, args)) {
         await interaction.client.command_event.try_to_execute(interaction, command, args)
@@ -18,7 +19,12 @@ async function interaction_create(interaction) {
 // ---------------------------------
 // Specific Slash Handlers
 // ---------------------------------
+function interaction_to_message(interaction) {
+    interaction.author = interaction.user
 
+
+    return interaction
+}
 // ---------------------------------
 
 

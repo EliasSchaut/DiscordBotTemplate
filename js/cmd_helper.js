@@ -109,6 +109,21 @@ async function create_embed_to_dm(msg) {
 function check_interaction_custom_id(interaction, custom_id) {
     return interaction.customId === custom_id
 }
+
+function trim_text(string, size, use_dots) {
+    const dots = " ..."
+
+    if (string.length >= size) {
+
+        if (use_dots) {
+            string = string.substring(0, size - dots.length - 1).trim() + dots
+
+        } else {
+            string = string.substring(0, size - 1)
+        }
+    }
+    return string
+}
 // ----------------------------
 
 
@@ -133,5 +148,5 @@ function is_admin_from_guild(msg) {
 // ----------------------------
 
 
-module.exports = { from_guild, from_dm, is_nsfw_channel, check_args, is_admin, has_permission,
-    is_permitted, commands_to_string, link_to_dm, link_to_message, create_embed_to_dm, check_interaction_custom_id }
+module.exports = { from_guild, from_dm, is_nsfw_channel, check_args, is_admin, has_permission, is_permitted,
+    commands_to_string, link_to_dm, link_to_message, create_embed_to_dm, check_interaction_custom_id, trim_text }

@@ -15,6 +15,7 @@ module.exports = {
     args_needed: false,
     usage: async function (msg) { return await gt(msg, s + "usage") },
     disabled: !enable_lang_change,
+    enable_slash: true,
     async execute(msg, args) {
         if (args.length > 0) {
             if (iv(args[0])) {
