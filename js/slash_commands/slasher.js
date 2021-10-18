@@ -51,7 +51,7 @@ async function create_slash_command(client, command) {
     const data = new SlashCommandBuilder()
         .setName(name)
         .setDescription(client.helper.trim_text(description, 100, true))
-        .setDefaultPermission(!(client.mod_getter.get_admin_only(command) || client.mod_getter.get_need_permission(command)))
+        .setDefaultPermission(!client.mod_getter.get_admin_only(command))
 
     const options = await create_options(client, command)
     if (options.length) {
