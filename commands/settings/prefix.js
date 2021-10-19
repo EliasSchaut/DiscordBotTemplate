@@ -11,7 +11,7 @@ const s = "commands.prefix."
 module.exports = {
     name: 'prefix',
     description: async function (msg) { return `${(await gt(msg, s + "help"))}}` },
-    aliases: ['p'],
+    aliases: ['pre'],
     usage: async function (msg) { return await gt(msg, s + "usage") },
     guild_only: true,
     need_permission: [ "ADMINISTRATOR" ],
@@ -19,13 +19,13 @@ module.exports = {
     async execute(msg, args) {
         if (args.length > 0) {
             if (args[0].length > 2000) {
-                return msg.channel.send(`${await gt(msg, s + "too_long")}`)
+                return msg.client.output.send(msg, `${await gt(msg, s + "too_long")}`)
             }
             await msg.client.db_helper.set_prefix(msg, args[0])
-            return msg.channel.send(`${await gt(msg, s + "set")} \`${args[0]}\``)
+            return msg.client.output.send(msg, `${await gt(msg, s + "set")} \`${args[0]}\``)
 
         } else {
-            return msg.channel.send(`${await gt(msg, s + "get")} \`${await msg.client.db_helper.get_prefix(msg)}\``)
+            return msg.client.output.send(msg, `${await gt(msg, s + "get")} \`${await msg.client.db_helper.get_prefix(msg)}\``)
         }
     },
 };

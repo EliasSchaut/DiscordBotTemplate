@@ -44,12 +44,12 @@ function get_command(msg, command_name) {
 // Checker
 // ----------------------------------
 async function check_message(msg, prefix, command, args) {
-    if (!check_admin_only(msg, command)) await send_fail_admin_only(msg)
-    else if (!check_permissions(msg, command)) await send_fail_permissions(msg)
-    else if (!check_guild_only(msg, command)) await send_fail_guild_only(msg)
-    else if (!check_dm_only(msg, command)) await send_fail_dm_only(msg)
-    else if (!check_nsfw(msg, command)) await send_fail_nsfw(msg)
-    else if (!check_args(msg, command, args)) await send_fail_missing_args(msg, prefix, command)
+    if (!check_admin_only(msg, command)) await msg.client.output.send_fail_admin_only(msg)
+    else if (!check_permissions(msg, command)) await msg.client.output.send_fail_permissions(msg)
+    else if (!check_guild_only(msg, command)) await msg.client.output.send_fail_guild_only(msg)
+    else if (!check_dm_only(msg, command)) await msg.client.output.send_fail_dm_only(msg)
+    else if (!check_nsfw(msg, command)) await msg.client.output.send_fail_nsfw(msg)
+    else if (!check_args(msg, command, args)) await msg.client.output.send_fail_missing_args(msg, prefix, command)
     // add more command modification checker here
     else return true
 
@@ -65,67 +65,32 @@ function check_bot(msg) {
 }
 
 function check_admin_only(msg, command) {
-    return !(command.hasOwnProperty("admin_only") && command.admin_only) || msg.client.helper.is_admin(msg)
+    return !(msg.client.mod_getter.get_admin_only(command)) || msg.client.helper.is_admin(msg)
 }
 
 function check_permissions(msg, command) {
-    return !(command.hasOwnProperty("need_permission") && command.need_permission.length)
-        || msg.client.helper.has_permission(msg, command.need_permission)
+    const need_permission = msg.client.mod_getter.get_need_permission(command)
+
+    return !(need_permission.length)
+        || msg.client.helper.has_permission(msg, need_permission)
 }
 
 function check_guild_only(msg, command) {
-    return !(command.hasOwnProperty("guild_only") && command.guild_only) || msg.client.helper.from_guild(msg)
+    return !(msg.client.mod_getter.get_guild_only(command)) || msg.client.helper.from_guild(msg)
 }
 
 function check_dm_only(msg, command) {
-    return !(command.hasOwnProperty("dm_only") && command.dm_only) || msg.client.helper.from_dm(msg)
+    return !(msg.client.mod_getter.get_dm_only(command)) || msg.client.helper.from_dm(msg)
 }
 
 function check_nsfw(msg, command) {
-    return !(command.hasOwnProperty("nsfw") && command.nsfw) || msg.client.helper.is_nsfw_channel(msg)
+    return !(msg.client.mod_getter.get_nsfw(command)) || msg.client.helper.is_nsfw_channel(msg)
 }
 
-function check_args (msg, command, args) {
-    return !(command.hasOwnProperty("args_needed") && command.args_needed) || msg.client.helper.check_args(command, args)
-}
-// ----------------------------------
-
-
-
-// ----------------------------------
-// Check-Fail-Messages
-// ----------------------------------
-async function send_fail_admin_only(msg) {
-    return msg.reply(await msg.client.lang_helper.get_text(msg, `${s}restricted`))
-}
-
-async function send_fail_permissions(msg) {
-    return msg.reply(await msg.client.lang_helper.get_text(msg, `${s}restricted`))
-}
-
-async function send_fail_guild_only(msg) {
-    return msg.reply(await msg.client.lang_helper.get_text(msg, `${s}guild_only`))
-}
-
-async function send_fail_dm_only(msg) {
-    return msg.reply(await msg.client.lang_helper.get_text(msg, `${s}dm_only`))
-}
-
-async function send_fail_nsfw(msg) {
-    return msg.reply(await msg.client.lang_helper.get_text(msg, `${s}nsfw_only`))
-}
-
-async function send_fail_missing_args(msg, prefix, command) {
-    let reply = `${await msg.client.lang_helper.get_text(msg, `${s}missing_args`)}, ${msg.author}`
-
-    if (command.hasOwnProperty("usage") && command.usage) {
-        reply += `\n${(await msg.client.lang_helper.get_text(msg, `${s}missing_args_proper_use`))} \`${prefix}${command.name} ${await command.usage(msg)}\``
-    }
-
-    return msg.channel.send(reply)
+function check_args(msg, command, args) {
+    return !(msg.client.mod_getter.get_args_needed(command)) || msg.client.helper.check_args(msg, command, args)
 }
 // ----------------------------------
-
 
 
 // ----------------------------------
@@ -137,9 +102,10 @@ async function try_to_execute(msg, command, args) {
 
     } catch (e) {
         msg.client.logger.log("error", e)
-        msg.reply(await msg.client.lang_helper.get_text(msg, `${s}error`))
+        msg.client.output.reply(msg, await msg.client.lang_helper.get_text(msg, `${s}error`))
     }
 }
 // ----------------------------------
 
-module.exports = { message_create }
+module.exports = { message_create, check_message, check_dm_only, check_guild_only, check_nsfw, check_args,
+    check_admin_only, check_permissions, check_bot, try_to_execute}

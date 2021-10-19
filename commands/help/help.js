@@ -17,6 +17,7 @@ module.exports = {
     args_needed: true,
     args_min_length: 0,
     usage: async function (msg) { return await gt(msg, s + "usage") },
+    enable_slash: true,
     async execute(msg, args) {
         const { commands } = msg.client
 
@@ -30,7 +31,7 @@ module.exports = {
             const command = commands.get(name) || commands.find(c => c.aliases && c.aliases.includes(name));
 
             if (!command) {
-                return msg.reply(await gt(msg, s + "invalid_command"));
+                return msg.client.output.reply(msg, await gt(msg, s + "invalid_command"));
             }
 
             return this.send_specific_command(msg, command)
@@ -43,23 +44,23 @@ module.exports = {
     // ----------------------------
     async send_all_commands(msg) {
         if (msg.client.config.help.send_to_dm && msg.client.helper.from_guild(msg)) {
-            return await msg.author.send({ embeds: [await this.create_embed_all_commands(msg)], components: [await this.create_command_menu(msg)] }).then(async () => {
-                msg.channel.send({embeds: [await msg.client.helper.create_embed_to_dm(msg)]})
+            return await msg.client.output.send_to_dm(msg, { embeds: [await this.create_embed_all_commands(msg)], components: [await this.create_command_menu(msg)] }).then(async () => {
+                msg.client.output.send(msg, {embeds: [await msg.client.helper.create_embed_to_dm(msg)]})
             })
 
         } else {
-            return msg.channel.send({ embeds: [await this.create_embed_all_commands(msg)], components: [await this.create_command_menu(msg)] })
+            return msg.client.output.send(msg, { embeds: [await this.create_embed_all_commands(msg)], components: [await this.create_command_menu(msg)] })
         }
     },
 
     async send_specific_command(msg, command) {
         if (msg.client.config.help.send_to_dm && msg.client.helper.from_guild(msg)) {
-            return await msg.author.send({ embeds: [await this.create_embed_specific_command(msg, command)], components: [await this.create_command_menu(msg)] }).then(async () => {
-                msg.channel.send({embeds: [await msg.client.helper.create_embed_to_dm(msg)]})
+            return await msg.client.output.send_to_dm(msg, { embeds: [await this.create_embed_specific_command(msg, command)], components: [await this.create_command_menu(msg)] }).then(async () => {
+                msg.client.output.send(msg, {embeds: [await msg.client.helper.create_embed_to_dm(msg)]})
             })
 
         } else {
-            return msg.channel.send({ embeds: [await this.create_embed_specific_command(msg, command)], components: [await this.create_command_menu(msg)] })
+            return msg.client.output.send(msg, { embeds: [await this.create_embed_specific_command(msg, command)], components: [await this.create_command_menu(msg)] })
         }
     },
 
@@ -88,11 +89,15 @@ module.exports = {
         const data = []
         const embed_msg = new Discord.MessageEmbed().setColor(msg.client.config.embed.color)
 
-        if (command.aliases) data.push(`${await gt(msg, s + "success.aliases")}\n${command.aliases.join(', ')}\n\n`);
-        if (command.description) data.push(`${await gt(msg, s + "success.description")}\n${await command.description(msg)}\n\n`);
-        if (command.usage) data.push(`${await gt(msg, s + "success.usage")}\n\`${prefix}${command.name} ${await command.usage(msg)}\`\n`);
+        const name = msg.client.mod_getter.get_name(command)
+        const aliases = msg.client.mod_getter.get_aliases(command)
+        const description = await msg.client.mod_getter.get_description(msg, command)
+        const usage = await msg.client.mod_getter.get_usage(msg, command)
+        if (aliases.length) data.push(`${await gt(msg, s + "success.aliases")}\n${aliases.join(', ')}\n\n`);
+        if (description) data.push(`${await gt(msg, s + "success.description")}\n${description}\n\n`);
+        if (usage) data.push(`${await gt(msg, s + "success.usage")}\n\`${prefix}${name} ${usage}\`\n`);
 
-        embed_msg.setTitle(`${command.name.toUpperCase()} ${(await gt(msg, s + "command")).toUpperCase()}`)
+        embed_msg.setTitle(`${name.toUpperCase()} ${(await gt(msg, s + "command")).toUpperCase()}`)
         embed_msg.setDescription(data.join(""))
         embed_msg.setThumbnail(msg.client.config.embed.avatar_url)
 
@@ -108,13 +113,12 @@ module.exports = {
 
         for (const command of msg.client.commands) {
             if (msg.client.config.help.show_only_permitted_commands && !msg.client.helper.is_permitted(msg, command[1])) continue
-            let description = await command[1].description(msg)
-            if (description.length >= 46) {
-                description = description.substring(0, 46).trim() + " ..."
-            }
+            let name = msg.client.mod_getter.get_name(command[1])
+            let description = msg.client.helper.trim_text(await msg.client.mod_getter.get_description(msg, command[1]), 50, true)
+
             options.push({
-                label: command[1].name,
-                value: command[1].name,
+                label: name,
+                value: name,
                 description: description
             })
         }

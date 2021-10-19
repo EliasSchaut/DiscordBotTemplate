@@ -3,29 +3,31 @@
 // ===============================
 
 // ----------------------------
-// Export
+// Check Msg
 // ----------------------------
-// checks, if given message is from guild (a discord server)
 const Discord = require("discord.js");
 const {get_text: gt} = require("../lang/lang_helper");
 
+// checks, if given message is from dm (personal chat with bot)
 function from_dm(msg) {
     return msg.channel.type === 'DM'
 }
 
-// checks, if given message is from dm (personal chat with bot)
+// checks, if given message is from guild (a discord server)
 function from_guild(msg) {
     return msg.channel.type === 'GUILD_TEXT' || msg.channel.type === 'GROUP_DM'
         || msg.channel.type === 'GUILD_PUBLIC_THREAD' || msg.channel.type === 'GUILD_PRIVATE_THREAD'
 }
 
+// checks, if given message is from an nsfw channel
 function is_nsfw_channel(msg) {
     return from_dm(msg) || (from_guild(msg) && msg.channel.nsfw)
 }
 
 // checks structural correctness of given args (by now only command length)
-function check_args(command, args) {
-    return !command.hasOwnProperty("args_min_length") || args.length >= command.args_min_length
+function check_args(msg, command, args) {
+    const args_min_length = msg.client.mod_getter.get_args_min_length(command)
+    return !args_min_length || args.length >= args_min_length
 }
 
 // check if author from message is admin
@@ -45,8 +47,10 @@ function has_permission(msg, permission_list) {
 
 // check, it the author from message is permitted to run given command
 function is_permitted(msg, command) {
-    return (!((command.hasOwnProperty("admin_only") && command.admin_only && !is_admin(msg))
-        ||  (command.hasOwnProperty("need_permission") && !has_permission(msg, command.need_permission))))
+    const need_permission = msg.client.mod_getter.get_need_permission(command)
+
+    return (!((msg.client.mod_getter.get_admin_only(command) && !is_admin(msg))
+        ||  (need_permission.length && !has_permission(msg, need_permission))))
 }
 
 // print all commands for the author from message in a human readable string
@@ -101,6 +105,25 @@ async function create_embed_to_dm(msg) {
         .setColor(msg.client.config.embed.color)
         .setThumbnail(msg.client.config.embed.avatar_url)
 }
+
+function check_interaction_custom_id(interaction, custom_id) {
+    return interaction.customId === custom_id
+}
+
+function trim_text(string, size, use_dots) {
+    const dots = " ..."
+
+    if (string.length >= size) {
+
+        if (use_dots) {
+            string = string.substring(0, size - dots.length - 1).trim() + dots
+
+        } else {
+            string = string.substring(0, size - 1)
+        }
+    }
+    return string
+}
 // ----------------------------
 
 
@@ -125,5 +148,5 @@ function is_admin_from_guild(msg) {
 // ----------------------------
 
 
-module.exports = { from_guild, from_dm, is_nsfw_channel, check_args, is_admin, has_permission,
-    is_permitted, commands_to_string, link_to_dm, link_to_message, create_embed_to_dm }
+module.exports = { from_guild, from_dm, is_nsfw_channel, check_args, is_admin, has_permission, is_permitted,
+    commands_to_string, link_to_dm, link_to_message, create_embed_to_dm, check_interaction_custom_id, trim_text }

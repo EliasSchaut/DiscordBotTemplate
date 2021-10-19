@@ -1,5 +1,6 @@
 {
   "prefix": "<YOUR_PREFIX>",
+  "client_id": "<YOUR_CLIENT_ID>",
   "token": "<YOUR_TOKEN>",
   "enable_prefix_change": true,
 
@@ -30,5 +31,7 @@
   "lang_paths": {
     "de": "text_de.json",
     "en": "text_en.json"
-  }
+  },
+
+  "auto_slash_options": true
 }

@@ -12,9 +12,6 @@
 // require needed modules.
 const fs = require('fs')
 const Discord = require('discord.js')
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
 
 // create client with its intents
 const client = new Discord.Client({ intents: [
@@ -26,15 +23,19 @@ const client = new Discord.Client({ intents: [
 // get required methods and fields and save it into client. This will always be accessible with message.client
 client.commands = new Discord.Collection()
 client.config = require('./config/config.json')
-client.helper = require('./js/helper_functions')
+client.helper = require('./js/cmd_helper')
 client.lang_helper = require("./lang/lang_helper")
 client.db_helper = require('./db/db_helper')
 client.DB = require('./db/db_init').DB
 client.sequelize = require('./db/db_init').sequelize
 client.logger = require("./js/logger").logger
+client.slasher = require("./js/slash_commands/slasher")
 client.command_event = require("./js/event_helper/command_event")
+client.slash_event = require("./js/event_helper/slash_event")
 client.menu_event = require("./js/event_helper/menu_event")
 client.button_event = require("./js/event_helper/button_event")
+client.mod_getter = require("./js/cmd_modificator_getter")
+client.output = require("./js/dc_output")
 
 // helper fields
 const commands_path = "./commands"
@@ -47,9 +48,11 @@ for (const folder of commandFolders) {
     const commandFiles = fs.readdirSync(`${commands_path}/${folder}`).filter(file => file.endsWith('.js'))
     for (const file of commandFiles) {
         const command = require(`${commands_path}/${folder}/${file}`)
-        if (command.hasOwnProperty("disabled") && command.disabled) continue
-        client.commands.set(command.name, command)
-        command_tree[folder][command.name] = command
+        const name = client.mod_getter.get_name(command)
+
+        if (client.mod_getter.get_disabled(command)) continue
+        client.commands.set(name, command)
+        command_tree[folder][name] = command
     }
 }
 client.command_tree = command_tree
@@ -70,21 +73,27 @@ client.once('ready', async () => {
     // sync database
     await client.sequelize.sync()
 
+    // sync slash commands
+    await client.slasher.register(client)
+
     // log ready info
     client.logger.log('info', 'Ready!')
 });
 
 // react on messages
-client.on('messageCreate',
-    async msg => await client.command_event.message_create(msg))
+client.on('messageCreate',async msg => await client.command_event.message_create(msg))
 
-// when a discord-menu was chosen
-client.on("interactionCreate",
-    async (interaction) => await client.menu_event.interaction_create(interaction))
+// react on interactions
+client.on("interactionCreate", async interaction => {
+    // react on slash commands
+    if (interaction.isCommand()) await client.slash_event.interaction_create(interaction)
 
-// when a discord-button was pressed
-client.on("interactionCreate",
-    async (interaction) => await client.button_event.interaction_create(interaction))
+    // when a menu was chosen
+    else if (interaction.isSelectMenu()) await client.menu_event.interaction_create(interaction)
+
+    // when a button was pressed
+    else if (interaction.isButton()) await client.button_event.interaction_create(interaction)
+})
 // ---------------------------------
 
 // login to Discord with app's token
