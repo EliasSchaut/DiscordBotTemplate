@@ -13,14 +13,10 @@ async function register(client) {
     try {
         client.logger.log("info", 'Started refreshing application (/) commands.');
 
-        const slash_commands = await rest.put(
+        await rest.put(
             Routes.applicationCommands(client.config.client_id),
             { body: await get_slash_commands(client) },
         )
-        //console.log(slash_commands)
-        //await client.application?.commands.permissions.set(get_permissions(client, slash_commands))
-        //await client.guilds.cache.get('801473859227222017')?.commands.permissions.set({ get_permissions(client, slash_commands) });
-        //console.log(await client.application?.commands.fetch(slash_commands[0].id))
 
         client.logger.log("info", 'Successfully reloaded application (/) commands.');
     } catch (error) {
@@ -51,7 +47,6 @@ async function create_slash_command(client, command) {
     const data = new SlashCommandBuilder()
         .setName(name)
         .setDescription(client.helper.trim_text(description, 100, true))
-        .setDefaultPermission(!client.mod_getter.get_admin_only(command))
 
     const options = await create_options(client, command)
     if (options.length) {
@@ -104,51 +99,6 @@ function create_option(name, description, required, choices) {
     }
 
     return option
-}
-// ----------------------------
-
-
-// ----------------------------
-// Permissions
-// ----------------------------
-function get_permissions(client, slash_commands) {
-    const full_permissions = []
-    for (const slash_command of slash_commands) {
-        const permissions = []
-        const command = client.commands.get(slash_command.name)
-
-        if (client.mod_getter.get_admin_only(command)) permissions.push.apply(permissions, get_permission_admin_only(client))
-
-        if (permissions.length) {
-            full_permissions.push({
-                "id": slash_command.id,
-                "permissions": permissions
-            })
-        }
-    }
-
-    return full_permissions
-}
-
-function get_permission_admin_only(client) {
-    const permissions = []
-    for (const user_id_admin of client.config.user_ids_admin) {
-        permissions.push({
-            "id": user_id_admin,
-            "type": "USER",
-            "permission": true
-        })
-    }
-
-    for (const role_id_admin of client.config.role_ids_admin) {
-        permissions.push({
-            "id": role_id_admin,
-            "type": "ROLE",
-            "permission": true
-        })
-    }
-
-    return permissions
 }
 // ----------------------------
 
