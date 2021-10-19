@@ -16,7 +16,6 @@ module.exports = {
     guild_only: true,
     need_permission: [ "ADMINISTRATOR" ],
     disabled: !enable_prefix_change,
-    enable_slash: true,
     async execute(msg, args) {
         if (args.length > 0) {
             if (args[0].length > 2000) {
