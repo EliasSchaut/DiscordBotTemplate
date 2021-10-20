@@ -88,7 +88,7 @@ client.on('messageCreate',async msg => {
 // react on interactions
 client.on("interactionCreate", async interaction => {
     // react on slash commands
-    if (msg.client.config.enable_slash_commands && interaction.isCommand()) await client.slash_event.interaction_create(interaction)
+    if (interaction.client.config.enable_slash_commands && interaction.isCommand()) await client.slash_event.interaction_create(interaction)
 
     // when a menu was chosen
     else if (interaction.isSelectMenu()) await client.menu_event.interaction_create(interaction)
