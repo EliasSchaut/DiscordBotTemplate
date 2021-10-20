@@ -81,12 +81,14 @@ client.once('ready', async () => {
 });
 
 // react on messages
-client.on('messageCreate',async msg => await client.command_event.message_create(msg))
+client.on('messageCreate',async msg => {
+    if (msg.client.config.enable_standard_commands) await client.command_event.message_create(msg)
+})
 
 // react on interactions
 client.on("interactionCreate", async interaction => {
     // react on slash commands
-    if (interaction.isCommand()) await client.slash_event.interaction_create(interaction)
+    if (msg.client.config.enable_slash_commands && interaction.isCommand()) await client.slash_event.interaction_create(interaction)
 
     // when a menu was chosen
     else if (interaction.isSelectMenu()) await client.menu_event.interaction_create(interaction)
