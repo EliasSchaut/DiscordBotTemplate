@@ -35,5 +35,5 @@
 
   "enable_standard_commands": true,
   "enable_slash_commands": true,
-  "auto_slash_options": true
+  "auto_slash_options": false
 }
