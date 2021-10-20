@@ -1,5 +1,6 @@
 {
   "prefix": "<YOUR_PREFIX>",
+  "client_id": "<YOUR_CLIENT_ID>",
   "token": "<YOUR_TOKEN>",
   "enable_prefix_change": true,
 
@@ -15,6 +16,11 @@
     "type": "PLAYING"
   },
 
+  "help": {
+    "show_only_permitted_commands": false,
+    "send_to_dm": false
+  },
+
   "embed": {
     "color": "RANDOM",
     "avatar_url": ""
@@ -25,5 +31,9 @@
   "lang_paths": {
     "de": "text_de.json",
     "en": "text_en.json"
-  }
+  },
+
+  "enable_standard_commands": true,
+  "enable_slash_commands": true,
+  "auto_slash_options": false
 }

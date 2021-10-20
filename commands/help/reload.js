@@ -17,27 +17,29 @@ module.exports = {
     args_min_length: 1,
     usage: async function (msg) { return await gt(msg, s + "usage") },
     admin_only: true,
+    disabled: true,
     async execute(msg, args) {
         const commandName = args[0].toLowerCase();
         const command = msg.client.commands.get(commandName)
             || msg.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
         if (!command) {
-            return msg.channel.send(`${await gt(msg, s + "invalid_command")} \`${commandName}\`, ${msg.author}!`);
+            return msg.client.output.send(msg, `${await gt(msg, s + "invalid_command")} \`${commandName}\`, ${msg.author}!`);
         }
 
         const commandFolders = fs.readdirSync(commands_path);
         const folderName = commandFolders.find(folder => fs.readdirSync(`${commands_path}/${folder}`).includes(`${commandName}.js`));
+        const name = msg.client.mod_getter.get_name(command)
 
-        delete require.cache[require.resolve(`../${folderName}/${command.name}.js`)];
+        delete require.cache[require.resolve(`../${folderName}/${name}.js`)];
 
         try {
-            const newCommand = require(`../${folderName}/${command.name}.js`);
-            msg.client.commands.set(newCommand.name, newCommand);
-            msg.channel.send(`\`${newCommand.name}\` ${await gt(msg, s + "success")}`);
+            const newCommand = require(`../${folderName}/${name}.js`);
+            await msg.client.commands.set(name, newCommand);
+            msg.client.output.send(msg, `\`${name}\` ${await gt(msg, s + "success")}`);
         } catch (error) {
             msg.client.logger.log('error', error);
-            msg.channel.send(`${await gt(msg, s + "fail")} \`${command.name}\`:\n\`${error.message}\``);
+            msg.client.output.send(msg, `${await gt(msg, s + "fail")} \`${name}\`:\n\`${error.message}\``);
         }
     },
 };
