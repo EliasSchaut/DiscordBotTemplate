@@ -38,7 +38,7 @@ async function get_text(msg, key, ...inserts) {
 // replaces %<index> with actual text from ...inserts
 function set_inserts(msg, text, ...inserts) {
     for (let i = 0; i < inserts.length; i++) {
-        const regEx = new RegExp(`%${i}[^0-9]`,"g")
+        const regEx = new RegExp(`%${i}([^0-9]|$)`,"g")
         const index = text.search(regEx)
 
         if (index === -1) {
