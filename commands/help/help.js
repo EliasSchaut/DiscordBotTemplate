@@ -71,9 +71,8 @@ module.exports = {
         const embed_msg = new Discord.MessageEmbed().setColor(msg.client.config.embed.color)
         embed_msg.setThumbnail(msg.client.config.embed.avatar_url)
 
-        data.push(`${await gt(msg, s + "intro.0")}\n`);
-        data.push(msg.client.helper.commands_to_string(msg));
-        data.push(`\n${await gt(msg, s + "intro.1")} \`${prefix}${this.name} ${await this.usage(msg)}\` ${await gt(msg, s + "intro.2")}\n`);
+        data.push(await gt(msg, s + "intro", msg.client.helper.commands_to_string(msg),
+                `\`${prefix}${this.name} ${await this.usage(msg)}\``))
         if (msg.client.config.help.send_to_dm && msg.client.helper.from_guild(msg)) {
             data.push(msg.client.helper.link_to_message(msg, await gt(msg, s + "back_to_message")))
         }

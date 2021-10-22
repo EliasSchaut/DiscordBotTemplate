@@ -22,10 +22,10 @@ module.exports = {
                 return msg.client.output.send(msg, `${await gt(msg, s + "too_long")}`)
             }
             await msg.client.db_helper.set_prefix(msg, args[0])
-            return msg.client.output.send(msg, `${await gt(msg, s + "set")} \`${args[0]}\``)
+            return msg.client.output.send(msg, await gt(msg, s + "set",  `\`${args[0]}\``))
 
         } else {
-            return msg.client.output.send(msg, `${await gt(msg, s + "get")} \`${await msg.client.db_helper.get_prefix(msg)}\``)
+            return msg.client.output.send(msg, await gt(msg, s + "get", `\`${await msg.client.db_helper.get_prefix(msg)}\``))
         }
     },
 };

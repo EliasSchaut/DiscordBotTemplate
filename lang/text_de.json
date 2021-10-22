@@ -7,8 +7,8 @@
     "dm_only": "Ich kann diesen Befehl nur im privaten Chat mit dir ausführen!",
     "restricted": "Du bist nicht berechtigt, diesen Befehl auszuführen!",
     "missing_args": "Du hast die falsche Anzahl an Argumenten abgegeben!",
-    "missing_args_proper_use": "Die korrekte Verwendung wäre:",
-    "nsfw_only": "Diesen Befehl kannst du nur in NSFW-Kanälen!"
+    "missing_args_proper_use": "Die korrekte Verwendung wäre: %0",
+    "nsfw_only": "Diesen Befehl kannst du nur in NSFW-Kanälen ausführen!"
   },
   "commands": {
     "echo": {
@@ -22,14 +22,10 @@
       "command": "Kommando",
       "back_to_message": "Zurück zur Nachricht",
       "jump_to_dm": "Springe zur DM",
-      "intro": {
-        "0": "Liste mit allen Befehlen:",
-        "1": "Du kannst",
-        "2": "senden, um Informationen zu einem bestimmten Befehl zu erhalten!"
-      },
+      "intro": "Liste mit allen Befehlen:\n%0\nDu kannst %1 senden, um Informationen zu einem bestimmten Befehl zu erhalten!",
       "dm": {
         "success": "Dir wurde eine DM geschickt!",
-        "fail_console": "Konnte keine DM senden an",
+        "fail_console": "Es konnte keine DM senden an %0",
         "fail_reply": "Es scheint so, als ob ich dir keine DMs schicken kann! Hast du DMs deaktiviert?"
       },
       "success": {
@@ -46,31 +42,31 @@
     },
     "ping": {
       "help": "Rufe den Ping des Bots ab.",
-      "websocket": "Websocket Heartbeat:",
+      "websocket": "Websocket Heartbeat: %0ms",
       "pinging": "Senden...",
-      "roundtrip": "Roundtrip Latenz:"
+      "roundtrip": "Roundtrip Latenz: %0ms"
     },
     "reload": {
       "help": "Lädt einen Befehl erneut.",
       "usage": "[Name eines Befehls]",
-      "invalid_command": "Es gibt keinen Befehl mit diesem Namen oder Alias",
-      "success": "wurde neu geladen!",
-      "fail": "Es gab einen Fehler beim Nachladen des Befehls"
+      "invalid_command": "Es gibt keinen Befehl mit diesem Namen oder Alias %0!",
+      "success": "%0 wurde neu geladen!",
+      "fail": "Es gab einen Fehler beim Nachladen des Befehls %0:\n%1"
     },
     "lang": {
       "help": "Ohne Argumente gibt dieser Befehl deine aktuell gesetzte Sprache aus. Mit einem Argument setzt dieser Befehl deine Sprache auf die übergebende Sprache, sofern diese existiert.\nUnterstütze Sprachen: ",
       "usage": "[Sprache]",
       "invalid": "Diese Sprache existiert nicht!",
-      "set": "Deine Sprache wurde gesetzt auf:",
-      "get": "Deine aktuelle Sprache ist:",
-      "error": "Error, ich konnte deine Sprache nicht ändern"
+      "set": "Deine Sprache wurde gesetzt auf: %0",
+      "get": "Deine aktuelle Sprache ist: %0",
+      "error": "Error, ich konnte deine Sprache nicht ändern (%0)!"
     },
     "prefix": {
       "help": "Ohne Argumente gibt dieser Befehl den aktuellen Prefix des aus. Mit einem Argument setzt dieser Befehl den Prefix des Servers auf den Übergebenen",
       "usage": "[Prefix]",
       "too_long": "Der übergebene Prefix ist zu lang!",
-      "get": "Der Prefix dieses Servers ist:",
-      "set": "Der Prefix dieses Server wurde gesetzt auf:"
+      "get": "Der Prefix dieses Servers ist: %0",
+      "set": "Der Prefix dieses Server wurde gesetzt auf: %0"
     }
   }
 }

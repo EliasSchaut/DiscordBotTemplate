@@ -24,7 +24,7 @@ module.exports = {
             || msg.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
         if (!command) {
-            return msg.client.output.send(msg, `${await gt(msg, s + "invalid_command")} \`${commandName}\`, ${msg.author}!`);
+            return msg.client.output.reply(msg, await gt(msg, s + "invalid_command", `\`${commandName}\``))
         }
 
         const commandFolders = fs.readdirSync(commands_path);
@@ -36,10 +36,10 @@ module.exports = {
         try {
             const newCommand = require(`../${folderName}/${name}.js`);
             await msg.client.commands.set(name, newCommand);
-            msg.client.output.send(msg, `\`${name}\` ${await gt(msg, s + "success")}`);
+            msg.client.output.send(msg, await gt(msg, s + "success", `\`${name}\``));
         } catch (error) {
             msg.client.logger.log('error', error);
-            msg.client.output.send(msg, `${await gt(msg, s + "fail")} \`${name}\`:\n\`${error.message}\``);
+            msg.client.output.send(msg, await gt(msg, s + "fail", `\`${name}\``, `\`${error.message}\``))
         }
     },
 };
