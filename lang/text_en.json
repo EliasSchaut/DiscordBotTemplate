@@ -7,7 +7,7 @@
     "dm_only": "I can execute this command only in private chat with you!",
     "restricted": "You are not authorized to execute this command!",
     "missing_args": "You have given the wrong number of arguments!",
-    "missing_args_proper_use": "The correct usage would be:",
+    "missing_args_proper_use": "The correct usage would be: %0",
     "nsfw_only": "You can execute this command only in NSFW channels!"
   },
   "commands": {
@@ -22,14 +22,10 @@
       "command": "Command",
       "back_to_message": "Back to message",
       "jump_to_dm": "Jump to DM",
-      "intro": {
-        "0": "List with all commands:",
-        "1": "You can send",
-        "2": "to get information about a specific command!"
-      },
+      "intro": "List with all commands:\n%0\nYou can send %1 to get information about a specific command!",
       "dm": {
         "success": "I've sent you a DM!",
-        "fail_console": "Could not send help DM to",
+        "fail_console": "Could not send help DM to %0",
         "fail_reply": "It seems like I can't DM you! Do you have DMs disabled?"
       },
       "success": {
@@ -46,31 +42,31 @@
     },
     "ping": {
       "help": "Get the bot's ping.",
-      "websocket": "Websocket heartbeat:",
+      "websocket": "Websocket heartbeat: %0ms",
       "pinging": "Pinging...",
-      "roundtrip": "Roundtrip latency:"
+      "roundtrip": "Roundtrip latency: %0ms"
     },
     "reload": {
       "help": "Reloads a command",
       "usage": "[command name]",
-      "invalid_command": "There is no command with this name or alias",
-      "success": "was reloaded!",
-      "fail": "There was an error while reloading the command"
+      "invalid_command": "There is no command with this name or alias %0!",
+      "success": "%0 was reloaded!",
+      "fail": "There was an error while reloading the command %0:\n%1"
     },
     "lang": {
       "help": "Without arguments, this command outputs your currently set language. With an argument, this command sets your language to the passing language, if it exists.\nSupported languages:",
       "usage": "[language]",
       "invalid": "This language is not supported!",
-      "set": "Your language has been been set to:",
-      "get": "Your current language is:",
-      "error": "Error, I could not change your language"
+      "set": "Your language has been been set to: %0",
+      "get": "Your current language is: %0",
+      "error": "Error, I could not change your language (%0)!"
     },
     "prefix": {
       "help": "Without arguments, this command prints the current prefix of the guild. With an argument, this command sets the prefix of the guild to the given one",
       "usage": "[prefix]",
       "too_long": "The passed prefix is too long!",
-      "get": "The prefix of this server is:",
-      "set": "The prefix of this server has been set to:"
+      "get": "The prefix of this server is: %0",
+      "set": "The prefix of this server has been set to: %0"
     }
   }
 }
