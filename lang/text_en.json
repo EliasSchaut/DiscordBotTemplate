@@ -3,12 +3,15 @@
     "error": "There was an error trying to execute that command!"
   },
   "error": {
-    "guild_only": "I can execute this command only in servers!",
-    "dm_only": "I can execute this command only in private chat with you!",
-    "restricted": "You are not authorized to execute this command!",
-    "missing_args": "You have given the wrong number of arguments!",
-    "missing_args_proper_use": "The correct usage would be: %0",
-    "nsfw_only": "You can execute this command only in NSFW channels!"
+    "args_needed": "This command needs arguments! But you didn't submit any.",
+    "args_min_length": "This command takes at least %0 arguments! But you only submitted %1.",
+    "args_max_length": "This command can only be passed with a maximum of %0 arguments! But you have submitted %1.",
+    "missing_args_proper_use": "The correct usage would be: %0!",
+    "guild_only": "Sorry, I can only run this command in servers!",
+    "dm_only": "I can only run this command in private chat with you!",
+    "need_permission": "You are not authorized to execute this command!\nYou need the following permissions to execute this command: %0",
+    "admin_only": "You are not authorized to execute this command!\nOnly bot admins can execute this command.",
+    "nsfw": "Sorry, you can execute this command only in NSFW channels!"
   },
   "commands": {
     "echo": {
