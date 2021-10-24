@@ -14,6 +14,8 @@ module.exports = {
     aliases: ['pre'],
     usage: async function (msg) { return await gt(msg, s + "usage") },
     guild_only: true,
+    args_min_length: 0,
+    args_max_length: 1,
     need_permission: [ "ADMINISTRATOR" ],
     disabled: !enable_prefix_change,
     async execute(msg, args) {

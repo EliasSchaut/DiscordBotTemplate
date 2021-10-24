@@ -36,6 +36,7 @@ client.menu_event = require("./js/event_helper/menu_event")
 client.button_event = require("./js/event_helper/button_event")
 client.mod_getter = require("./js/cmd_modificator_getter")
 client.output = require("./js/dc_output")
+client.mod_man = require("./js/cmd_modificators/mod_manager")
 
 // helper fields
 const commands_path = "./commands"
@@ -65,6 +66,11 @@ client.command_tree = command_tree
 // ---------------------------------
 // when the client is ready (bot is ready)
 client.once('ready', async () => {
+    let problem_free_set_up = true
+
+    // set mods
+    problem_free_set_up = client.mod_man.init(client)
+
     // set activity
     if (client.config.enable_activity) {
         await client.user.setActivity(client.config.activity.name, { type: client.config.activity.type })
@@ -77,8 +83,12 @@ client.once('ready', async () => {
     await client.slasher.register(client)
 
     // log ready info
-    client.logger.log('info', 'Ready!')
-});
+    if (problem_free_set_up) {
+        client.logger.log('info', 'Ready!')
+    } else {
+        client.logger.log('warn', 'Ready, but with some errors!')
+    }
+})
 
 // react on messages
 client.on('messageCreate',async msg => {
