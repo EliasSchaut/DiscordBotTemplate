@@ -25,11 +25,7 @@ function init(client) {
 
 async function check_all_mods(msg, command, args) {
     for (const mod of Object.keys(command)) {
-        if (mod === "execute") continue
-        else if (!(mod in mods)) {
-            unknown(msg.client, command.name, mod)
-
-        } else if (!await mods[mod].check(msg, command, args)) {
+        if ((mod in mods) && !await mods[mod].check(msg, command, args)) {
             await mods[mod].send_check_fail(msg, command, args)
             return false
         }
