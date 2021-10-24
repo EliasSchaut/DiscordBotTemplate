@@ -2,7 +2,7 @@
 // config values
 // ----------------------------------
 const name = "usage"
-const type = "object"
+const type = "function"
 const required = false
 // ----------------------------------
 const lang_key = "error." + name

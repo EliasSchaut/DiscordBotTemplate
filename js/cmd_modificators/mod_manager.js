@@ -27,7 +27,7 @@ async function check_all_mods(msg, command, args) {
     for (const mod of Object.keys(command)) {
         if (mod === "execute") continue
         else if (!(mod in mods)) {
-            unknown(msg.client, command, mod)
+            unknown(msg.client, command.name, mod)
 
         } else if (!await mods[mod].check(msg, command, args)) {
             await mods[mod].send_check_fail(msg, command, args)
@@ -48,7 +48,7 @@ function check_all_valid(client) {
         for (const mod of Object.keys(command[1])) {
             if (mod === "execute") continue
             else if (!(mod in mods)) {
-                unknown(client, command[1], mod)
+                unknown(client, command[1].name, mod)
 
             } else if (!mods[mod].is_valid(command[1])) {
                 send_invalid(client, command[1].name, mods[mod].name, mods[mod].type, mods[mod].required)
