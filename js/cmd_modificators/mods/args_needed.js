@@ -32,8 +32,8 @@ async function send_check_fail(msg, command, args) {
 // check/get modification
 // ----------------------------------
 function is_valid(command) {
-    const is_in = is_in(command)
-    return (is_in || !required) && (!is_in || (typeof command[name] === type))
+    const is_in_command = is_in(command)
+    return (is_in_command || !required) && (!is_in_command || (typeof command[name] === type))
 }
 
 async function get(msg, command) {

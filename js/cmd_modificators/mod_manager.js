@@ -2,6 +2,7 @@
 // Global values
 // ----------------------------------
 const fs = require("fs")
+const mods_path_global = "./js/cmd_modificators/mods"
 const mods_path = "./mods"
 const mods = {}
 // ----------------------------------
@@ -11,9 +12,9 @@ const mods = {}
 // init/check
 // ----------------------------------
 function init(client) {
-    const mod_folder = fs.readdirSync(mods_path)
+    const mod_folder = fs.readdirSync(mods_path_global)
     for (const mod_file of mod_folder) {
-        const mod = require(`${mods_path}/${mod_file}`).filter(file => file.endsWith('.js'))
+        const mod = require(`${mods_path}/${mod_file}`)
         mods[mod.name] = mod
     }
 
@@ -50,7 +51,7 @@ function check_all_valid(client) {
                 unknown(client, command[1], mod)
 
             } else if (!mods[mod].is_valid(command[1])) {
-                send_invalid(client, command[1], mods[mod].name, mods[mod].type, mods[mod].required)
+                send_invalid(client, command[1].name, mods[mod].name, mods[mod].type, mods[mod].required)
                 return false
             }
         }
