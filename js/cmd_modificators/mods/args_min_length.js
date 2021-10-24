@@ -14,7 +14,7 @@ const lang_key = "error." + name
 // ----------------------------------
 async function check(msg, command, args) {
     const mod = await get(msg, command)
-    return !mod || (args.length < mod)
+    return !mod || (args.length > mod)
 }
 
 async function send_check_fail(msg, command, args) {
