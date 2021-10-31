@@ -7,6 +7,7 @@ const required = false
 const cooldown_title = 'usedRecently'
 const cooldown_base = 1000 // seconds
 const timeouts = new Map()
+const ms = require("ms")
 // ----------------------------------
 const lang_key = "error." + name
 // ----------------------------------
@@ -79,10 +80,10 @@ function get_time_remaining(command, user_id) {
     const timeout = timeouts.get(user_id)
 
     if (timeout) {
-        console.log(timeout)
+        return ms((timeout.createdTimestamp + timeout["_idleTimeout"]) - Date.now())
 
     } else {
-        return 0
+        return "0s"
     }
 }
 // ----------------------------
@@ -97,6 +98,7 @@ function set_command_timeout(command, user_id, cooldown_time) {
             command[cooldown_title].delete(user_id);
         }, cooldown_time * cooldown_base)
 
+        timeout.createdTimestamp = Date.now()
         timeouts.set(user_id, timeout)
     }
 }

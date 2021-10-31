@@ -6,7 +6,7 @@
     "args_needed": "Dieser Befehl benötigt Argumente! Du hast aber keine abgegeben.",
     "args_min_length": "Dieser Befehl benötigt mindestens %0 Argumente! Du hast aber nur %1 abgegeben.",
     "args_max_length": "Diesem Befehl können maximal %0 Argumente übergeben werden! Du hast aber %1 abgegeben.",
-    "cooldown": "Auf diesen Befehl gibt es einen Cooldown. Du musst noch %0 warten, um den Befehl wieder ausführen zu können.",
+    "cooldown": "Auf diesen Befehl gibt es einen Cooldown. Du musst noch `%0` warten, um den Befehl wieder ausführen zu können.",
     "missing_args_proper_use": "Die korrekte Verwendung wäre: `%0`!",
     "guild_only": "Ich kann diesen Befehl leider nur in Servern ausführen!",
     "dm_only": "Ich kann diesen Befehl nur im privaten Chat mit dir ausführen!",

@@ -8,7 +8,7 @@ async function interaction_create(interaction) {
     const [command_name, args] = get_command_name_and_args(interaction)
     const command = get_command(interaction, command_name)
 
-    if (await interaction.client.command_event.check_message(interaction, "/", command, args)) {
+    if (await interaction.client.mod_man.check_all_mods(interaction, command, args)) {
         await interaction.client.command_event.try_to_execute(interaction, command, args)
     }
 }

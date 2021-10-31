@@ -14,6 +14,7 @@ module.exports = {
     usage: async function (msg) { return await gt(msg, s + "usage") },
     args_min_length: 1,
     enable_slash: true,
+    cooldown: 55,
     async execute(msg, args) {
         msg.client.output.send(msg, args.join(" "));
     },

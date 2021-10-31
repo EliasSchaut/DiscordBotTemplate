@@ -6,7 +6,7 @@
     "args_needed": "This command needs arguments! But you didn't submit any.",
     "args_min_length": "This command takes at least %0 arguments! But you only submitted %1.",
     "args_max_length": "This command can only be passed with a maximum of %0 arguments! But you have submitted %1.",
-    "cooldown": "There is a cool-down on this command. You have to wait another %0 to be able to execute the command again.",
+    "cooldown": "There is a cooldown on this command. You have to wait another `%0` to be able to execute the command again.",
     "missing_args_proper_use": "The correct usage would be: `%0`!",
     "guild_only": "Sorry, I can only run this command in servers!",
     "dm_only": "I can only run this command in private chat with you!",
