@@ -35,17 +35,18 @@ async function check_all_mods(msg, command, args) {
 }
 
 async function get_mods_for_help(msg, command) {
-    const mods_help = []
+    const mods_help = [`**${await msg.client.lang_helper.get_text(msg, "mods_help.modifications")}:**`]
     for (const mod of Object.keys(command)) {
         if (mod in mods) {
-            const mod_help = mods[mod].get_help(msg, command)
+            const mod_help = await mods[mod].get_help(msg, command)
             if (mod_help.length !== 0) {
                 mods_help.push(mod_help)
             }
         }
     }
 
-    return mods_help
+    if (mods_help.length === 1) return []
+    else return mods_help
 }
 // ----------------------------------
 
@@ -76,7 +77,8 @@ function send_invalid(client, command_name, mod_name, mod_type, mod_required) {
 }
 
 function unknown(client, command_name, mod_name) {
-    client.logger.log("warn", `The command modification ${mod_name} of the command ${command_name} is not known by the mod_manager.`)
+    client.logger.log("warn", `Th
+    e command modification ${mod_name} of the command ${command_name} is not known by the mod_manager.`)
 }
 // ----------------------------------
 
