@@ -42,7 +42,7 @@ async function check_all_mods(msg, command, args) {
 function check_all_valid(client) {
     for (const command of client.commands) {
         for (const mod of Object.keys(command[1])) {
-            if (mod === "execute") continue
+            if (mod === "execute") break
             else if (!(mod in mods)) {
                 unknown(client, command[1].name, mod)
 
