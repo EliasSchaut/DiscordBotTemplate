@@ -14,6 +14,18 @@
     "admin_only": "You are not authorized to execute this command!\nOnly bot admins can execute this command.",
     "nsfw": "Sorry, you can execute this command only in NSFW channels!"
   },
+  "mods-help": {
+    "admin_only": "Only executable by bot admins",
+    "args_needed": "Requires arguments",
+    "args_max_length": "At least %0 arguments",
+    "args_min_length": "Maximal %0 arguments",
+    "cooldown": "Cooldown: `%0`",
+    "cooldown_global": "Global Cooldown: `%0`",
+    "dm_only": "Only executable in DMs",
+    "guild_only": "Only executable in servers",
+    "need_permission": "Requires the following permissions: `%0`",
+    "nsfw": "Only executable in NSFW channels"
+  },
   "commands": {
     "echo": {
       "help": "Sends back the passed arguments.",
