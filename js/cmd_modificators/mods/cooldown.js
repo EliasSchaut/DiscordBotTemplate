@@ -56,7 +56,8 @@ async function get(msg, command) {
 }
 
 async function get_help(msg, command) {
-    return await get(msg, command) ? await msg.client.lang_helper.get_text(msg, help_key) : ""
+    const value = await get(msg, command)
+    return value ? await msg.client.lang_helper.get_text(msg, help_key, ms(value * cooldown_base)) : ""
 }
 
 function is_in(command) {
