@@ -36,7 +36,7 @@ async function check(msg, command, args) {
 }
 
 async function send_check_fail(msg, command, args) {
-    const err = await msg.client.lang_helper.get_text(msg, lang_key, get_time_remaining(command, msg.author.id))
+    const err = await msg.client.lang_helper.get_text(msg, lang_key, get_time_remaining(msg.author.id))
     msg.client.output.reply(msg, err)
 }
 // ----------------------------------
@@ -76,7 +76,7 @@ function check_cooldown(command, user_id) {
     return command[cooldown_title].has(user_id)
 }
 
-function get_time_remaining(command, user_id) {
+function get_time_remaining(user_id) {
     const timeout = timeouts.get(user_id)
 
     if (timeout) {

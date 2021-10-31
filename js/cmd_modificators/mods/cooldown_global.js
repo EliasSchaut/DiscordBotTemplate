@@ -6,6 +6,8 @@ const type = "number"
 const required = false
 const cooldown_global = new Set()
 const cooldown_base = 1000 // seconds
+const timeouts = new Map()
+const ms = require("ms")
 // ----------------------------------
 const lang_key = "error.cooldown"
 // ----------------------------------
@@ -29,7 +31,7 @@ async function check(msg, command, args) {
 }
 
 async function send_check_fail(msg, command, args) {
-    const err = await msg.client.lang_helper.get_text(msg, lang_key)
+    const err = await msg.client.lang_helper.get_text(msg, lang_key, get_time_remaining(msg.author.id))
     msg.client.output.reply(msg, err)
 }
 // ----------------------------------
@@ -64,6 +66,17 @@ function set_global_cooldown(command, user_id, cooldown_time) {
 function check_cooldown_global(client, user_id) {
     return cooldown_global.has(user_id)
 }
+
+function get_time_remaining(user_id) {
+    const timeout = timeouts.get(user_id)
+
+    if (timeout) {
+        return ms((timeout.createdTimestamp + timeout["_idleTimeout"]) - Date.now())
+
+    } else {
+        return "0s"
+    }
+}
 // ----------------------------
 
 
@@ -72,9 +85,12 @@ function check_cooldown_global(client, user_id) {
 // ----------------------------
 function set_global_timeout(command, user_id, cooldown_time) {
     if (cooldown_time) {
-        setTimeout(() => {
+        const timeout = setTimeout(() => {
             cooldown_global.delete(user_id);
         }, cooldown_time * cooldown_base)
+
+        timeout.createdTimestamp = Date.now()
+        timeouts.set(user_id, timeout)
     }
 }
 // ----------------------------
