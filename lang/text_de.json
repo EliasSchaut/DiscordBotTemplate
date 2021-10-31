@@ -3,12 +3,29 @@
     "error": "Es gab einen Fehler beim Versuch, diesen Befehl auszuführen!"
   },
   "error": {
-    "guild_only": "Ich kann diesen Befehl nur in Servern ausführen!",
+    "admin_only": "Du bist nicht berechtigt, diesen Befehl auszuführen!\nNur Bot-Admins können diesen Befehl ausführen.",
+    "args_needed": "Dieser Befehl benötigt Argumente! Du hast aber keine abgegeben.",
+    "args_min_length": "Dieser Befehl benötigt mindestens %0 Argumente! Du hast aber nur %1 abgegeben.",
+    "args_max_length": "Diesem Befehl können maximal %0 Argumente übergeben werden! Du hast aber %1 abgegeben.",
+    "cooldown": "Auf diesen Befehl gibt es einen Cooldown. Du musst noch `%0` warten, um den Befehl wieder ausführen zu können.",
+    "missing_args_proper_use": "Die korrekte Verwendung wäre: `%0`!",
     "dm_only": "Ich kann diesen Befehl nur im privaten Chat mit dir ausführen!",
-    "restricted": "Du bist nicht berechtigt, diesen Befehl auszuführen!",
-    "missing_args": "Du hast die falsche Anzahl an Argumenten abgegeben!",
-    "missing_args_proper_use": "Die korrekte Verwendung wäre:",
-    "nsfw_only": "Diesen Befehl kannst du nur in NSFW-Kanälen!"
+    "guild_only": "Ich kann diesen Befehl leider nur in Servern ausführen!",
+    "need_permission": "Du bist nicht berechtigt, diesen Befehl auszuführen!\nDu benötigst folgende Rechte um diesen Befehl auszuführen: %0",
+    "nsfw": "Diesen Befehl kannst du leider nur in NSFW-Kanälen ausführen!"
+  },
+  "mods_help": {
+    "modifications": "Modifikationen",
+    "admin_only": "Nur von Bot-Admins ausführbar",
+    "args_needed": "Benötigt Argumente",
+    "args_max_length": "Maximale Anzahl an Argumenten: `%0`",
+    "args_min_length": "Minimale Anzahl an Argumenten: `%0`",
+    "cooldown": "Cooldown: `%0`",
+    "cooldown_global": "Globaler-Cooldown: `%0`",
+    "dm_only": "Nur in DMs ausführbar",
+    "guild_only": "Nur in Servern ausführbar",
+    "need_permission": "Benötigt folgende Rechte: `%0`",
+    "nsfw": "Nur in NSFW-Channeln ausführbar"
   },
   "commands": {
     "echo": {
@@ -22,14 +39,10 @@
       "command": "Kommando",
       "back_to_message": "Zurück zur Nachricht",
       "jump_to_dm": "Springe zur DM",
-      "intro": {
-        "0": "Liste mit allen Befehlen:",
-        "1": "Du kannst",
-        "2": "senden, um Informationen zu einem bestimmten Befehl zu erhalten!"
-      },
+      "intro": "Liste mit allen Befehlen:\n%0\nDu kannst %1 senden, um Informationen zu einem bestimmten Befehl zu erhalten!",
       "dm": {
         "success": "Dir wurde eine DM geschickt!",
-        "fail_console": "Konnte keine DM senden an",
+        "fail_console": "Es konnte keine DM senden an %0",
         "fail_reply": "Es scheint so, als ob ich dir keine DMs schicken kann! Hast du DMs deaktiviert?"
       },
       "success": {
@@ -46,31 +59,31 @@
     },
     "ping": {
       "help": "Rufe den Ping des Bots ab.",
-      "websocket": "Websocket Heartbeat:",
+      "websocket": "Websocket Heartbeat: %0ms",
       "pinging": "Senden...",
-      "roundtrip": "Roundtrip Latenz:"
+      "roundtrip": "Roundtrip Latenz: %0ms"
     },
     "reload": {
       "help": "Lädt einen Befehl erneut.",
       "usage": "[Name eines Befehls]",
-      "invalid_command": "Es gibt keinen Befehl mit diesem Namen oder Alias",
-      "success": "wurde neu geladen!",
-      "fail": "Es gab einen Fehler beim Nachladen des Befehls"
+      "invalid_command": "Es gibt keinen Befehl mit diesem Namen oder Alias %0!",
+      "success": "%0 wurde neu geladen!",
+      "fail": "Es gab einen Fehler beim Nachladen des Befehls %0:\n%1"
     },
     "lang": {
       "help": "Ohne Argumente gibt dieser Befehl deine aktuell gesetzte Sprache aus. Mit einem Argument setzt dieser Befehl deine Sprache auf die übergebende Sprache, sofern diese existiert.\nUnterstütze Sprachen: ",
       "usage": "[Sprache]",
       "invalid": "Diese Sprache existiert nicht!",
-      "set": "Deine Sprache wurde gesetzt auf:",
-      "get": "Deine aktuelle Sprache ist:",
-      "error": "Error, ich konnte deine Sprache nicht ändern"
+      "set": "Deine Sprache wurde gesetzt auf: %0",
+      "get": "Deine aktuelle Sprache ist: %0",
+      "error": "Error, ich konnte deine Sprache nicht ändern (%0)!"
     },
     "prefix": {
       "help": "Ohne Argumente gibt dieser Befehl den aktuellen Prefix des aus. Mit einem Argument setzt dieser Befehl den Prefix des Servers auf den Übergebenen",
       "usage": "[Prefix]",
       "too_long": "Der übergebene Prefix ist zu lang!",
-      "get": "Der Prefix dieses Servers ist:",
-      "set": "Der Prefix dieses Server wurde gesetzt auf:"
+      "get": "Der Prefix dieses Servers ist: %0",
+      "set": "Der Prefix dieses Server wurde gesetzt auf: %0"
     }
   }
 }

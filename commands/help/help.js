@@ -14,8 +14,8 @@ module.exports = {
     name: 'help',
     description: async function (msg) { return await gt(msg, s + "help") },
     aliases: ['commands', 'h'],
-    args_needed: true,
     args_min_length: 0,
+    args_max_length: 1,
     usage: async function (msg) { return await gt(msg, s + "usage") },
     enable_slash: true,
     async execute(msg, args) {
@@ -71,9 +71,8 @@ module.exports = {
         const embed_msg = new Discord.MessageEmbed().setColor(msg.client.config.embed.color)
         embed_msg.setThumbnail(msg.client.config.embed.avatar_url)
 
-        data.push(`${await gt(msg, s + "intro.0")}\n`);
-        data.push(msg.client.helper.commands_to_string(msg));
-        data.push(`\n${await gt(msg, s + "intro.1")} \`${prefix}${this.name} ${await this.usage(msg)}\` ${await gt(msg, s + "intro.2")}\n`);
+        data.push(await gt(msg, s + "intro", msg.client.helper.commands_to_string(msg),
+                `\`${prefix}${this.name} ${await this.usage(msg)}\``))
         if (msg.client.config.help.send_to_dm && msg.client.helper.from_guild(msg)) {
             data.push(msg.client.helper.link_to_message(msg, await gt(msg, s + "back_to_message")))
         }
@@ -93,9 +92,10 @@ module.exports = {
         const aliases = msg.client.mod_getter.get_aliases(command)
         const description = await msg.client.mod_getter.get_description(msg, command)
         const usage = await msg.client.mod_getter.get_usage(msg, command)
-        if (aliases.length) data.push(`${await gt(msg, s + "success.aliases")}\n${aliases.join(', ')}\n\n`);
-        if (description) data.push(`${await gt(msg, s + "success.description")}\n${description}\n\n`);
-        if (usage) data.push(`${await gt(msg, s + "success.usage")}\n\`${prefix}${name} ${usage}\`\n`);
+        if (aliases.length) data.push(`${await gt(msg, s + "success.aliases")}\n${aliases.join(', ')}\n\n`)
+        if (description) data.push(`${await gt(msg, s + "success.description")}\n${description}\n\n`)
+        if (usage) data.push(`${await gt(msg, s + "success.usage")}\n\`${prefix}${name} ${usage}\`\n`)
+        if (msg.client.config.help.show_cmd_modifications) data.push(`\n${(await msg.client.mod_man.get_mods_for_help(msg, command)).join("\n")}`)
 
         embed_msg.setTitle(`${name.toUpperCase()} ${(await gt(msg, s + "command")).toUpperCase()}`)
         embed_msg.setDescription(data.join(""))

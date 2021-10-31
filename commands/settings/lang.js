@@ -12,7 +12,8 @@ module.exports = {
     name: 'lang',
     description: async function (msg) { return `${(await gt(msg, s + "help"))} ${Object.keys(lang_paths).join(", ")}` },
     aliases: ['change_lang', 'language', 'cl'],
-    args_needed: false,
+    args_min_length: 0,
+    args_max_length: 1,
     usage: async function (msg) { return await gt(msg, s + "usage") },
     disabled: !enable_lang_change,
     enable_slash: true,
@@ -20,10 +21,10 @@ module.exports = {
         if (args.length > 0) {
             if (iv(args[0])) {
                 if (await msg.client.db_helper.set_lang(msg, args[0])) {
-                    msg.client.output.send(msg, `${await gt(msg, `${s}set`)} \`${args[0]}\``)
+                    msg.client.output.send(msg, await gt(msg, `${s}set`, `\`${args[0]}\``))
 
                 } else {
-                    msg.client.output.reply(msg, `${await gt(msg, `${s}error`)} (${msg.author.username})!`)
+                    msg.client.output.reply(msg, await gt(msg, `${s}error`, `${msg.author.username}`))
                 }
 
             } else {
@@ -31,7 +32,7 @@ module.exports = {
             }
 
         } else {
-            return msg.client.output.send(msg, `${await gt(msg, s + "get")} \`${await msg.client.db_helper.get_lang(msg)}\``)
+            return msg.client.output.send(msg, await gt(msg, s + "get", `\`${await msg.client.db_helper.get_lang(msg)}\``))
         }
     },
 };

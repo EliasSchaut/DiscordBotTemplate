@@ -54,7 +54,7 @@ async function send_fail_missing_args(msg, prefix, command) {
 
     if (usage) {
         const name = msg.client.mod_getter.get_name(command)
-        reply_content += `\n${(await msg.client.lang_helper.get_text(msg, `${s}missing_args_proper_use`))} \`${prefix}${name} ${usage}\``
+        reply_content += "\n" + await msg.client.lang_helper.get_text(msg, `${s}missing_args_proper_use`, `\`${prefix}${name} ${usage}\``)
     }
 
     return reply(msg, reply_content)

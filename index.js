@@ -34,8 +34,10 @@ client.command_event = require("./js/event_helper/command_event")
 client.slash_event = require("./js/event_helper/slash_event")
 client.menu_event = require("./js/event_helper/menu_event")
 client.button_event = require("./js/event_helper/button_event")
+client.events = require("./js/event_helper/events")
 client.mod_getter = require("./js/cmd_modificator_getter")
 client.output = require("./js/dc_output")
+client.mod_man = require("./js/cmd_modifications/mod_manager")
 
 // helper fields
 const commands_path = "./commands"
@@ -65,6 +67,11 @@ client.command_tree = command_tree
 // ---------------------------------
 // when the client is ready (bot is ready)
 client.once('ready', async () => {
+    let problem_free_set_up = true
+
+    // set mods
+    problem_free_set_up = client.mod_man.init(client)
+
     // set activity
     if (client.config.enable_activity) {
         await client.user.setActivity(client.config.activity.name, { type: client.config.activity.type })
@@ -76,19 +83,30 @@ client.once('ready', async () => {
     // sync slash commands
     await client.slasher.register(client)
 
+    // set up events
+    await client.events.init(client)
+
     // log ready info
-    client.logger.log('info', 'Ready!')
-});
+    if (problem_free_set_up) {
+        client.logger.log('info', 'Ready!')
+    } else {
+        client.logger.log('warn', 'Ready, but with some errors!')
+    }
+})
 
 // react on messages
 client.on('messageCreate',async msg => {
-    if (msg.client.config.enable_standard_commands) await client.command_event.message_create(msg)
+    // react on commands
+    if (client.config.enable_standard_commands) await client.command_event.message_create(msg)
+
+    // react on all messages for events
+    await client.events.event_create(msg)
 })
 
 // react on interactions
 client.on("interactionCreate", async interaction => {
     // react on slash commands
-    if (interaction.client.config.enable_slash_commands && interaction.isCommand()) await client.slash_event.interaction_create(interaction)
+    if (client.config.enable_slash_commands && interaction.isCommand()) await client.slash_event.interaction_create(interaction)
 
     // when a menu was chosen
     else if (interaction.isSelectMenu()) await client.menu_event.interaction_create(interaction)

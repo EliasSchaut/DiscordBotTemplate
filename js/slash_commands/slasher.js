@@ -15,7 +15,7 @@ async function register(client) {
 
         await rest.put(
             Routes.applicationCommands(client.config.client_id),
-            { body: await get_slash_commands(client) },
+            { body: client.config.enable_slash_commands ? await get_slash_commands(client) : [] },
         )
 
         client.logger.log("info", 'Successfully reloaded application (/) commands.');
