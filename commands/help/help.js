@@ -92,9 +92,10 @@ module.exports = {
         const aliases = msg.client.mod_getter.get_aliases(command)
         const description = await msg.client.mod_getter.get_description(msg, command)
         const usage = await msg.client.mod_getter.get_usage(msg, command)
-        if (aliases.length) data.push(`${await gt(msg, s + "success.aliases")}\n${aliases.join(', ')}\n\n`);
-        if (description) data.push(`${await gt(msg, s + "success.description")}\n${description}\n\n`);
-        if (usage) data.push(`${await gt(msg, s + "success.usage")}\n\`${prefix}${name} ${usage}\`\n`);
+        if (aliases.length) data.push(`${await gt(msg, s + "success.aliases")}\n${aliases.join(', ')}\n\n`)
+        if (description) data.push(`${await gt(msg, s + "success.description")}\n${description}\n\n`)
+        if (usage) data.push(`${await gt(msg, s + "success.usage")}\n\`${prefix}${name} ${usage}\`\n`)
+        if (msg.client.config.help.show_cmd_modifications) data.push(`\n${(await msg.client.mod_man.get_mods_for_help(msg, command)).join("\n")}`)
 
         embed_msg.setTitle(`${name.toUpperCase()} ${(await gt(msg, s + "command")).toUpperCase()}`)
         embed_msg.setDescription(data.join(""))

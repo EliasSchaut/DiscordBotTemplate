@@ -3,16 +3,29 @@
     "error": "Es gab einen Fehler beim Versuch, diesen Befehl auszuführen!"
   },
   "error": {
+    "admin_only": "Du bist nicht berechtigt, diesen Befehl auszuführen!\nNur Bot-Admins können diesen Befehl ausführen.",
     "args_needed": "Dieser Befehl benötigt Argumente! Du hast aber keine abgegeben.",
     "args_min_length": "Dieser Befehl benötigt mindestens %0 Argumente! Du hast aber nur %1 abgegeben.",
     "args_max_length": "Diesem Befehl können maximal %0 Argumente übergeben werden! Du hast aber %1 abgegeben.",
     "cooldown": "Auf diesen Befehl gibt es einen Cooldown. Du musst noch `%0` warten, um den Befehl wieder ausführen zu können.",
     "missing_args_proper_use": "Die korrekte Verwendung wäre: `%0`!",
-    "guild_only": "Ich kann diesen Befehl leider nur in Servern ausführen!",
     "dm_only": "Ich kann diesen Befehl nur im privaten Chat mit dir ausführen!",
+    "guild_only": "Ich kann diesen Befehl leider nur in Servern ausführen!",
     "need_permission": "Du bist nicht berechtigt, diesen Befehl auszuführen!\nDu benötigst folgende Rechte um diesen Befehl auszuführen: %0",
-    "admin_only": "Du bist nicht berechtigt, diesen Befehl auszuführen!\nNur Bot-Admins können diesen Befehl ausführen.",
     "nsfw": "Diesen Befehl kannst du leider nur in NSFW-Kanälen ausführen!"
+  },
+  "mods_help": {
+    "modifications": "Modifikationen",
+    "admin_only": "Nur von Bot-Admins ausführbar",
+    "args_needed": "Benötigt Argumente",
+    "args_max_length": "Maximale Anzahl an Argumenten: `%0`",
+    "args_min_length": "Minimale Anzahl an Argumenten: `%0`",
+    "cooldown": "Cooldown: `%0`",
+    "cooldown_global": "Globaler-Cooldown: `%0`",
+    "dm_only": "Nur in DMs ausführbar",
+    "guild_only": "Nur in Servern ausführbar",
+    "need_permission": "Benötigt folgende Rechte: `%0`",
+    "nsfw": "Nur in NSFW-Channeln ausführbar"
   },
   "commands": {
     "echo": {

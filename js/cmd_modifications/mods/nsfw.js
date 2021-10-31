@@ -1,11 +1,12 @@
 // ----------------------------------
 // config values
 // ----------------------------------
-const name = "need_permission"
-const type = "object"
-const required = true
+const name = "nsfw"
+const type = "boolean"
+const required = false
 // ----------------------------------
-const lang_key = "error." + name
+const error_key = "error." + name
+const help_key = "mods_help." + name
 // ----------------------------------
 
 
@@ -13,12 +14,11 @@ const lang_key = "error." + name
 // check msg
 // ----------------------------------
 async function check(msg, command, args) {
-    const mod = await get(msg, command)
-    return !mod || !mod.length || msg.client.helper.has_permission(msg, mod)
+    return !(await get(msg, command)) || msg.client.helper.is_nsfw_channel(msg)
 }
 
 async function send_check_fail(msg, command, args) {
-    const err = await msg.client.lang_helper.get_text(msg, lang_key, await get(msg, command))
+    const err = await msg.client.lang_helper.get_text(msg, error_key)
     msg.client.output.reply(msg, err)
 }
 // ----------------------------------
@@ -36,9 +36,13 @@ async function get(msg, command) {
     return (is_in(command)) ? command[name] : false
 }
 
+async function get_help(msg, command) {
+    return await get(msg, command) ? await msg.client.lang_helper.get_text(msg, help_key) : ""
+}
+
 function is_in(command) {
     return command.hasOwnProperty(name)
 }
 // ----------------------------------
 
-module.exports = { check, send_check_fail, is_valid, get, is_in, name, type, required }
+module.exports = { check, send_check_fail, is_valid, get, get_help, is_in, name, type, required }

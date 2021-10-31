@@ -1,15 +1,16 @@
 // ----------------------------------
 // config values
 // ----------------------------------
-const name = "cooldown"
+const name = "cooldown_global"
 const type = "number"
 const required = false
-const cooldown_title = 'usedRecently'
+const cooldown_global = new Set()
 const cooldown_base = 1000 // seconds
 const timeouts = new Map()
 const ms = require("ms")
 // ----------------------------------
-const lang_key = "error." + name
+const error_key = "error.cooldown"
+const help_key = "mods_help." + name
 // ----------------------------------
 
 
@@ -20,23 +21,18 @@ async function check(msg, command, args) {
     const mod = await get(msg, command)
     if (!mod) {
         return true
-    }
 
-    if (!(Object.keys(command).includes(cooldown_title))) {
-        init_cooldown(command)
-    }
-
-    if (check_cooldown(command, msg.author.id)) {
+    } else if (check_cooldown_global(command, msg.author.id)) {
         return false
 
     } else {
-        set_cooldown(command, msg.author.id, mod)
+        set_global_cooldown(command, msg.author.id, mod)
         return true
     }
 }
 
 async function send_check_fail(msg, command, args) {
-    const err = await msg.client.lang_helper.get_text(msg, lang_key, get_time_remaining(msg.author.id))
+    const err = await msg.client.lang_helper.get_text(msg, error_key, get_time_remaining(msg.author.id))
     msg.client.output.reply(msg, err)
 }
 // ----------------------------------
@@ -54,6 +50,11 @@ async function get(msg, command) {
     return (is_in(command)) ? command[name] : false
 }
 
+async function get_help(msg, command) {
+    const value = await get(msg, command)
+    return value ? await msg.client.lang_helper.get_text(msg, help_key, ms(value * cooldown_base)) : ""
+}
+
 function is_in(command) {
     return command.hasOwnProperty(name)
 }
@@ -63,17 +64,13 @@ function is_in(command) {
 // ----------------------------
 // Private
 // ----------------------------
-function init_cooldown(command) {
-    command[cooldown_title] = new Set()
+function set_global_cooldown(command, user_id, cooldown_time) {
+    cooldown_global.add(user_id)
+    set_global_timeout(command, user_id, cooldown_time)
 }
 
-function set_cooldown(command, user_id, cooldown_time) {
-    command[cooldown_title].add(user_id)
-    set_command_timeout(command, user_id, cooldown_time)
-}
-
-function check_cooldown(command, user_id) {
-    return command[cooldown_title].has(user_id)
+function check_cooldown_global(client, user_id) {
+    return cooldown_global.has(user_id)
 }
 
 function get_time_remaining(user_id) {
@@ -92,10 +89,10 @@ function get_time_remaining(user_id) {
 // ----------------------------
 // Timeout
 // ----------------------------
-function set_command_timeout(command, user_id, cooldown_time) {
-    if(cooldown_time) {
+function set_global_timeout(command, user_id, cooldown_time) {
+    if (cooldown_time) {
         const timeout = setTimeout(() => {
-            command[cooldown_title].delete(user_id);
+            cooldown_global.delete(user_id);
         }, cooldown_time * cooldown_base)
 
         timeout.createdTimestamp = Date.now()
@@ -104,5 +101,4 @@ function set_command_timeout(command, user_id, cooldown_time) {
 }
 // ----------------------------
 
-module.exports = { check, send_check_fail, is_valid, get, is_in, name, type, required }
-
+module.exports = { check, send_check_fail, is_valid, get, get_help, is_in, name, type, required }

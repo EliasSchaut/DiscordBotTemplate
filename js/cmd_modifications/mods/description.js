@@ -1,11 +1,12 @@
 // ----------------------------------
 // config values
 // ----------------------------------
-const name = "dm_only"
-const type = "boolean"
-const required = false
+const name = "description"
+const type = "function"
+const required = true
 // ----------------------------------
-const lang_key = "error." + name
+const error_key = "error." + name
+const help_key = "mods_help." + name
 // ----------------------------------
 
 
@@ -13,13 +14,11 @@ const lang_key = "error." + name
 // check msg
 // ----------------------------------
 async function check(msg, command, args) {
-    const mod = await get(msg, command)
-    return !mod || msg.client.helper.from_dm(msg)
+    return true
 }
 
 async function send_check_fail(msg, command, args) {
-    const err = await msg.client.lang_helper.get_text(msg, lang_key)
-    msg.client.output.reply(msg, err)
+    return true
 }
 // ----------------------------------
 
@@ -33,7 +32,11 @@ function is_valid(command) {
 }
 
 async function get(msg, command) {
-    return (is_in(command)) ? command[name] : false
+    return (is_in(command)) ? await command[name](msg) : false
+}
+
+async function get_help(msg, command) {
+    return ""
 }
 
 function is_in(command) {
@@ -41,4 +44,4 @@ function is_in(command) {
 }
 // ----------------------------------
 
-module.exports = { check, send_check_fail, is_valid, get, is_in, name, type, required }
+module.exports = { check, send_check_fail, is_valid, get, get_help, is_in, name, type, required }

@@ -1,11 +1,12 @@
 // ----------------------------------
 // config values
 // ----------------------------------
-const name = "enable_slash"
-const type = "boolean"
+const name = "usage"
+const type = "function"
 const required = false
 // ----------------------------------
-const lang_key = "error." + name
+const error_key = "error." + name
+const help_key = "mods_help." + name
 // ----------------------------------
 
 
@@ -31,7 +32,11 @@ function is_valid(command) {
 }
 
 async function get(msg, command) {
-    return (is_in(command)) ? command[name] : false
+    return (is_in(command)) ? await command[name](msg) : false
+}
+
+async function get_help(msg, command) {
+    return ""
 }
 
 function is_in(command) {
@@ -39,4 +44,4 @@ function is_in(command) {
 }
 // ----------------------------------
 
-module.exports = { check, send_check_fail, is_valid, get, is_in, name, type, required }
+module.exports = { check, send_check_fail, is_valid, get, get_help, is_in, name, type, required }

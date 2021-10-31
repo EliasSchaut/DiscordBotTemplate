@@ -1,11 +1,12 @@
 // ----------------------------------
 // config values
 // ----------------------------------
-const name = "nsfw"
+const name = "enable_slash"
 const type = "boolean"
 const required = false
 // ----------------------------------
-const lang_key = "error." + name
+const error_key = "error." + name
+const help_key = "mods_help." + name
 // ----------------------------------
 
 
@@ -13,12 +14,11 @@ const lang_key = "error." + name
 // check msg
 // ----------------------------------
 async function check(msg, command, args) {
-    return !(await get(msg, command)) || msg.client.helper.is_nsfw_channel(msg)
+    return true
 }
 
 async function send_check_fail(msg, command, args) {
-    const err = await msg.client.lang_helper.get_text(msg, lang_key)
-    msg.client.output.reply(msg, err)
+    return true
 }
 // ----------------------------------
 
@@ -35,9 +35,13 @@ async function get(msg, command) {
     return (is_in(command)) ? command[name] : false
 }
 
+async function get_help(msg, command) {
+    return ""
+}
+
 function is_in(command) {
     return command.hasOwnProperty(name)
 }
 // ----------------------------------
 
-module.exports = { check, send_check_fail, is_valid, get, is_in, name, type, required }
+module.exports = { check, send_check_fail, is_valid, get, get_help, is_in, name, type, required }

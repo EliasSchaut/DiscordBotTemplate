@@ -1,11 +1,12 @@
 // ----------------------------------
 // config values
 // ----------------------------------
-const name = "aliases"
-const type = "object"
+const name = "args_needed"
+const type = "boolean"
 const required = false
 // ----------------------------------
-const lang_key = "error." + name
+const error_key = "error." + name
+const help_key = "mods_help." + name
 // ----------------------------------
 
 
@@ -13,11 +14,19 @@ const lang_key = "error." + name
 // check msg
 // ----------------------------------
 async function check(msg, command, args) {
-    return true
+    return !(await get(msg, command)) || (args.length > 0)
 }
 
 async function send_check_fail(msg, command, args) {
-    return true
+    let err = await msg.client.lang_helper.get_text(msg, error_key)
+
+    const cmd_usage = await msg.client.mods.usage.get(msg, command)
+    const prefix = msg.client.config.enable_prefix_change ? await msg.client.db_helper.get_prefix(msg) : msg.client.config.prefix
+    if (cmd_usage) {
+        err += "\n" + await msg.client.lang_helper.get_text(msg, "error.missing_args_proper_use", `${prefix}${command.name} ${cmd_usage}`)
+    }
+
+    msg.client.output.reply(msg, err)
 }
 // ----------------------------------
 
@@ -34,9 +43,13 @@ async function get(msg, command) {
     return (is_in(command)) ? command[name] : false
 }
 
+async function get_help(msg, command) {
+    return await get(msg, command) ? await msg.client.lang_helper.get_text(msg, help_key) : ""
+}
+
 function is_in(command) {
     return command.hasOwnProperty(name)
 }
 // ----------------------------------
 
-module.exports = { check, send_check_fail, is_valid, get, is_in, name, type, required }
+module.exports = { check, send_check_fail, is_valid, get, get_help, is_in, name, type, required }

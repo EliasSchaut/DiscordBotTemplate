@@ -2,7 +2,7 @@
 // Global values
 // ----------------------------------
 const fs = require("fs")
-const mods_path_global = "./js/cmd_modificators/mods"
+const mods_path_global = "./js/cmd_modifications/mods"
 const mods_path = "./mods"
 const mods = {}
 // ----------------------------------
@@ -33,6 +33,21 @@ async function check_all_mods(msg, command, args) {
 
     return true
 }
+
+async function get_mods_for_help(msg, command) {
+    const mods_help = [`**${await msg.client.lang_helper.get_text(msg, "mods_help.modifications")}:**`]
+    for (const mod of Object.keys(command)) {
+        if (mod in mods) {
+            const mod_help = await mods[mod].get_help(msg, command)
+            if (mod_help.length !== 0) {
+                mods_help.push(mod_help)
+            }
+        }
+    }
+
+    if (mods_help.length === 1) return []
+    else return mods_help
+}
 // ----------------------------------
 
 
@@ -42,7 +57,7 @@ async function check_all_mods(msg, command, args) {
 function check_all_valid(client) {
     for (const command of client.commands) {
         for (const mod of Object.keys(command[1])) {
-            if (mod === "execute") continue
+            if (mod === "execute") break
             else if (!(mod in mods)) {
                 unknown(client, command[1].name, mod)
 
@@ -62,8 +77,9 @@ function send_invalid(client, command_name, mod_name, mod_type, mod_required) {
 }
 
 function unknown(client, command_name, mod_name) {
-    client.logger.log("warn", `The command modification ${mod_name} of the command ${command_name} is not known by the mod_manager.`)
+    client.logger.log("warn", `Th
+    e command modification ${mod_name} of the command ${command_name} is not known by the mod_manager.`)
 }
 // ----------------------------------
 
-module.exports = { init, check_all_mods }
+module.exports = { init, check_all_mods, get_mods_for_help }
