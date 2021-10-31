@@ -37,7 +37,7 @@ client.button_event = require("./js/event_helper/button_event")
 client.events = require("./js/event_helper/events")
 client.mod_getter = require("./js/cmd_modificator_getter")
 client.output = require("./js/dc_output")
-client.mod_man = require("./js/cmd_modificators/mod_manager")
+client.mod_man = require("./js/cmd_modifier/mod_manager")
 
 // helper fields
 const commands_path = "./commands"
