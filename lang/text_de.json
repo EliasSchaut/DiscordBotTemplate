@@ -15,6 +15,7 @@
     "nsfw": "Diesen Befehl kannst du leider nur in NSFW-Kanälen ausführen!"
   },
   "mods_help": {
+    "modifiers": "Modifikationen",
     "admin_only": "Nur von Bot-Admins ausführbar",
     "args_needed": "Benötigt Argumente",
     "args_max_length": "Mindestens %0 Argumente",

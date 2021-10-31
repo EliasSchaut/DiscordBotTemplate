@@ -15,6 +15,7 @@
     "nsfw": "Sorry, you can execute this command only in NSFW channels!"
   },
   "mods_help": {
+    "modifiers": "Modifications",
     "admin_only": "Only executable by bot admins",
     "args_needed": "Requires arguments",
     "args_max_length": "At least %0 arguments",

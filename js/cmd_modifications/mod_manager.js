@@ -2,7 +2,7 @@
 // Global values
 // ----------------------------------
 const fs = require("fs")
-const mods_path_global = "./js/cmd_modificators/mods"
+const mods_path_global = "./js/cmd_modifications/mods"
 const mods_path = "./mods"
 const mods = {}
 // ----------------------------------
