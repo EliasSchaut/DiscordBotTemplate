@@ -15,11 +15,11 @@
     "nsfw": "Diesen Befehl kannst du leider nur in NSFW-Kanälen ausführen!"
   },
   "mods_help": {
-    "modifiers": "Modifikationen",
+    "modifications": "Modifikationen",
     "admin_only": "Nur von Bot-Admins ausführbar",
     "args_needed": "Benötigt Argumente",
-    "args_max_length": "Mindestens %0 Argumente",
-    "args_min_length": "Maximal %0 Argumente",
+    "args_max_length": "Maximale Anzahl an Argumenten: `%0`",
+    "args_min_length": "Minimale Anzahl an Argumenten: `%0`",
     "cooldown": "Cooldown: `%0`",
     "cooldown_global": "Globaler-Cooldown: `%0`",
     "dm_only": "Nur in DMs ausführbar",

@@ -15,11 +15,11 @@
     "nsfw": "Sorry, you can execute this command only in NSFW channels!"
   },
   "mods_help": {
-    "modifiers": "Modifications",
+    "modifications": "Modifications",
     "admin_only": "Only executable by bot admins",
     "args_needed": "Requires arguments",
-    "args_max_length": "At least %0 arguments",
-    "args_min_length": "Maximal %0 arguments",
+    "args_max_length": "Maximum number of arguments: `%0`",
+    "args_min_length": "Minimum number of arguments: `%0`",
     "cooldown": "Cooldown: `%0`",
     "cooldown_global": "Global Cooldown: `%0`",
     "dm_only": "Only executable in DMs",
