@@ -18,7 +18,8 @@
 
   "help": {
     "show_only_permitted_commands": false,
-    "send_to_dm": false
+    "send_to_dm": false,
+    "show_cmd_modifications": true
   },
 
   "embed": {
