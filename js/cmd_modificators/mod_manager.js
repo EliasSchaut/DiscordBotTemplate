@@ -33,6 +33,20 @@ async function check_all_mods(msg, command, args) {
 
     return true
 }
+
+async function get_mods_for_help(msg, command) {
+    const mods_help = []
+    for (const mod of Object.keys(command)) {
+        if (mod in mods) {
+            const mod_help = mods[mod].get_help(msg, command)
+            if (mod_help.length !== 0) {
+                mods_help.push(mod_help)
+            }
+        }
+    }
+
+    return mods_help
+}
 // ----------------------------------
 
 
@@ -66,4 +80,4 @@ function unknown(client, command_name, mod_name) {
 }
 // ----------------------------------
 
-module.exports = { init, check_all_mods }
+module.exports = { init, check_all_mods, get_mods_for_help }

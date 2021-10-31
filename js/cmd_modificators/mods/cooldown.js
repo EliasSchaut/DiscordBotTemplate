@@ -9,7 +9,8 @@ const cooldown_base = 1000 // seconds
 const timeouts = new Map()
 const ms = require("ms")
 // ----------------------------------
-const lang_key = "error." + name
+const error_key = "error." + name
+const help_key = "mods_help." + name
 // ----------------------------------
 
 
@@ -36,7 +37,7 @@ async function check(msg, command, args) {
 }
 
 async function send_check_fail(msg, command, args) {
-    const err = await msg.client.lang_helper.get_text(msg, lang_key, get_time_remaining(msg.author.id))
+    const err = await msg.client.lang_helper.get_text(msg, error_key, get_time_remaining(msg.author.id))
     msg.client.output.reply(msg, err)
 }
 // ----------------------------------
@@ -52,6 +53,10 @@ function is_valid(command) {
 
 async function get(msg, command) {
     return (is_in(command)) ? command[name] : false
+}
+
+async function get_help(msg, command) {
+    return await get(msg, command) ? await msg.client.lang_helper.get_text(msg, help_key) : ""
 }
 
 function is_in(command) {
@@ -104,5 +109,5 @@ function set_command_timeout(command, user_id, cooldown_time) {
 }
 // ----------------------------
 
-module.exports = { check, send_check_fail, is_valid, get, is_in, name, type, required }
+module.exports = { check, send_check_fail, is_valid, get, get_help, is_in, name, type, required }
 

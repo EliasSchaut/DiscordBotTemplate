@@ -5,7 +5,8 @@ const name = "args_min_length"
 const type = "number"
 const required = false
 // ----------------------------------
-const lang_key = "error." + name
+const error_key = "error." + name
+const help_key = "mods_help." + name
 // ----------------------------------
 
 
@@ -18,7 +19,7 @@ async function check(msg, command, args) {
 }
 
 async function send_check_fail(msg, command, args) {
-    let err = await msg.client.lang_helper.get_text(msg, lang_key, await get(msg, command), args.length)
+    let err = await msg.client.lang_helper.get_text(msg, error_key, await get(msg, command), args.length)
 
     const cmd_usage = await msg.client.mods.usage.get(msg, command)
     const prefix = msg.client.config.enable_prefix_change ? await msg.client.db_helper.get_prefix(msg) : msg.client.config.prefix
@@ -43,9 +44,13 @@ async function get(msg, command) {
     return (is_in(command)) ? command[name] : false
 }
 
+async function get_help(msg, command) {
+    return await get(msg, command) ? await msg.client.lang_helper.get_text(msg, help_key) : ""
+}
+
 function is_in(command) {
     return command.hasOwnProperty(name)
 }
 // ----------------------------------
 
-module.exports = { check, send_check_fail, is_valid, get, is_in, name, type, required }
+module.exports = { check, send_check_fail, is_valid, get, get_help, is_in, name, type, required }

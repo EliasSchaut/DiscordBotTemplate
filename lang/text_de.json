@@ -14,7 +14,7 @@
     "need_permission": "Du bist nicht berechtigt, diesen Befehl auszuführen!\nDu benötigst folgende Rechte um diesen Befehl auszuführen: %0",
     "nsfw": "Diesen Befehl kannst du leider nur in NSFW-Kanälen ausführen!"
   },
-  "mods-help": {
+  "mods_help": {
     "admin_only": "Nur von Bot-Admins ausführbar",
     "args_needed": "Benötigt Argumente",
     "args_max_length": "Mindestens %0 Argumente",

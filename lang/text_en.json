@@ -14,7 +14,7 @@
     "admin_only": "You are not authorized to execute this command!\nOnly bot admins can execute this command.",
     "nsfw": "Sorry, you can execute this command only in NSFW channels!"
   },
-  "mods-help": {
+  "mods_help": {
     "admin_only": "Only executable by bot admins",
     "args_needed": "Requires arguments",
     "args_max_length": "At least %0 arguments",
