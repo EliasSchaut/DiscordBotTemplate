@@ -20,7 +20,8 @@ const normalized_path = path.join(__dirname, "models")
 fs.readdirSync(normalized_path).forEach(function (file_path) {
     const file = require("./models/" + file_path)
     const file_name = file_path.substring(0, file_path.lastIndexOf('.'))
-    DB[file_name] = file(sequelize, Sequelize)
+    DB[file_name] = file
+    DB[file_name].TABLE = file._TABLE(sequelize, Sequelize)
 })
 
 module.exports = { DB, sequelize }

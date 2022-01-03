@@ -23,41 +23,39 @@ const client = new Discord.Client({ intents: [
 // get required methods and fields and save it into client. This will always be accessible with message.client
 client.commands = new Discord.Collection()
 client.config = require('./config/config.json')
-client.helper = require('./js/cmd_helper')
+client.helper = require('./util/cmd_helper')
 client.lang_helper = require("./lang/lang_helper")
-client.db_helper = require('./db/db_helper')
 client.DB = require('./db/db_init').DB
 client.sequelize = require('./db/db_init').sequelize
-client.logger = require("./js/logger").logger
-client.slasher = require("./js/slash_commands/slasher")
-client.command_event = require("./js/event_helper/command_event")
-client.slash_event = require("./js/event_helper/slash_event")
-client.menu_event = require("./js/event_helper/menu_event")
-client.button_event = require("./js/event_helper/button_event")
-client.events = require("./js/event_helper/events")
-client.mod_getter = require("./js/cmd_modificator_getter")
-client.output = require("./js/dc_output")
-client.mod_man = require("./js/cmd_modifications/mod_manager")
-
-// helper fields
-const commands_path = "./commands"
+client.logger = require("./util/logger").logger
+client.slasher = require("./handler/slash_commands/slasher")
+client.command_event = require("./handler/event_handler/command_event")
+client.slash_event = require("./handler/event_handler/slash_event")
+client.menu_event = require("./handler/event_handler/menu_event")
+client.button_event = require("./handler/event_handler/button_event")
+client.events = require("./handler/event_handler/events")
+client.output = require("./util/output")
+client.mod_man = require("./handler/cmd_modifications/mod_manager")
 
 // dynamically retrieve all command files and additionally save it into message.client.command_tree
-let command_tree = {}
-const commandFolders = fs.readdirSync(commands_path)
-for (const folder of commandFolders) {
-    command_tree[folder] = {}
-    const commandFiles = fs.readdirSync(`${commands_path}/${folder}`).filter(file => file.endsWith('.js'))
-    for (const file of commandFiles) {
-        const command = require(`${commands_path}/${folder}/${file}`)
-        const name = client.mod_getter.get_name(command)
+async function load_commands(client) {
+    let command_tree = {}
+    const commands_path = "./commands"
+    const commandFolders = fs.readdirSync(commands_path)
+    for (const folder of commandFolders) {
+        command_tree[folder] = {}
+        const commandFiles = fs.readdirSync(`${commands_path}/${folder}`).filter(file => file.endsWith('.js'))
+        for (const file of commandFiles) {
+            const command = require(`${commands_path}/${folder}/${file}`)
+            if (await client.mods.disabled.get(null, command)) continue
 
-        if (client.mod_getter.get_disabled(command)) continue
-        client.commands.set(name, command)
-        command_tree[folder][name] = command
+            const name = await client.mods.name.get(null, command)
+            await client.commands.set(name, command)
+            command_tree[folder][name] = command
+        }
     }
+    client.command_tree = command_tree
 }
-client.command_tree = command_tree
 // ---------------------------------
 
 
@@ -67,10 +65,11 @@ client.command_tree = command_tree
 // ---------------------------------
 // when the client is ready (bot is ready)
 client.once('ready', async () => {
-    let problem_free_set_up = true
-
     // set mods
-    problem_free_set_up = client.mod_man.init(client)
+    const problem_free_set_up = client.mod_man.init(client)
+
+    // load commands
+    await load_commands(client)
 
     // set activity
     if (client.config.enable_activity) {
@@ -81,7 +80,9 @@ client.once('ready', async () => {
     await client.sequelize.sync()
 
     // sync slash commands
-    await client.slasher.register(client)
+    if (client.config.enable_slash_commands) {
+        await client.slasher.register(client)
+    }
 
     // set up events
     await client.events.init(client)

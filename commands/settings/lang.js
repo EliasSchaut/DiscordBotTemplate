@@ -20,7 +20,7 @@ module.exports = {
     async execute(msg, args) {
         if (args.length > 0) {
             if (iv(args[0])) {
-                if (await msg.client.db_helper.set_lang(msg, args[0])) {
+                if (await msg.client.DB.User_Lang.set(msg, args[0])) {
                     msg.client.output.send(msg, await gt(msg, `${s}set`, `\`${args[0]}\``))
 
                 } else {
@@ -32,7 +32,7 @@ module.exports = {
             }
 
         } else {
-            return msg.client.output.send(msg, await gt(msg, s + "get", `\`${await msg.client.db_helper.get_lang(msg)}\``))
+            return msg.client.output.send(msg, await gt(msg, s + "get", `\`${await msg.client.DB.User_Lang.get(msg)}\``))
         }
     },
 };

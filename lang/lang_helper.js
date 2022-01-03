@@ -3,7 +3,6 @@
 // ===============================
 
 const { lang_paths } = require("../config/config.json")
-const db_helper = require("../db/db_helper")
 
 // get all language files and save it into text
 const text = {}
@@ -18,7 +17,7 @@ function is_valid(lang) {
 
 // returns text in the correct language (key = json key with its scope (e.g. commands.echo.help))
 async function get_text(msg, key, ...inserts) {
-    const lang = (msg.client.config.enable_lang_change) ? await db_helper.get_lang(msg) : msg.client.config.default_lang
+    const lang = (msg.client.config.enable_lang_change) ? await msg.client.DB.User_Lang.get(msg) : msg.client.config.default_lang
     const key_arr = key.split(".")
 
     let scope_text = text[lang]

@@ -24,6 +24,7 @@
 
   "embed": {
     "color": "RANDOM",
+    "author_name": "",
     "avatar_url": ""
   },
 

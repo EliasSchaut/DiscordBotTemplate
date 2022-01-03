@@ -4,7 +4,7 @@
 // See also: https://discordjs.guide/miscellaneous/useful-packages.html#winston
 // ===============================
 
-// require winston.js for logging
+// require winston.handler for logging
 const winston = require("winston");
 const config = require("../config/config.json");
 

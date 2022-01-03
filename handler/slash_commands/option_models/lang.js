@@ -1,4 +1,4 @@
-const config = require('../../../config/config.json')
+const config = require('../../../../Lila-Kuh-bot/config/config.json')
 const choices = []
 for (const lang of Object.keys(config.lang_paths)) {
     choices.push({ "name": lang, "value": lang })
