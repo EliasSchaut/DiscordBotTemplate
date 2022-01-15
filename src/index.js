@@ -1,8 +1,7 @@
 // ===============================
 // This is the entry point of the whole program!
 // This file will collect every needed package or code file together and start the discord bot.
-// In this file is also the event listener for every incoming message for the bot.
-// This file checks, if the message is a valid command and if so, it will execute.
+// Further explanations can be found in the wiki: https://github.com/EliasSchaut/Discord-Bot-Template/wiki
 // ===============================
 
 
