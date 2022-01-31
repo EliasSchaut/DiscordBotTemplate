@@ -24,54 +24,25 @@ function is_nsfw_channel(msg) {
     return from_dm(msg) || (from_guild(msg) && msg.channel.nsfw)
 }
 
-// checks structural correctness of given args (by now only command length)
-async function check_args(msg, command, args) {
-    const args_min_length = await msg.client.mods.args_min_length.get(null, command)
-    return !args_min_length || args.length >= args_min_length
-}
-
-// check if author from message is admin
-function is_admin(msg) {
-    if (from_dm(msg)) {
-        return is_admin_from_dm(msg)
-
-    } else {
-        return is_admin_from_guild(msg)
-    }
-}
-
-// check, if the author from message have all of the given permissions as list
-function has_permission(msg, permission_list) {
-    return !from_dm(msg) && msg.member.permissions.has(permission_list)
-}
-
-// check, it the author from message is permitted to run given command
-function is_permitted(msg, command) {
-    const need_permission = msg.client.mods.need_permission.get(msg, command)
-
-    return (!((msg.client.mods.admin_only.get(msg, command) && !is_admin(msg))
-        ||  (need_permission.length && !has_permission(msg, need_permission))))
-}
-
 // print all commands for the author from message in a human readable string
-function commands_to_string(msg) {
+async function commands_to_string(msg) {
     let out = ""
-    Object.keys(msg.client.command_tree).forEach(function (command_dir) {
-        let data = []
+    for (const command_dir of Object.keys(msg.client.command_tree)) {
+        const data = []
 
-        Object.keys(msg.client.command_tree[command_dir]).forEach(function (command_name) {
+        for (const command_name of Object.keys(msg.client.command_tree[command_dir])) {
             const command = msg.client.command_tree[command_dir][command_name]
 
             // user is admin or permitted (only needed if help.show_only_permitted_commands is true
-            if (!msg.client.config.help.show_only_permitted_commands || is_permitted(msg, command)) {
+            if (!msg.client.config.help.show_only_permitted_commands || await is_permitted(msg, command)) {
                 data.push(`${command_name}`)
             }
-        })
+        }
 
         if (data.length) {
             out += `\n**${command_dir.toUpperCase()}**\n${data.join("\n")}\n`
         }
-    })
+    }
 
     return out
 }
@@ -124,6 +95,45 @@ function trim_text(string, size, use_dots) {
     }
     return string
 }
+
+
+// --------------------
+// Permissions
+// --------------------
+// check if author from message is admin
+function is_admin(msg) {
+    if (from_dm(msg)) {
+        return is_admin_from_dm(msg)
+
+    } else {
+        return is_admin_from_guild(msg)
+    }
+}
+
+// check, if the author from message have all the given permissions as list
+function has_permission(msg, permission_list) {
+    return !from_dm(msg) && msg.member.permissions.has(permission_list)
+}
+
+// check, if the author from message is permitted to run given command
+async function is_permitted(msg, command) {
+    const need_permission = await msg.client.mods.need_permission.get(msg, command)
+    const admin_only = await msg.client.mods.admin_only.get(msg, command)
+
+    if (!admin_only && (need_permission.length === 0)) {
+        return true
+
+    } else if (!admin_only || is_admin(msg)) {
+        return true
+
+    } else if (!(need_permission.length > 0) || has_permission(msg, need_permission)) {
+        return true
+
+    } else {
+        return false
+    }
+}
+// --------------------
 // ----------------------------
 
 
@@ -148,5 +158,5 @@ function is_admin_from_guild(msg) {
 // ----------------------------
 
 
-module.exports = { from_guild, from_dm, is_nsfw_channel, check_args, is_admin, has_permission, is_permitted,
+module.exports = { from_guild, from_dm, is_nsfw_channel, is_admin, has_permission, is_permitted,
     commands_to_string, link_to_dm, link_to_message, create_embed_to_dm, check_interaction_custom_id, trim_text }
