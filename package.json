@@ -11,8 +11,8 @@
     "pm-stop": "pm2 delete my-bot"
   },
   "dependencies": {
-    "@discordjs/builders": "^0.11.0",
-    "@discordjs/rest": "^0.2.0-canary.0",
+    "@discordjs/builders": "^0.12.0",
+    "@discordjs/rest": "^0.3.0",
     "dayjs": "^1.10.7",
     "discord-api-types": "^0.26.1",
     "discord.js": "^13.6.0",
@@ -20,9 +20,10 @@
     "node": "^16.13.2",
     "node-schedule": "^2.1.0",
     "pm2": "^5.1.2",
-    "sequelize": "^6.13.0",
+    "sequelize": "^6.15.0",
     "sqlite3": "^4.2.0",
-    "winston": "^3.4.0"
+    "winston": "^3.5.0",
+    "follow-redirects": ">=1.14.7"
   },
   "keywords": [
     "discord-bot-template"
