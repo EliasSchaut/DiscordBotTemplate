@@ -123,10 +123,10 @@ async function is_permitted(msg, command) {
     if (!admin_only && (need_permission.length === 0)) {
         return true
 
-    } else if (!admin_only || is_admin(msg)) {
+    } else if (admin_only && is_admin(msg)) {
         return true
 
-    } else if (!(need_permission.length > 0) || has_permission(msg, need_permission)) {
+    } else if ((need_permission.length > 0) && has_permission(msg, need_permission)) {
         return true
 
     } else {
