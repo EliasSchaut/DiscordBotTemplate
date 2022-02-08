@@ -7,6 +7,8 @@ const fs = require("fs")
 // ----------------------------
 // Export
 // ----------------------------
+// if config.enable_slash_commands is true, this function makes slash commands for all commands with the enable_slash modification.
+// if config.enable_slash_commands is false, this function removes all slash commands
 async function register(client) {
     const rest = new REST({ version: '9' }).setToken(client.config.token)
 

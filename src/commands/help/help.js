@@ -90,7 +90,7 @@ module.exports = {
         const usage = await msg.client.mods.usage.get(msg, command)
         if (aliases.length) description.push(`${await gt(msg, s + "success.aliases")}\n${aliases.join(', ')}\n`)
         if (cmd_description) description.push(`${await gt(msg, s + "success.description")}\n${cmd_description}\n`)
-        if (usage) description.push(`${await gt(msg, s + "success.usage")}\n\`${prefix}${name} ${usage}\``)
+        if (usage) description.push(`${await gt(msg, s + "success.usage")}\n\`${prefix}${name} ${usage}\`\n`)
         if (msg.client.config.help.show_cmd_modifications) description.push(`${(await msg.client.mod_man.get_mods_for_help(msg, command)).join("\n")}`)
 
         return await this.create_embed_help_format(msg, name, description.join("\n"))
